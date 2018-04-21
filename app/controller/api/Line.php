@@ -29,7 +29,8 @@ class Line extends ApiController {
       Log::info(6.1);
       Log::info($event->getReplyToken());
       $response = $bot->replyText( $event->getReplyToken(), 'hello!' );
-
+      Log::info($response->getRawBody());
+      Log::info($response->getHTTPStatus());
     }
     Log::info(7);
 
