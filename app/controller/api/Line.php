@@ -18,12 +18,12 @@ class Line extends ApiController {
     Log::info(2);
     $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
     Log::info(3);
-    if( !isset ($_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE]) )
+    if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
       return false;
     Log::info(4);
     $body = file_get_contents ("php://input");
     Log::info(5);
-    $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE]);
+    $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
     Log::info(6);
     foreach( $events as $event ) {
       $response = $bot->replyText( $event->getReplyToken(), 'hello!' );
