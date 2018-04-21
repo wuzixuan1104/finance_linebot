@@ -11,10 +11,13 @@ class Main extends SiteController {
 
   public function a () {
     $posts = Input::post ();
-    
+
   }
   public function index () {
-    return View::create ('test.php');
+    $this->layout
+         ->with ('current_url', URL::base (''));
+
+    return $this->view->setPath ('site/index.php');
   }
   public function admin () {
     return refresh (Url::base ('admin/login'));

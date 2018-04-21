@@ -16,7 +16,6 @@ class Main extends AdminController {
   public function index () {
     $this->layout
          ->with ('current_url', URL::base ('admin'));
-         
     return $this->view->setPath ('admin/index.php')
                 ->output ();
   }
