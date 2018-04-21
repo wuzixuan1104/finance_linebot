@@ -10,7 +10,7 @@
 Router::get ('', 'Main@index');
 
 Router::dir ('api', function () {
-  Router::get ('line', 'Line@index');
+  Router::post ('line', 'Line@index');
 });
 
 Router::dir ('admin', function () {
