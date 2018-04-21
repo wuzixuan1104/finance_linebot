@@ -1,7 +1,0 @@
-.DS_Store
-sftp-config*
-
-.sass-cache/*
-package-lock.json
-node_modules/*
-npm-debug.log
