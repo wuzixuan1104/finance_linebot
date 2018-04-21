@@ -9,6 +9,10 @@
 
 Router::get ('', 'Main@index');
 
+Router::dir ('api', function () {
+  Router::get ('line', 'Line@index');
+});
+
 Router::dir ('admin', function () {
   Router::get ('', 'Main');
 

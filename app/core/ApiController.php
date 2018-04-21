@@ -8,12 +8,8 @@
  */
 
 abstract class ApiController extends Controller {
-  protected $user = null;
 
   public function __construct () {
     parent::__construct ();
-    
-    $token = Input::requestHeader ('token');
-    $token && $this->user = User::find ('one', Where::create ('access_token = ?', $token));
   }
 }
