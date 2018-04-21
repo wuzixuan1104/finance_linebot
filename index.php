@@ -41,8 +41,10 @@ switch (ENVIRONMENT) {
     break;
 
   case 'production':
-    ini_set ('display_errors', 0);
-    error_reporting (is_php ('5.3') ? E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED : E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
+    ini_set ('display_errors', 1);
+    error_reporting (-1);
+    // ini_set ('display_errors', 0);
+    // error_reporting (is_php ('5.3') ? E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED : E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
     break;
 
   default:
