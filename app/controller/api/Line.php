@@ -28,7 +28,8 @@ class Line extends ApiController {
     foreach( $events as $event ) {
       Log::info(6.1);
       Log::info($event->getReplyToken());
-      $response = $bot->replyText( $event->getReplyToken(), 'hello!' );
+      $response = $bot->replyMessage( $event->getReplyToken(), new LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello') );
+
       Log::info($response->getRawBody());
       Log::info($response->getHTTPStatus());
     }
