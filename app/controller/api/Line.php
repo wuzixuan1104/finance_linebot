@@ -16,7 +16,7 @@ class Line extends ApiController {
 
   public function index() {
     $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
-    $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
+    $bot = new \LINE\LINEBotTiny($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
     if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
       return false;
 
@@ -32,7 +32,6 @@ class Line extends ApiController {
           $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
           break;
       }
-      Log::info($event->getReplyToken());
       $response = $bot->replyMessage(
         array(
           'replyToken' => $event->getReplyToken(),
