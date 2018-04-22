@@ -23,10 +23,12 @@ class Line extends ApiController {
 
     foreach( $events as $event ) {
       # text
+      Log::info(1);
       Log::info($event->message->type);
+      Log::info(2);
       switch($event->message->type) {
         case 'text':
-          Log:info(123);
+          Log::info(123);
           $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->message->text);
           $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
           break;
