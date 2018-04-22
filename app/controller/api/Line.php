@@ -24,16 +24,13 @@ class Line extends ApiController {
 
     foreach( $events as $event ) {
       if ( $event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage ) {
-        Log::info(1);
-        $type = strtolower(trim( $event->getMessageType() ));
-        Log::info(2);
-        Log::info($type);
-        Log::info($event->getText());
-        switch($type) {
+        switch($event->getMessageType()) {
           case "text":
-            Log::info(3);
             $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
             break;
+          case "image":
+            $url = 'https://example.com/image_preview.jpg';
+            $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
         }
         $response = $bot->replyMessage($event->getReplyToken(), $outputText);
       }
@@ -41,46 +38,5 @@ class Line extends ApiController {
     }
 
   }
-    // public function index() {
-    //   $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
-    //   $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
-    //   if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
-    //     return false;
-    //
-    //   $access_token = config('line', 'channelToken');
-    //
-    //
-    //   $json_string = file_get_contents('php://input');
-    //   $json_obj = json_decode($json_string);
-    //
-    //   $event = $json_obj->{"events"}[0];
-    //   $type  = $event->{"message"}->{"type"};
-    //   $message = $event->{"message"};
-    //   $reply_token = $event->{"replyToken"};
-    //
-    //   $post_data = [
-    //     "replyToken" => $reply_token,
-    //     "messages" => [
-    //       [
-    //         "type" => "text",
-    //         "text" => $message->{"text"}
-    //       ]
-    //     ]
-    //   ];
-    //
-    //   $ch = curl_init("https://api.line.me/v2/bot/message/reply");
-    //   curl_setopt($ch, CURLOPT_POST, true);
-    //   curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-    //   curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    //   curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
-    //   curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-    //       'Content-Type: application/json',
-    //       'Authorization: Bearer '.$access_token
-    //       //'Authorization: Bearer '. TOKEN
-    //   ));
-    //   $result = curl_exec($ch);
-    //   curl_close($ch);
-    // }
-
 
 }
