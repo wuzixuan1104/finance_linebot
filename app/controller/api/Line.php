@@ -21,6 +21,12 @@ class Line extends ApiController {
     $body = file_get_contents ("php://input");
     $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
 
+    $receive = json_decode(file_get_contents("php://input"));
+
+
+  	$text = $receive->events[0]->message->text;
+    Log::info($text);
+
     foreach( $events as $event ) {
       # text
       Log::info(1);
