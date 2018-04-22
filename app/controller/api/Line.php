@@ -81,7 +81,7 @@ class Line extends ApiController {
 
   	// 準備Post回Line伺服器的資料
   	$this->header = ["Content-Type: application/json", "Authorization: Bearer {" . config('line', 'channelToken') . "}"];
-
+    Log::info($this->from);
   	// 回覆訊息
   	$this->reply($content_type, $text);
   }
