@@ -141,6 +141,6 @@ class Line extends ApiController {
 		$context = stream_context_create(array(
 		"http" => array("method" => "POST", "header" => implode(PHP_EOL, $this->header), "content" => json_encode($data), "ignore_errors" => true)
 		));
-		file_get_contents($url, false, $context);
+		echo file_get_contents($url, false, $context);
 	}
 }
