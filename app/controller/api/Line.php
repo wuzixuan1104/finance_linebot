@@ -13,35 +13,18 @@ class Line extends ApiController {
   }
 
   public function index() {
-    Log::info(1);
     $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
-    Log::info(2);
     $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
-    Log::info(3);
     if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
       return false;
-    Log::info(4);
-    $body = file_get_contents ("php://input");
-    Log::info(5);
-    $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
-    Log::info(6);
-    foreach( $events as $event ) {
-      Log::info(6.1);
-      Log::info($event->getReplyToken());
 
-      $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
-      $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
-      // try {
-      //   $builder = new LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
-      //   Log::info(6.2);
-      //   $response = $bot->replyMessage( $event->getReplyToken(), $builder );
-      // } catch ( Exception $e ) {
-      //   Log::info($e->getMessage());
-      // }
-      Log::info($response->getRawBody());
-      Log::info($response->getHTTPStatus());
+    $body = file_get_contents ("php://input");
+    $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
+    foreach( $events as $event ) {
+      $response = $bot->replyText($event->getReplyToken(), 'hello master!');
+      // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
+      // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
     }
-    Log::info(7);
 
   }
 }
