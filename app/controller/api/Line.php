@@ -22,10 +22,10 @@ class Line extends ApiController {
     $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
     Log::info('test');
     foreach( $events as $event ) {
-      $response = $bot->replyText($event->getReplyToken(), 'hello master!');
-      Log::info('hi~~');
-      // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
-      // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
+      // $response = $bot->replyText($event->getReplyToken(), 'hello master!');
+      // Log::info('hi~~');
+      $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello master');
+      $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
     }
 
   }
