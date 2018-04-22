@@ -49,7 +49,7 @@ class Line extends ApiController {
       Log::info(2);
       $msg = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder("這訊息要用手機的賴才看的到哦", $button);
       Log::info(3);
-      $bot->replyMessage($replyToken,$msg);
+      $bot->replyMessage($event->getReplyToken(),$msg);
       // $response = $bot->replyMessage($event->getReplyToken(), $msg);
 
     }
