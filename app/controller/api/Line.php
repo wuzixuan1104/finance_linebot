@@ -23,9 +23,9 @@ class Line extends ApiController {
 
     foreach( $events as $event ) {
       # text
-      // $response = $bot->replyText($event->getReplyToken(), 'hello cherry!');
-      // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello master');
-      // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
+      $response = $bot->replyText($event->getReplyToken(), 'hello cherry!');
+      $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello master');
+      $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
 
       # image
       $img_url = "https://cdn.shopify.com/s/files/1/0379/7669/products/sampleset2_1024x1024.JPG?v=1458740363";
