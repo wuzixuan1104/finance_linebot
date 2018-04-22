@@ -14,48 +14,73 @@ class Line extends ApiController {
     parent::__construct();
   }
 
-  public function index() {
-    $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
-    $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
-    if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
-      return false;
+  // public function index() {
+  //   $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
+  //   $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
+  //   if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
+  //     return false;
+  //
+  //   $events = $bot->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
+  //
+  //   foreach( $events as $event ) {
+  //     if ( $event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage ) {
+  //       Log::info(1);
+  //       $type = strtolower(trim( $event->getMessage() ));
+  //       Log::info(2);
+  //       Log::info($type);
+  //       Log::info($event->getText());
+  //       switch($type) {
+  //         case "text":
+  //           Log::info(3);
+  //           $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
+  //           break;
+  //       }
+  //       $response = $bot->replyMessage($event->getReplyToken(), $outputText);
+  //     }
+  //
+  //   }
+  //
+  // }
+    public function index() {
+      $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
+      $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
+      if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
+        return false;
 
-    $events = $bot->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
+      $access_token = config('line', 'channelToken');
 
-    foreach( $events as $event ) {
-      if ( $event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage ) {
-        Log::info(1);
-        $type = strtolower(trim( $event->getMessage() ));
-        Log::info(2);
-        Log::info($type);
-        Log::info($event->getText());
-        switch($type) {
-          case "text":
-            Log::info(3);
-            $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
-            break;
-        }
-        $response = $bot->replyMessage($event->getReplyToken(), $outputText);
-      }
-      // Log::info($event->message->type);
-      // switch($event->message->type) {
-      //   case 'text':
-      //     // Log::info($event->message->text);
-      //     $text = $event->message->text;
-      //     Log::info($text);
-      //     $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
-      //     $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
-      //     break;
-      //   case 'image':
-      //     $img_url = "https://cdn.shopify.com/s/files/1/0379/7669/products/sampleset2_1024x1024.JPG?v=1458740363";
-      //     $outputText = new LINE\LINEBot\MessageBuilder\ImageMessageBuilder($img_url, $img_url);
-      //     $response = $bot->replyMessage($event->getReplyToken(), $outputText);
-      //     break;
-      // }
+
+      $json_string = file_get_contents('php://input');
+      $json_obj = json_decode($json_string);
+
+      $event = $json_obj->{"events"}[0];
+      $type  = $event->{"message"}->{"type"};
+      $message = $event->{"message"};
+      $reply_token = $event->{"replyToken"};
+
+      $post_data = [
+        "replyToken" => $reply_token,
+        "messages" => [
+          [
+            "type" => "text",
+            "text" => $message->{"text"}
+          ]
+        ]
+      ];
+
+      $ch = curl_init("https://api.line.me/v2/bot/message/reply");
+      curl_setopt($ch, CURLOPT_POST, true);
+      curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+      curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($post_data));
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+          'Content-Type: application/json',
+          'Authorization: Bearer '.$access_token
+          //'Authorization: Bearer '. TOKEN
+      ));
+      $result = curl_exec($ch);
+      curl_close($ch); 
     }
-
-  }
-
   // public function index() {
   //   $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
   //   $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
