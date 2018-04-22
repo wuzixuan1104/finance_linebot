@@ -32,7 +32,7 @@ class Line extends ApiController {
         //     $url = 'https://example.com/image_preview.jpg';
         //     $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
         // }
-        Log::info('test');
+        Log::info($event->getMessageType());
         $url = 'https://example.com/image_preview.jpg';
         $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
         $response = $bot->replyMessage($event->getReplyToken(), $outputText);
