@@ -32,6 +32,7 @@ class Line extends ApiController {
           $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
           break;
       }
+      Log::info($event->getReplyToken());
       $response = $bot->replyMessage(array(
         'replyToken' => $event->getReplyToken(),
         'messages' => array(
@@ -45,6 +46,12 @@ class Line extends ApiController {
           ),
         ),
       ));
+
+      if( $response->isSucceeded() ) {
+        echo 'Succeeded';
+        return;
+      }
+      echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
     }
 
   }
