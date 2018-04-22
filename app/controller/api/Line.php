@@ -24,15 +24,19 @@ class Line extends ApiController {
 
     foreach( $events as $event ) {
       if ( $event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage ) {
-        switch($event->getMessageType()) {
-          case "text":
-            $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
-            break;
-          case "image":
-            $url = 'https://example.com/image_preview.jpg';
-            $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
-        }
+        // switch($event->getMessageType()) {
+        //   case "text":
+        //     $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
+        //     break;
+        //   case "image":
+        //     $url = 'https://example.com/image_preview.jpg';
+        //     $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
+        // }
+        Log::info('test');
+        $url = 'https://example.com/image_preview.jpg';
+        $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
         $response = $bot->replyMessage($event->getReplyToken(), $outputText);
+
       }
 
     }
