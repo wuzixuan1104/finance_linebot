@@ -23,19 +23,16 @@ class Line extends ApiController {
     $events = $bot->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
 
     foreach( $events as $event ) {
-        // switch($event->getMessageType()) {
-        //   case "text":
-        //     $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
-        //     break;
-        //   case "image":
-        //     $url = 'https://example.com/image_preview.jpg';
-        //     $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
-        // }
-        Log::info(1);
-        Log::info($event->getMessageType());
-        Log::info(2);
-        $url = 'https://example.com/image_preview.jpg';
-        $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
+      Log::info($event->getMessageType());
+        switch($event->getMessageType()) {
+          case "text":
+            $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
+            break;
+          case "image":
+            $url = 'https://example.com/image_preview.jpg';
+            $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
+            break;
+        }
         $response = $bot->replyMessage($event->getReplyToken(), $outputText);
 
 
