@@ -21,11 +21,12 @@ class Line extends ApiController {
       return false;
 
     $events = $bot->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
-    Log::info($events[0]['message']['type']);
+
     foreach( $events as $event ) {
       if ( $event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage ) {
         Log::info(1);
-        $type = strtolower(trim( $event->getMessage() ));
+        Log::info($event['message']['type']);
+        $type = strtolower(trim( $event->getType() ));
         Log::info(2);
         Log::info($type);
         Log::info($event->getText());
