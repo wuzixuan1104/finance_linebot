@@ -27,8 +27,9 @@ class Line extends ApiController {
       Log::info($event->message->type);
       switch($event->message->type) {
         case 'text':
-          Log::info($event->message->text);
-          $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->message->text);
+          // Log::info($event->message->text);
+          $text = $event->message->text;
+          $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
           $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
           break;
         case 'image':
