@@ -29,7 +29,7 @@ class Line extends ApiController {
         case 'text':
           // Log::info($event->message->text);
           $text = $event->message->text;
-          $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
+          $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
           $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
           break;
         case 'image':
