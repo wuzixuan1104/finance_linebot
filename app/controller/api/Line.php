@@ -23,7 +23,6 @@ class Line extends ApiController {
     $events = $bot->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
 
     foreach( $events as $event ) {
-      if ( $event instanceof \LINE\LINEBot\Event\MessageEvent\TextMessage ) {
         // switch($event->getMessageType()) {
         //   case "text":
         //     $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
@@ -39,7 +38,6 @@ class Line extends ApiController {
         $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
         $response = $bot->replyMessage($event->getReplyToken(), $outputText);
 
-      }
 
     }
 
