@@ -28,10 +28,9 @@ class Line extends ApiController {
       // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
 
       # image
-      $imgUrl = 'http://wpvoyager.purethe.me/files/2015/06/photo-1437747941115-61870b18ede5-420x400.jpg';
-      $imageMessageBuilder = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($imgUrl, $imgUrl);
-      $response = $bot->replyMessage($event->getReplyToken(), $imageMessageBuilder);
-
+      $img_url = "https://cdn.shopify.com/s/files/1/0379/7669/products/sampleset2_1024x1024.JPG?v=1458740363";
+      $outputText = new LINE\LINEBot\MessageBuilder\ImageMessageBuilder($img_url, $img_url);
+      $response = $bot->replyMessage($event->getReplyToken(), $outputText);
     }
 
   }
