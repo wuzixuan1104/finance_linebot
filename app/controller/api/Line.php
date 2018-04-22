@@ -20,12 +20,18 @@ class Line extends ApiController {
 
     $body = file_get_contents ("php://input");
     $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
-    // Log::info('test');
+
     foreach( $events as $event ) {
-      $response = $bot->replyText($event->getReplyToken(), 'hello cherry!');
-      // Log::info('hi~~');
+      # text
+      // $response = $bot->replyText($event->getReplyToken(), 'hello cherry!');
       // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello master');
       // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
+
+      # image
+      // http://wpvoyager.purethe.me/files/2015/06/photo-1437747941115-61870b18ede5-420x400.jpg
+      $imageMessageBuilder = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder('http://wpvoyager.purethe.me/files/2015/06/photo-1437747941115-61870b18ede5-420x400.jpg');
+      $response = $bot->replyMessage($event->getReplyToken(), $imageMessageBuilder);
+
     }
 
   }
