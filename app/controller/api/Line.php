@@ -23,8 +23,8 @@ class Line extends ApiController {
     // $receive = json_decode(file_get_contents("php://input"));
 
     foreach( $events as $event ) {
-      $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
-      $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
+      // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
+      // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
 
       # text
       Log::info($event->message->type);
