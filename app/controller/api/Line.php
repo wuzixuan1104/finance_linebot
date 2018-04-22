@@ -43,10 +43,12 @@ class Line extends ApiController {
         new \LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder("下一頁", "page=3"),
         new \LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder("上一頁", "page=1")
       );
-
-      $img_url = "圖片網址，必需為 https (圖片非必填欄位)";
+      Log::info(1);
+      $img_url = "https://example.com/image_preview.jpg";
       $button = new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder("按鈕文字","說明", $img_url, $actions);
+      Log::info(2);
       $msg = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder("這訊息要用手機的賴才看的到哦", $button);
+      Log::info(3);
       $bot->replyMessage($replyToken,$msg);
       // $response = $bot->replyMessage($event->getReplyToken(), $msg);
 
