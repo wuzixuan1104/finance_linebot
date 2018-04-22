@@ -16,40 +16,30 @@ class Line extends ApiController {
 
   public function index() {
     $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
-    $bot = new \LINE\LINEBotTiny($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
+    $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
     if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
       return false;
 
     $events = $bot->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
+    $msg = new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
 
     foreach( $events as $event ) {
       switch($event->getMessageType()) {
         case "text":
           $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
+          $msg->add($outputText);
           break;
         case "image":
           $url = 'https://example.com/image_preview.jpg';
           $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
           break;
       }
-      $response = $bot->replyMessage(
-        array(
-          'replyToken' => $event->getReplyToken(),
-          'messages' => array(
-            array(
-              'type' => 'text',
-              'text' => $event->getText(),
-            ),
-            array(
-              'type' => 'text',
-              'text' => 'Hello',
-        ))));
-      Log::info(123);
-      if( $response->isSucceeded() ) {
-        echo 'Succeeded';
-        return;
-      }
-      echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
+      $response = $bot->replyMessage($event->getReplyToken(), $msg);
+      // if( $response->isSucceeded() ) {
+      //   echo 'Succeeded';
+      //   return;
+      // }
+      // echo $response->getHTTPStatus() . ' ' . $response->getRawBody();
     }
 
   }
