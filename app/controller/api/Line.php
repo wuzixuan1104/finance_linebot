@@ -33,7 +33,7 @@ class Line extends ApiController {
           break;
       }
       $response = $bot->replyMessage(array(
-        'replyToken' => config('line', 'channelToken'),
+        'replyToken' => $event->getReplyToken(),
         'messages' => array(
           array(
             'type' => 'text',
