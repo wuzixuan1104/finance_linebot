@@ -33,20 +33,19 @@ class Line extends ApiController {
           break;
       }
       Log::info($event->getReplyToken());
-      $response = $bot->replyMessage(array(
-        'replyToken' => $event->getReplyToken(),
-        'messages' => array(
-          array(
-            'type' => 'text',
-            'text' => $event->getText(),
-          ),
-          array(
-            'type' => 'text',
-            'text' => 'Hello',
-          ),
-        ),
-      ));
-
+      $response = $bot->replyMessage(
+        array(
+          'replyToken' => $event->getReplyToken(),
+          'messages' => array(
+            array(
+              'type' => 'text',
+              'text' => $event->getText(),
+            ),
+            array(
+              'type' => 'text',
+              'text' => 'Hello',
+        ))));
+      Log::info(123);
       if( $response->isSucceeded() ) {
         echo 'Succeeded';
         return;
