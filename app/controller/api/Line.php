@@ -28,8 +28,8 @@ class Line extends ApiController {
       // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
 
       # image
-      // http://wpvoyager.purethe.me/files/2015/06/photo-1437747941115-61870b18ede5-420x400.jpg
-      $imageMessageBuilder = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder('http://wpvoyager.purethe.me/files/2015/06/photo-1437747941115-61870b18ede5-420x400.jpg');
+      $imgUrl = 'http://wpvoyager.purethe.me/files/2015/06/photo-1437747941115-61870b18ede5-420x400.jpg';
+      $imageMessageBuilder = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($imgUrl, $imgUrl);
       $response = $bot->replyMessage($event->getReplyToken(), $imageMessageBuilder);
 
     }
