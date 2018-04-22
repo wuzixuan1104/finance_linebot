@@ -18,12 +18,11 @@ class Line extends ApiController {
     if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
       return false;
 
-    $body = file_get_contents ("php://input");
-    $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
-    // $receive = json_decode(file_get_contents("php://input"));
-    Log::info( json_encode($events) );
-    Log::info('end');
-    foreach( $events as $event ) {
+    // $body = file_get_contents ("php://input");
+    // $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
+    $receive = json_decode(file_get_contents("php://input"));
+
+    foreach( $receive->events as $event ) {
       // $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
       // $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
 
@@ -33,7 +32,8 @@ class Line extends ApiController {
         case 'text':
           // Log::info($event->message->text);
           $text = $event->message->text;
-          $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
+          Log::info($text);
+          $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($text);
           $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
           break;
         case 'image':
