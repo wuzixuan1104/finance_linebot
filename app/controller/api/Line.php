@@ -18,14 +18,14 @@ class Line extends ApiController {
     if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
       return false;
 
-    // $body = file_get_contents ("php://input");
+    $body = file_get_contents ("php://input");
     $events = $bot->parseEventRequest ($body, $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
     // $receive = json_decode(file_get_contents("php://input"));
 
     foreach( $events as $event ) {
       $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder('hello');
       $response = $bot->replyMessage($event->getReplyToken(), $textMessageBuilder);
-      die;
+
       # text
       Log::info($event->message->type);
       switch($event->message->type) {
