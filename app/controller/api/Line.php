@@ -27,6 +27,7 @@ class Line extends ApiController {
         Log::info(1);
         $type = strtolower(trim($event->getText()));
         Log::info(2);
+        Log::info($type);
         switch($type) {
           case "text":
             Log::info(3);
