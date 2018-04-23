@@ -13,7 +13,7 @@ return array (
       `user_id` int(11) unsigned NOT NULL,
       `mid` int(11) unsigned NOT NULL COMMENT '回覆的訊息id',
       `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '標題',
-      `address` text unsigned NOT NULL DEFAULT '' COMMENT '地址',
+      `address` text NOT NULL DEFAULT '' COMMENT '地址',
       `latitude` DOUBLE unsigned NOT NULL DEFAULT '' COMMENT '',
       `longitude` DOUBLE unsigned NOT NULL DEFAULT '' COMMENT '',
       `reply_token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '回覆token',
