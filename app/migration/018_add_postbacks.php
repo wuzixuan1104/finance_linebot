@@ -11,7 +11,7 @@ return array (
     'up' => "CREATE TABLE `postbacks` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `user_id` int(11) unsigned NOT NULL,
-      `data` int(11) unsigned NOT NULL DEFAULT '' COMMENT '資料',
+      `data` int(11) unsigned NOT NULL COMMENT '資料',
       `param` text COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '參數',
       `reply_token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '回覆token',
       `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
