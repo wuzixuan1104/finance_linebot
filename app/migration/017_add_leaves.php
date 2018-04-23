@@ -10,7 +10,7 @@
 return array (
     'up' => "CREATE TABLE `leaves` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-      `group_id` int(11) unsigned NOT NULL DEFAULT '' COMMENT '群組ID',
+      `group_id` int(11) unsigned NOT NULL COMMENT '群組ID',
       `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
       `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
