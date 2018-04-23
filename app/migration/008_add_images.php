@@ -11,7 +11,7 @@ return array (
     'up' => "CREATE TABLE `images` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `user_id` int(11) unsigned NOT NULL,
-      `mid` int(11) unsigned NOT NULL DEFAULT '' COMMENT '回覆的訊息id',
+      `mid` int(11) unsigned NOT NULL COMMENT '回覆的訊息id',
       `reply_token` varchar(191) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '回覆token',
       `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       `pic` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '圖片',

@@ -11,7 +11,7 @@ return array (
     'up' => "CREATE TABLE `files` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `user_id` int(11) unsigned NOT NULL,
-      `mid` int(11) unsigned NOT NULL DEFAULT '' COMMENT '回覆的訊息id',
+      `mid` int(11) unsigned NOT NULL COMMENT '回覆的訊息id',
       `filename` varchar(191) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '檔案名稱',
       `filesize` int(11) unsigned NOT NULL DEFAULT '' COMMENT '檔案大小',
       `file` int(11) unsigned NOT NULL DEFAULT '' COMMENT '檔案',
