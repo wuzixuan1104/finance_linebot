@@ -8,9 +8,12 @@
  */
 
 return array (
-    'up' => "CREATE TABLE `joins` (
+    'up' => "CREATE TABLE `follows` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-      `group_id` int(11) unsigned NOT NULL,
+      `user_id` int(11) unsigned NOT NULL,
+      `mid` int(11) unsigned NOT NULL DEFAULT '' COMMENT '回覆的訊息id',
+      `package_id` int(11) unsigned NOT NULL DEFAULT '' COMMENT '',
+      `sticker_id` int(11) unsigned NOT NULL DEFAULT '' COMMENT '貼圖ID',
       `reply_token` varchar(191) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '回覆token',
       `timestamp` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
@@ -18,6 +21,6 @@ return array (
       PRIMARY KEY (`id`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
 
-    'down' => "DROP TABLE `joins`;",
-    'at' => "2018-04-23 10:32:23",
+    'down' => "DROP TABLE `follows`;",
+    'at' => "2018-04-23 10:30:32",
   );
