@@ -9,33 +9,27 @@
 
 class Line extends ApiController {
 
-  public $header, $from, $receive;
   public function __construct() {
     parent::__construct();
   }
 
   public function index() {
-    $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient(config('line', 'channelToken'));
-    $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => config('line', 'channelSecret')]);
-    if( !isset ($_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]) )
-      return false;
-
-    $events = $bot->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . LINE\LINEBot\Constant\HTTPHeader::LINE_SIGNATURE]);
-    $msg = new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
+    Load::lib ('MyLineBot.php');
+    $events = MyLineBot::events();
 
     foreach( $events as $event ) {
-      var_dump ($event->getMessageType ());
+      switch($event->getMessageType()) {
+        case "text":
+          $msg = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()) );
+          break;
+        case "image":
+          $url = 'https://example.com/image_preview.jpg';
+          $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
+          break;
+      }
+      print_r($msg);
+      die;
 
-      // switch($event->getMessageType()) {
-      //   case "text":
-      //     $outputText = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
-      //     $msg->add($outputText);
-      //     break;
-      //   case "image":
-      //     $url = 'https://example.com/image_preview.jpg';
-      //     $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
-      //     break;
-      // }
       // $actions = array(
       //   //一般訊息型 action
       //   new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder("按鈕1","文字1"),
