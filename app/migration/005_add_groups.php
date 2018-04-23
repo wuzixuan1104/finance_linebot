@@ -10,7 +10,7 @@
 return array (
     'up' => "CREATE TABLE `groups` (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `uid` int(11) unsigned NOT NULL,
+        `user_id` int(11) unsigned NOT NULL,
         `gid` int(11) unsigned NOT NULL,
         `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
