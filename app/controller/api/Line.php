@@ -27,8 +27,8 @@ class Line extends ApiController {
           $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
           break;
       }
-      print_r($msg);
-      die;
+      // print_r($msg);
+      // die;
 
       // $actions = array(
       //   //一般訊息型 action
@@ -46,7 +46,7 @@ class Line extends ApiController {
       // $msg = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder("這訊息要用手機的賴才看的到哦", $button);
       // Log::info(3);
       // $bot->replyMessage($event->getReplyToken(),$msg);
-      // // $response = $bot->replyMessage($event->getReplyToken(), $msg);
+      $response = $bot->replyMessage($event->getReplyToken(), $msg);
 
     }
 
