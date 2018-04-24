@@ -17,6 +17,7 @@ use LINE\LINEBot\Exception\InvalidSignatureException;
 use LINE\LINEBot\MessageBuilder;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
+use LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder;
 use LINE\LINEBot\MessageBuilder\VideoMessageBuilder;
 use LINE\LINEBot\MessageBuilder\AudioMessageBuilder;
 use LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
@@ -66,6 +67,10 @@ class MyLineBotMsg {
   public static function create() {
     return new MyLineBotMsg();
   }
+  public function reply ($token) {
+    if ($this->builder)
+      MyLineBot::bot()->replyMessage($token, $this->builder);
+  }
   public function getBuilder() {
     return $this->builder;
   }
@@ -93,6 +98,20 @@ class MyLineBotMsg {
     $this->builder = is_string($title) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($ori, $d) : null;
     return $this;
   }
+  public function imagemap($url, $altText, $baseSizeBuilder, array $actionBuilders) {
+    $this->builder = isHttps($url) && is_string($altText) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($ori, $d) : null;
+    return $this;
+  }
+  public function multi($builds) {
+    if (!is_array ($builds))
+      $this->builder = null;
+
+    $this->builder = new MultiMessageBuilder();
+    foreach ($builds as $build) {
+      $this->builder->add ($build->getBuilder ());
+    }
+    return $this;
+  }
   public function templateButton($title, $text, $imageUrl, array $actionBuilders) {
     $this->builder = is_string($title) && is_string($text) && is_string($imageUrl) && is_array($actionBuilders) ? new ButtonTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
     return $this;
@@ -105,23 +124,10 @@ class MyLineBotMsg {
       return $this;
 
     $this->builder = new TemplateMessageBuilder($text, $builder->getBuilder());
-    
     return $this;
   }
-  public function reply ($token) {
-    if ($this->builder)
-      MyLineBot::bot()->replyMessage($token, $this->builder);
-  }
-  public function multi($builds) {
-    if (!is_array ($builds))
-      $this->builder = null;
 
-    $this->builder = new MultiMessageBuilder();
-    foreach ($builds as $build) {
-      $this->builder->add ($build->getBuilder ());
-    }
-    return $this;
-  }
+
 }
 
 class MyLineBotActionMsg {
