@@ -28,13 +28,17 @@ class Line extends ApiController {
       //                 ->reply ($event->getReplyToken());
       //     break;
       //   case "image":
-          $url = 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg';
-          $msg = MyLineBotMsg::create ()
-                      ->multi([
-                        MyLineBotMsg::create ()->image($url, $url),
-                      ])
-                      ->reply ($event->getReplyToken());
-      
+          // $url = 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg';
+          // $msg = MyLineBotMsg::create ()
+          //             ->multi([
+          //               MyLineBotMsg::create ()->image($url, $url),
+          //             ])
+          //             ->reply ($event->getReplyToken());
+          // case "video":
+            $url = 'https://youtu.be/n3GhjRiVtns';
+            $msg = MyLineBotMsg::create()->video($url, $url)->reply ($event->getReplyToken());
+
+            // break;
           // break;
       // }
       // print_R($msg);
