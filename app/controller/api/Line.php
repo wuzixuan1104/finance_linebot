@@ -16,12 +16,14 @@ class Line extends ApiController {
   public function index() {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
+    $msg = new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
 
     foreach( $events as $event ) {
       switch($event->getMessageType()) {
         case "text":
           // $msg = MyLineBotMsg::create()->text($event->getText());
-          $msg = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()) );
+          // $msg = MyLineBotMultiMsg::create()->getMultiBuilder()->add( MyLineBotMsg::create()->text($event->getText()) );
+          $msg->add( MyLineBotMsg::create()->text($event->getText()) );
           break;
         case "image":
           $url = 'https://example.com/image_preview.jpg';

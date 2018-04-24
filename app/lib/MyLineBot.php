@@ -72,8 +72,7 @@ class MyLineBotMultiMsg {
   public static function create() {
     return new MyLineBotMultiMsg( new MultiMessageBuilder() );
   }
-  public function add($message) {
-    $this->multiBuilder->add($message);
-    return $this;
+  public function getMultiBuilder() {
+    return $this->multiBuilder;
   }
 }
