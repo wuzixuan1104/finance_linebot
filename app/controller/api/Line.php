@@ -20,12 +20,8 @@ class Line extends ApiController {
     foreach( $events as $event ) {
       switch($event->getMessageType()) {
         case "text":
-
-          // $msg = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
-
-          $msg = MyLineBotMsg::create()->text($event->getText());
-    
-          // $msg = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()) );
+          // $msg = MyLineBotMsg::create()->text($event->getText());
+          $msg = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()) );
           break;
         case "image":
           $url = 'https://example.com/image_preview.jpg';
