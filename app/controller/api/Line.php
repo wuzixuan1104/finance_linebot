@@ -34,8 +34,9 @@ class Line extends ApiController {
                         MyLineBotMsg::create ()->image($url, $url),
                       ])
                       ->reply ($event->getReplyToken());
+      
           // break;
-      }
+      // }
       // print_R($msg);
       // die;
       // $response = MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
