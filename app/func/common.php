@@ -20,3 +20,8 @@ if (!function_exists ('youtube_key')) {
   }
 }
 
+if (!function_exists ('isHttps')) {
+  function isHttps ($str) {
+    return substr ($str, 0, 8) == "https://";
+  }
+}

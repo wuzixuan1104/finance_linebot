@@ -18,42 +18,23 @@ class Line extends ApiController {
     $events = MyLineBot::events();
 
     foreach( $events as $event ) {
-      switch($event->getMessageType()) {
-        case "text":
-          // $a = MyLineBotMsg::create()->text($event->getText());
-
-          // $msg = MyLineBotMsg::create()->text($event->getText());
-          // $msg = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()) )->add( MyLineBotMsg::create()->text($event->getText()) );
-          // $msg = new LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
-          // $builder = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()));
-          // print_r($msg);
-          // die;
-
-          // $msg = MyLineBotMsg();
-          // $msg->text ('asdasd');
-          // $msg->reply ($event->getReplyToken());
-          //
-
+      // switch($event->getMessageType()) {
+      //   case "text":
+      //     $msg = MyLineBotMsg::create ()
+      //                 ->multi ([
+      //                   MyLineBotMsg::create ()->text ($event->getText()),
+      //                   MyLineBotMsg::create ()->text ('hello')
+      //                 ])
+      //                 ->reply ($event->getReplyToken());
+      //     break;
+      //   case "image":
+          $url = 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg';
           $msg = MyLineBotMsg::create ()
-                      ->multi ([
-                        MyLineBotMsg::create ()->text ($event->getText()),
-                        MyLineBotMsg::create ()->text ('hello')
+                      ->multi([
+                        MyLineBotMsg::create ()->image($url, $url),
                       ])
                       ->reply ($event->getReplyToken());
-
-          // print_r($msg);
-          // die;
-          break;
-        case "image":
-
-          $msg = MyLineBotMsg();
-          $msg->image ('url1', 'url2');
-          $msg->reply ($event->getReplyToken());
-
-
-          // $url = 'https://example.com/image_preview.jpg';
-          // $builder = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
-          break;
+          // break;
       }
       // print_R($msg);
       // die;
