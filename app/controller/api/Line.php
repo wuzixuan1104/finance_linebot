@@ -20,7 +20,11 @@ class Line extends ApiController {
     foreach( $events as $event ) {
       switch($event->getMessageType()) {
         case "text":
+
+          // $msg = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($event->getText());
+
           $msg = MyLineBotMsg::create()->text($event->getText());
+    
           // $msg = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()) );
           break;
         case "image":
@@ -28,8 +32,7 @@ class Line extends ApiController {
           $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
           break;
       }
-      // print_r($msg);
-      // die;
+
 
       // $actions = array(
       //   //一般訊息型 action
@@ -47,7 +50,7 @@ class Line extends ApiController {
       // $msg = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder("這訊息要用手機的賴才看的到哦", $button);
       // Log::info(3);
       // $bot->replyMessage($event->getReplyToken(),$msg);
-      $response = $bot->replyMessage($event->getReplyToken(), $msg);
+      $response = MyLineBot::create()->getBot()->replyMessage($event->getReplyToken(), $msg);
 
     }
 
