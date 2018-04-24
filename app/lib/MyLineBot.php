@@ -18,7 +18,17 @@ use LINE\LINEBot\MessageBuilder;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use LINE\LINEBot\MessageBuilder\VideoMessageBuilder;
+use LINE\LINEBot\MessageBuilder\AudioMessageBuilder;
+use LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
+use LINE\LINEBot\MessageBuilder\LocationMessageBuilder;
 use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\TemplateActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
+
 
 class MyLineBot extends LINEBot{
   static $bot;
@@ -67,15 +77,36 @@ class MyLineBotMsg {
     $this->builder = is_string ($url1) && is_string ($url2) ? new ImageMessageBuilder($url1, $url2) : null;
     return $this;
   }
-  public function sticker() {
-
+  public function sticker($packId, $id) {
+    $this->builder = is_numeric($packId) && is_numeric($id) ? new StickerMessageBuilder($packId, $id) : null;
+    return $this;
   }
   public function video($ori, $prev) {
     $this->builder = isHttps($ori) && isHttps($prev) ? new VideoMessageBuilder($ori, $prev) : null;
     return $this;
   }
-  public function location() {
+  public function audio($ori, $d) {
+    $this->builder = isHttps($ori) && is_numeric($d) ? new VideoMessageBuilder($ori, $d) : null;
+    return $this;
+  }
+  public function location($title, $add, $lat, $lon) {
+    $this->builder = is_string($title) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($ori, $d) : null;
+    return $this;
+  }
+  public function templateButton($title, $text, $imageUrl, array $actionBuilders) {
+    $this->builder = is_string($title) && is_string($text) && is_string($imageUrl) && is_array($actionBuilders) ? new ButtonTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
+    return $this;
+  }
+  public function templateCarousel() {
 
+  }
+  public function template($text, $builder) {
+    if( !is_string($text) || empty($builder) )
+      return $this;
+
+    $this->builder = new TemplateMessageBuilder($text, $builder->getBuilder());
+    
+    return $this;
   }
   public function reply ($token) {
     if ($this->builder)
@@ -89,7 +120,25 @@ class MyLineBotMsg {
     foreach ($builds as $build) {
       $this->builder->add ($build->getBuilder ());
     }
-
     return $this;
+  }
+}
+
+class MyLineBotActionMsg {
+  private $action;
+  public function __construct() {
+
+  }
+  public static function create() {
+    return new MyLineBotActionMsg();
+  }
+  public function message($text1, $text2) {
+    return is_string($text1) && is_string($text2) ? new MessageTemplateActionBuilder($text1, $text2) : null;
+  }
+  public function uri($text, $url) {
+    return is_string($text) && (isHttp($url) || isHttps($url)) ? new UriTemplateActionBuilder($text, $url) : null;
+  }
+  public function postback($text, $href) {
+    return is_string($text) && is_string($href) ? new PostbackTemplateActionBuilder($text, $href) : null;
   }
 }

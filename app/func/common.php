@@ -25,3 +25,9 @@ if (!function_exists ('isHttps')) {
     return substr ($str, 0, 8) == "https://";
   }
 }
+
+if (!function_exists ('isHttp')) {
+  function isHttp ($str) {
+    return substr ($str, 0, 7) == "http://";
+  }
+}
