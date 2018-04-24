@@ -19,60 +19,84 @@ use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 use LINE\LINEBot\MessageBuilder\ImageMessageBuilder;
 use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 
-class MyLineBot {
-  private $bot = null;
-  public function __construct($bot) {
-    $this->bot = $bot;
+// bot
+class MyLineBot extends LINEBot{
+  static $bot;
+
+  public function __construct ($client, $option) {
+    parent::__construct ($client, $option);
   }
-  public function getBot() { return $this->bot; }
   public static function create() {
-    $mybot = new LINEBot( new CurlHTTPClient(config('line', 'channelToken')), ['channelSecret' => config('line', 'channelSecret')]);
-    return new MyLineBot($mybot);
+    return new LINEBot( new CurlHTTPClient(config('line', 'channelToken')), ['channelSecret' => config('line', 'channelSecret')]);
+  }
+  public static function bot() {
+    if (self::$bot)
+      return self::$bot;
+
+    return self::$bot = self::create ();
   }
   public static function events() {
     if( !isset ($_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE]) )
       return false;
+
     try {
-      return MyLineBot::create()->getBot()->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE]);
+      return MyLineBot::bot()->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE]);
     } catch (Exception $e) {
       return $e;
     }
   }
 }
-
+// builder 總合體
 class MyLineBotMsg {
   private $builder;
+
   public function __construct() {
   }
+
   public static function create() {
     return new MyLineBotMsg();
   }
   public function getBuilder() {
     return $this->builder;
   }
-  public function _text($text) {
-    $this->builder = ( isset($text) && $text != '' ) ? new TextMessageBuilder($text) : '';
+  public function text($text) {
+    $this->builder = is_string($text) ? new TextMessageBuilder($text) : null;
     return $this;
   }
-  public function _image() {
+  public function multi($builds) {
+    if (!is_array ($builds))
+      $this->builder = null;
 
+    $this->builder = new MultiMessageBuilder();
+    foreach ($builds as $build) {
+      $this->builder->add ($build->getBuilder ());
+    }
+
+    return $this;
   }
-  public function __call($name, $args) {
-    method_exists($this, '_' . $name) || Validation::error('錯誤');
-    call_user_func_array (array ($this, '_' . $name), $args);
-    return $this->getBuilder();
+  public function image($url1, $url2) {
+    $this->builder = is_string ($url1) && is_string ($url2) ? new ImageMessageBuilder($url1, $url2) : null;
+    return $this;
+  }
+  public function reply ($token) {
+    if ($this->builder)
+      MyLineBot::bot()->replyMessage($token, $this->builder);
   }
 }
-
-class MyLineBotMultiMsg {
-  private $multiBuilder;
-  public function __construct($multiBuilder) {
-    $this->multiBuilder = $multiBuilder;
-  }
-  public static function create() {
-    return new MyLineBotMultiMsg( new MultiMessageBuilder() );
-  }
-  public function getMultiBuilder() {
-    return $this->multiBuilder;
-  }
-}
+//
+// class MyLineBotMultiMsg extends MultiMessageBuilder{
+//   private $multiBuilder;
+//   public function __construct() {
+//
+//   }
+//   public static function create() {
+//     return new MyLineBotMultiMsg();
+//   }
+//   // public function setMultiBuilder() {
+//   //   $this->multiBuilder = new MultiMessageBuilder();
+//   //   return $this;
+//   // }
+//   // public function getMultiBuilder() {
+//   //   return $this->multiBuilder;
+//   // }
+// }

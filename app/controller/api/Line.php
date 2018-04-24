@@ -16,23 +16,48 @@ class Line extends ApiController {
   public function index() {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
-    // $msg = new \LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
 
     foreach( $events as $event ) {
       switch($event->getMessageType()) {
         case "text":
+          // $a = MyLineBotMsg::create()->text($event->getText());
+
           // $msg = MyLineBotMsg::create()->text($event->getText());
-          $msg = MyLineBotMultiMsg::create()->getMultiBuilder()->add( MyLineBotMsg::create()->text($event->getText()) )->add( MyLineBotMsg::create()->text($event->getText()) );
-          // $msg->add( MyLineBotMsg::create()->text($event->getText()) );
+          // $msg = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()) )->add( MyLineBotMsg::create()->text($event->getText()) );
+          // $msg = new LINE\LINEBot\MessageBuilder\MultiMessageBuilder();
+          // $builder = MyLineBotMultiMsg::create()->add( MyLineBotMsg::create()->text($event->getText()));
+          // print_r($msg);
+          // die;
+
+          // $msg = MyLineBotMsg();
+          // $msg->text ('asdasd');
+          // $msg->reply ($event->getReplyToken());
+          //
+
+          $msg = MyLineBotMsg::create ()
+                      ->multi ([
+                        MyLineBotMsg::create ()->text ($event->getText()),
+                        MyLineBotMsg::create ()->text ('hello')
+                      ])
+                      ->reply ($event->getReplyToken());
+
           // print_r($msg);
           // die;
           break;
         case "image":
-          $url = 'https://example.com/image_preview.jpg';
-          $outputText = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
+
+          $msg = MyLineBotMsg();
+          $msg->image ('url1', 'url2');
+          $msg->reply ($event->getReplyToken());
+
+
+          // $url = 'https://example.com/image_preview.jpg';
+          // $builder = new \LINE\LINEBot\MessageBuilder\ImageMessageBuilder($url, $url);
           break;
       }
-
+      // print_R($msg);
+      // die;
+      // $response = MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
 
       // $actions = array(
       //   //一般訊息型 action
@@ -50,7 +75,6 @@ class Line extends ApiController {
       // $msg = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder("這訊息要用手機的賴才看的到哦", $button);
       // Log::info(3);
       // $bot->replyMessage($event->getReplyToken(),$msg);
-      $response = MyLineBot::create()->getBot()->replyMessage($event->getReplyToken(), $msg);
 
     }
 
