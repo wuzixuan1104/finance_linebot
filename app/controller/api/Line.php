@@ -46,14 +46,23 @@ class Line extends ApiController {
           // break;
       // }
 
-      $msg = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-                MyLineBotMsg::create()->templateButton("按鈕文字","說明", 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-                  MyLineBotActionMsg::create()->message("按鈕1","文字1"),
-                  MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
-                  MyLineBotActionMsg::create()->postback("下一頁", "page=3"),
-                  MyLineBotActionMsg::create()->postback("上一頁", "page=1"),
-                ])
-             )->reply ($event->getReplyToken());
+      // $msg = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+      //           MyLineBotMsg::create()->templateButton("按鈕文字","說明", 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
+      //             MyLineBotActionMsg::create()->message("按鈕1","文字1"),
+      //             MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
+      //             MyLineBotActionMsg::create()->postback("下一頁", "page=3"),
+      //             MyLineBotActionMsg::create()->postback("上一頁", "page=1"),
+      //           ])
+      //        )->reply ($event->getReplyToken());
+
+      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('http://www.google.com.tw', 'test',
+        new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(100,100),
+        [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder('文字', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
+       );
+      // print_r($builder);
+      // die;
+
+      MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
 
     }
 

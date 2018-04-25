@@ -99,7 +99,7 @@ class MyLineBotMsg {
     return $this;
   }
   public function imagemap($url, $altText, $baseSizeBuilder, array $actionBuilders) {
-    $this->builder = isHttps($url) && is_string($altText) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($ori, $d) : null;
+    $this->builder = isHttps($url) && is_string($altText) && is_object($baseSizeBuilder) && is_array($actionBuilders) ? new LocationMessageBuilder($url, $altText, $baseSizeBuilder, $actionBuilders) : null;
     return $this;
   }
   public function multi($builds) {
