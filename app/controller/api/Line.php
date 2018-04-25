@@ -56,7 +56,7 @@ class Line extends ApiController {
       //        )->reply ($event->getReplyToken());
 
       Log::info('====================');
-      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://comdan66.github.io/ci/t5', 'test',
+      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://angel.ioa.tw/res/image/t5', 'test',
                     new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(1040,1040),
                     [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder('文字', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
                  );
