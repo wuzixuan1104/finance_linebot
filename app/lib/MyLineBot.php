@@ -26,6 +26,7 @@ use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 use LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
 use LINE\LINEBot\TemplateActionBuilder;
@@ -117,6 +118,16 @@ class MyLineBotMsg {
       $this->builder->add ($build->getBuilder ());
     }
     return $this;
+  }
+  public function templateConfirm($text, array $actionBuilders) {
+    $this->builder = is_string($text) && is_array($actionBuilders) ? new ConfirmTemplateBuilder($text, $actionBuilders) : null;
+    return $this;
+  }
+  public function templateImageCarousel() {
+
+  }
+  public function templateImageCarouselColumn() {
+
   }
   public function templateButton($title, $text, $imageUrl, array $actionBuilders) {
     $this->builder = is_string($title) && is_string($text) && is_string($imageUrl) && is_array($actionBuilders) ? new ButtonTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
