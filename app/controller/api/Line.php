@@ -71,9 +71,9 @@ class Line extends ApiController {
                     ]));
       // print_r($builder);
       // die;
-      Log::info(1);
+
       MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
-      Log::info(2);
+
     }
 
   }
