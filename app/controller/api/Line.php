@@ -62,11 +62,13 @@ class Line extends ApiController {
       // MyLineBotMsg::create()->location('my location', '〒150-0002 東京都渋谷区渋谷２丁目２１−１', '35.65910807942215', '139.70372892916203')->reply ($event->getReplyToken());
       $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
         MyLineBotMsg::create()->templateCarousel('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-          new \LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder('date', date('Y-m-d'), 'datetime', '', '', ''),
+          MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'datetime', '', '', ''),
+          // new \LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder('date', date('Y-m-d'), 'datetime', '', '', ''),
         ]) )->reply ($event->getReplyToken());
 
       print_r($builder);
       die;
+
       $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder ('test',
                     new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
                         [
