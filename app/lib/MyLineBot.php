@@ -24,12 +24,14 @@ use LINE\LINEBot\MessageBuilder\StickerMessageBuilder;
 use LINE\LINEBot\MessageBuilder\LocationMessageBuilder;
 use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
+use LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use LINE\LINEBot\TemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
-
+use LINE\LINEBot\ImagemapActionBuilder\AreaBuilder;
+use LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder;
 
 class MyLineBot extends LINEBot{
   static $bot;
@@ -98,8 +100,8 @@ class MyLineBotMsg {
     $this->builder = is_string($title) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($ori, $d) : null;
     return $this;
   }
-  public function imagemap($url, $altText, $baseSizeBuilder, array $actionBuilders) {
-    $this->builder = isHttps($url) && is_string($altText) && is_object($baseSizeBuilder) && is_array($actionBuilders) ? new LocationMessageBuilder($url, $altText, $baseSizeBuilder, $actionBuilders) : null;
+  public function imagemap($url, $altText, $weight, $height, array $actionBuilders) {
+    $this->builder = isHttps($url) && is_string($altText) && is_numeric($weight) && is_numeric($height) && is_array($actionBuilders) ? new ImagemapMessageBuilder($url, $altText, new BaseSizeBuilder($height, $weight), $actionBuilders) : null;
     return $this;
   }
   public function multi($builds) {
@@ -146,5 +148,8 @@ class MyLineBotActionMsg {
   }
   public function postback($text, $href) {
     return is_string($text) && is_string($href) ? new PostbackTemplateActionBuilder($text, $href) : null;
+  }
+  public function imagemapMsg($text, $x, $y, $width, $height) {
+    return is_string($text) && is_numeric($x) && is_numeric($y) && is_numeric($width) && is_numeric($height) ? new ImagemapMessageActionBuilder($text, new AreaBuilder($x, $y, $width, $height) ) : null;
   }
 }
