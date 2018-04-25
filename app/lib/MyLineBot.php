@@ -98,7 +98,7 @@ class MyLineBotMsg {
     return $this;
   }
   public function location($title, $add, $lat, $lon) {
-    $this->builder = is_string($title) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($ori, $d) : null;
+    $this->builder = is_string($title) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($title, $add, $lat, $lon) : null;
     return $this;
   }
   public function imagemap($url, $altText, $weight, $height, array $actionBuilders) {
