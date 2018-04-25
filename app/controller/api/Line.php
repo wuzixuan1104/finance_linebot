@@ -55,17 +55,21 @@ class Line extends ApiController {
       //           ])
       //        )->reply ($event->getReplyToken());
 
-      $builder = MyLineBotMsg::create()->imagemap('https://angel.ioa.tw/res/image/t5', 'test', 1040, 1040, [
-                    MyLineBotActionMsg::create()->imagemapMsg('文字', 0, 0, 100, 100),
-                 ])->reply ($event->getReplyToken());
+      // MyLineBotMsg::create()->imagemap('https://angel.ioa.tw/res/image/t5', 'test', 1040, 1040, [
+      //                 MyLineBotActionMsg::create()->imagemapMsg('文字', 0, 0, 100, 100),
+      //            ])->reply ($event->getReplyToken());
 
       // $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://angel.ioa.tw/res/image/t5', 'test',
       //               new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(1040,1040),
       //               [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder('文字', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
       //            );
+      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://angel.ioa.tw/res/image/t5', 'test',
+                    new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(1040,1040),
+                    [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapUriActionBuilder('http://google.com.tw', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
+                 );
       // print_r($builder);
       // die;
-      // MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
+      MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
 
     }
 
