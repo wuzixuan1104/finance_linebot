@@ -56,9 +56,9 @@ class Line extends ApiController {
       //        )->reply ($event->getReplyToken());
 
       Log::info('====================');
-      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', 'test',
+      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://cdn.ioa.tw/upload/articles/cover/0/0/0/77/c630x315_1145382054_59a9468ab1654.jpg', 'test',
                     new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(100,100),
-                    [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder('文字', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(10,10,100,100) ) ]
+                    [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder('文字', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
                  );
       // print_r($builder);
       // die;
