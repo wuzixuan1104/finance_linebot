@@ -56,7 +56,7 @@ class Line extends ApiController {
       //        )->reply ($event->getReplyToken());
 
       Log::info('====================');
-      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://www.google.com.tw/maps/place/%E5%8F%B0%E7%81%A3/@23.69781,120.960515,3a,75y,163.5h,90t/data=!3m8!1e1!3m6!1sAF1QipNOAVkOptvFv0G0h5sPnJLOFEmcRVpIYfR_U4gr!2e10!3e11!6shttps:%2F%2Flh5.googleusercontent.com%2Fp%2FAF1QipNOAVkOptvFv0G0h5sPnJLOFEmcRVpIYfR_U4gr%3Dw234-h106-k-no-pi-0-ya163.5-ro-0-fo100!7i5376!8i2688!4m5!3m4!1s0x346ef3065c07572f:0xe711f004bf9c5469!8m2!3d23.4506483!4d121.2615967?hl=zh-TW', 'test',
+      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://www.google.com.tw/maps/place/%E5%8F%B0%E7%81%A3/@23.4857501,120.0843006,7z/data=!4m5!3m4!1s0x346ef3065c07572f:0xe711f004bf9c5469!8m2!3d23.4506483!4d121.2615967?hl=zh-TW', 'test',
                     new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(100,100),
                     [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder('文字', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(10,10,100,100) ) ]
                  );
