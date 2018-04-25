@@ -32,6 +32,7 @@ use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\AreaBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder;
+use LINE\LINEBot\ImagemapActionBuilder\ImagemapUriActionBuilder;
 
 class MyLineBot extends LINEBot{
   static $bot;
@@ -151,5 +152,8 @@ class MyLineBotActionMsg {
   }
   public function imagemapMsg($text, $x, $y, $width, $height) {
     return is_string($text) && is_numeric($x) && is_numeric($y) && is_numeric($width) && is_numeric($height) ? new ImagemapMessageActionBuilder($text, new AreaBuilder($x, $y, $width, $height) ) : null;
+  }
+  public function imagemapUri($url, $x, $y, $width, $height) {
+    return is_string($url) && is_numeric($x) && is_numeric($y) && is_numeric($width) && is_numeric($height) ? new ImagemapUriActionBuilder($url, new AreaBuilder($x, $y, $width, $height) ) : null;
   }
 }

@@ -63,10 +63,12 @@ class Line extends ApiController {
       //               new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(1040,1040),
       //               [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder('文字', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
       //            );
-      $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://angel.ioa.tw/res/image/t5', 'test',
-                    new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(1040,1040),
-                    [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapUriActionBuilder('http://google.com.tw', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
-                 );
+      // $builder = new \LINE\LINEBot\MessageBuilder\ImagemapMessageBuilder('https://angel.ioa.tw/res/image/t5', 'test',
+      //               new \LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder(1040,1040),
+      //               [ new \LINE\LINEBot\ImagemapActionBuilder\ImagemapUriActionBuilder('http://google.com.tw', new \LINE\LINEBot\ImagemapActionBuilder\AreaBuilder(0,0,100,100) ) ]
+      //            );
+
+        $builder = new \LINE\LINEBot\MessageBuilder\LocationMessageBuilder('my location', '〒150-0002 東京都渋谷区渋谷２丁目２１−１', '35.65910807942215', '139.70372892916203');
       // print_r($builder);
       // die;
       MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
