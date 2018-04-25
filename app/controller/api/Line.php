@@ -59,11 +59,19 @@ class Line extends ApiController {
       //                 MyLineBotActionMsg::create()->imagemapMsg('文字', 0, 0, 100, 100),
       //            ])->reply ($event->getReplyToken());
 
-        // $builder = new \LINE\LINEBot\MessageBuilder\LocationMessageBuilder('my location', '〒150-0002 東京都渋谷区渋谷２丁目２１−１', '35.65910807942215', '139.70372892916203');
-      MyLineBotMsg::create()->location('my location', '〒150-0002 東京都渋谷区渋谷２丁目２１−１', '35.65910807942215', '139.70372892916203')->reply ($event->getReplyToken());
+      // MyLineBotMsg::create()->location('my location', '〒150-0002 東京都渋谷区渋谷２丁目２１−１', '35.65910807942215', '139.70372892916203')->reply ($event->getReplyToken());
 
 
-      // MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
+      $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder ('test', new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+                    [
+                      new \LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder('date', date('Y-m-d'), 'datetime', '', '', ''),
+                      new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('label', 'test'),
+                      new \LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder('label', 'postback', 'test'),
+                      new \LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('url', 'http://google.com.tw'),
+                    ]));
+      // print_r($builder);
+      // die;
+      MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
 
     }
 
