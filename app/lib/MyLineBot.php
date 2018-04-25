@@ -26,7 +26,9 @@ use LINE\LINEBot\MessageBuilder\MultiMessageBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateMessageBuilder;
 use LINE\LINEBot\MessageBuilder\Imagemap\BaseSizeBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
 use LINE\LINEBot\TemplateActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
@@ -94,7 +96,7 @@ class MyLineBotMsg {
     return $this;
   }
   public function audio($ori, $d) {
-    $this->builder = isHttps($ori) && is_numeric($d) ? new VideoMessageBuilder($ori, $d) : null;
+    $this->builder = isHttps($ori) && is_numeric($d) ? new AudioMessageBuilder($ori, $d) : null;
     return $this;
   }
   public function location($title, $add, $lat, $lon) {
@@ -119,8 +121,9 @@ class MyLineBotMsg {
     $this->builder = is_string($title) && is_string($text) && is_string($imageUrl) && is_array($actionBuilders) ? new ButtonTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
     return $this;
   }
-  public function templateCarousel() {
-
+  public function templateCarousel($title, $text, $imageUrl, array $actionBuilders) {
+    $this->builder = is_string($title) && is_string($text) && is_string($imageUrl) && is_array($actionBuilders) ? new CarouselColumnTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
+    return $this;
   }
   public function template($text, $builder) {
     if( !is_string($text) || empty($builder) )
@@ -140,6 +143,9 @@ class MyLineBotActionMsg {
   }
   public static function create() {
     return new MyLineBotActionMsg();
+  }
+  public function datetimePicker($label, $data, $mode, $initial = null, $max = null, $min = null) {
+    return is_string($label) && is_string($data) && in_array($mode, ['date', 'time', 'datetime']) ? new DatetimePickerTemplateActionBuilder($label, $data, $mode, $initial, $max, $min) : null;
   }
   public function message($text1, $text2) {
     return is_string($text1) && is_string($text2) ? new MessageTemplateActionBuilder($text1, $text2) : null;
