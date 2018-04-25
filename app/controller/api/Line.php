@@ -49,7 +49,7 @@ class Line extends ApiController {
       // $msg = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
       //           MyLineBotMsg::create()->templateButton("按鈕文字","說明", 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
       //             MyLineBotActionMsg::create()->message("按鈕1","文字1"),
-      //             MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
+                  // MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
       //             MyLineBotActionMsg::create()->postback("下一頁", "page=3"),
       //             MyLineBotActionMsg::create()->postback("上一頁", "page=1"),
       //           ])
@@ -76,7 +76,7 @@ class Line extends ApiController {
           MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
             MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'date', '', '', ''),
             MyLineBotActionMsg::create()->message('label', 'test'),
-            MyLineBotActionMsg::create()->uri('Google', 'http://www.google.com'),
+            MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
             MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
 
           ]),
