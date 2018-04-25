@@ -70,27 +70,31 @@ class Line extends ApiController {
 
 
 
-      Log::info(1);
-      $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-        MyLineBotMsg::create()->templateCarousel('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-          MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'date', '', '', ''),
-          // new \LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder('date', date('Y-m-d'), 'datetime', '', '', ''),
-        ]) )
-        ->reply ($event->getReplyToken());
-      Log::info(2);
-      print_r($builder);
-      die;
+      // Log::info(1);
+      // $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+      //
+      //   MyLineBotMsg::create()->templateCarousel('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
+      //     MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'date', '', '', ''),
+      //     // new \LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder('date', date('Y-m-d'), 'datetime', '', '', ''),
+      //   ])
+      //
+      // );
+        // ->reply ($event->getReplyToken());
+      // Log::info(2);
+      // print_r($builder);
+      // die;
 
       $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder ('test',
+                  new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder([
                     new \LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
                         [
                           new \LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder('date', date('Y-m-d'), 'datetime', '', '', ''),
                           // new \LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder('label', 'test'),
                           // new \LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder('label', 'postback', 'test'),
                           // new \LINE\LINEBot\TemplateActionBuilder\UriTemplateActionBuilder('url', 'http://google.com.tw'),
-                        ]));
-      print_r($builder);
-      die;
+                        ])]));
+      // print_r($builder);
+      // die;
 
       MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
 
