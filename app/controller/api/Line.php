@@ -76,19 +76,35 @@ class Line extends ApiController {
       //     ]),
       //   ])
       // )->reply ($event->getReplyToken());
-      Log::info(1);
 
-      $msg = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-                MyLineBotMsg::create()->templateConfirm("按鈕文字",  [
-                  MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
-                  MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
-                ]))
-                ->reply ($event->getReplyToken());
+      // MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+      //   MyLineBotMsg::create()->templateConfirm("按鈕文字",  [
+      //     MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
+      //     MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
+      //   ]))
+      //   ->reply ($event->getReplyToken());
 
-      Log::info(2);
-      print_r($msg);
+
+      $builder = MyLineBotMsg::create()->template( '這訊息要用手機的賴才看得到喔！',
+          MyLineBotMsg::create()->templateImageCarousel([
+            MyLineBotMsg::create()->templateImageCarouselColumn(
+              'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+              MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
+            )
+          ]))
+          ->reply ($event->getReplyToken());
+      print_r($builder);
       die;
-
+      // $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder( '這訊息要用手機的賴才看的到哦', new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselTemplateBuilder(
+      //   [
+      //     new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselTemplateBuilder( [
+      //       new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselColumnTemplateBuilder(
+      //         'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+      //
+      //       ),
+      //     ]),
+      //   ]
+      // ));
       MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
 
     }

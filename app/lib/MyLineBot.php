@@ -29,6 +29,8 @@ use LINE\LINEBot\MessageBuilder\TemplateBuilder\ButtonTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\ConfirmTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselTemplateBuilder;
 use LINE\LINEBot\MessageBuilder\TemplateBuilder\CarouselColumnTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselTemplateBuilder;
+use LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselColumnTemplateBuilder;
 use LINE\LINEBot\TemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\DatetimePickerTemplateActionBuilder;
 use LINE\LINEBot\TemplateActionBuilder\MessageTemplateActionBuilder;
@@ -123,11 +125,12 @@ class MyLineBotMsg {
     $this->builder = is_string($text) && is_array($actionBuilders) ? new ConfirmTemplateBuilder($text, $actionBuilders) : null;
     return $this;
   }
-  public function templateImageCarousel() {
-
+  public function templateImageCarousel(array $columnBuilders) {
+    $this->builder = is_array($columnBuilders) ? new ImageCarouselTemplateBuilder($columnBuilders) : null;
+    return $this;
   }
-  public function templateImageCarouselColumn() {
-
+  public function templateImageCarouselColumn($imageUrl, $actionBuilder) {
+    return is_string($imageUrl) && is_object($actionBuilder) ? new ImageCarouselColumnTemplateBuilder($imageUrl, $actionBuilder) : null;
   }
   public function templateButton($title, $text, $imageUrl, array $actionBuilders) {
     $this->builder = is_string($title) && is_string($text) && is_string($imageUrl) && is_array($actionBuilders) ? new ButtonTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
