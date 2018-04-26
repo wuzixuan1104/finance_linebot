@@ -81,6 +81,7 @@ class Line extends ApiController {
       $msg = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
                 MyLineBotMsg::create()->templateConfirm("按鈕文字",  [
                   MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
+                  MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
                 ]))
                 ->reply ($event->getReplyToken());
 
