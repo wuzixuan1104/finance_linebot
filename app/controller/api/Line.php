@@ -77,14 +77,15 @@ class Line extends ApiController {
       //   ])
       // )->reply ($event->getReplyToken());
       Log::info(1);
-      $msg = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+
+      $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
                 MyLineBotMsg::create()->templateConfirm("按鈕文字",  [
-                  MyLineBotActionMsg::create()->message("按鈕1","文字1"),
-                ]))
-                ->reply ($event->getReplyToken());
+                  MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
+                ]));
+                // ->reply ($event->getReplyToken());
       Log::info(2);
-      print_r($msg);
-      die;
+      // print_r($msg);
+      // die;
 
       MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
 
