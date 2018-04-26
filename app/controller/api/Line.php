@@ -90,6 +90,14 @@ class Line extends ApiController {
             MyLineBotMsg::create()->templateImageCarouselColumn(
               'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
               MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
+            ),
+            MyLineBotMsg::create()->templateImageCarouselColumn(
+              'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+              MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
+            ),
+            MyLineBotMsg::create()->templateImageCarouselColumn(
+              'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+              MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
             )
           ]))
           ->reply ($event->getReplyToken());
