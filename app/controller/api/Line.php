@@ -16,10 +16,13 @@ class Line extends ApiController {
   public function index() {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
-    print_r($events);
-    die;
+    // print_r($events);
+    // die;
     foreach( $events as $event ) {
-      // $obj = User::
+      // print_r($event->getUserId());
+      // die;
+      $obj = User::create( array('uid' => $event->getUserId() ));
+
       // MyLineBotMsg::create()->template( '這訊息要用手機的賴才看得到喔！',
       //   MyLineBotMsg::create()->templateImageCarousel([
       //     MyLineBotMsg::create()->templateImageCarouselColumn(

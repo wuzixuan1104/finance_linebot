@@ -11,9 +11,9 @@ return array (
     'up' => "CREATE TABLE `locations` (
       `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
       `user_id` int(11) unsigned NOT NULL,
-      `mid` int(11) unsigned NOT NULL COMMENT '回覆的訊息id',
+      `mid` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '回覆的訊息id',
       `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '標題',
-      `address` text NOT NULL DEFAULT '' COMMENT '地址',
+      `address` text NOT NULL COMMENT '地址',
       `latitude` DOUBLE unsigned NOT NULL COMMENT '',
       `longitude` DOUBLE unsigned NOT NULL COMMENT '',
       `reply_token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '回覆token',
