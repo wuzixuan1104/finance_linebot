@@ -16,107 +16,26 @@ class Line extends ApiController {
   public function index() {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
-
+    print_r($events);
+    die;
     foreach( $events as $event ) {
-      // switch($event->getMessageType()) {
-      //   case "text":
-      //     $msg = MyLineBotMsg::create ()
-      //                 ->multi ([
-      //                   MyLineBotMsg::create ()->text ($event->getText()),
-      //                   MyLineBotMsg::create ()->text ('hello')
-      //                 ])
-      //                 ->reply ($event->getReplyToken());
-      //     break;
-      //   case "image":
-          // $url = 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg';
-          // $msg = MyLineBotMsg::create ()
-          //             ->multi([
-          //               MyLineBotMsg::create ()->image($url, $url),
-          //             ])
-          //             ->reply ($event->getReplyToken());
-          // case "video":
-            // $url = 'https://youtu.be/n3GhjRiVtns';
-            // $msg = MyLineBotMsg::create()->video($url, $url)->reply ($event->getReplyToken());
-
-            // break;
-          // case "audio":
-          //   $url =
-          //   break;
-
-          // break;
-      // }
-
-      // $msg = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-      //           MyLineBotMsg::create()->templateButton("按鈕文字","說明", 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-      //             MyLineBotActionMsg::create()->message("按鈕1","文字1"),
-                  // MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
-      //             MyLineBotActionMsg::create()->postback("下一頁", "page=3"),
-      //             MyLineBotActionMsg::create()->postback("上一頁", "page=1"),
-      //           ])
-      //        )->reply ($event->getReplyToken());
-
-      // MyLineBotMsg::create()->imagemap('https://angel.ioa.tw/res/image/t5', 'test', 1040, 1040, [
-      //                 MyLineBotActionMsg::create()->imagemapMsg('文字', 0, 0, 100, 100),
-      //            ])->reply ($event->getReplyToken());
-      // MyLineBotMsg::create()->location('my location', '〒150-0002 東京都渋谷区渋谷２丁目２１−１', '35.65910807942215', '139.70372892916203')->reply ($event->getReplyToken());
-
-      // $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-      //   MyLineBotMsg::create()->templateCarousel( [
-      //     MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-      //       MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'date', '', '', ''),
-      //       // MyLineBotActionMsg::create()->message('label', 'test'),
-      //       MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
-      //       MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-      //     ]),
-      //     MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-      //       MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'date', '', '', ''),
-      //       MyLineBotActionMsg::create()->message('label', 'test'),
-      //       // MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
-      //       MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-      //     ]),
-      //   ])
-      // )->reply ($event->getReplyToken());
-
-      // MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-      //   MyLineBotMsg::create()->templateConfirm("按鈕文字",  [
-      //     MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
-      //     MyLineBotActionMsg::create()->uri("Google","http://www.google.com"),
+      // $obj = User::
+      // MyLineBotMsg::create()->template( '這訊息要用手機的賴才看得到喔！',
+      //   MyLineBotMsg::create()->templateImageCarousel([
+      //     MyLineBotMsg::create()->templateImageCarouselColumn(
+      //       'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+      //       MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
+      //     ),
+      //     MyLineBotMsg::create()->templateImageCarouselColumn(
+      //       'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+      //       MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
+      //     ),
+      //     MyLineBotMsg::create()->templateImageCarouselColumn(
+      //       'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
+      //       MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
+      //     )
       //   ]))
-      //   ->reply ($event->getReplyToken());
-
-
-      $builder = MyLineBotMsg::create()->template( '這訊息要用手機的賴才看得到喔！',
-          MyLineBotMsg::create()->templateImageCarousel([
-            MyLineBotMsg::create()->templateImageCarouselColumn(
-              'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
-              MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
-            ),
-            MyLineBotMsg::create()->templateImageCarouselColumn(
-              'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
-              MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
-            ),
-            MyLineBotMsg::create()->templateImageCarouselColumn(
-              'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
-              MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
-            )
-          ]))
-          ->reply ($event->getReplyToken());
-      print_r($builder);
-      die;
-      // $builder = new \LINE\LINEBot\MessageBuilder\TemplateMessageBuilder( '這訊息要用手機的賴才看的到哦', new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselTemplateBuilder(
-      //   [
-      //     new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselTemplateBuilder( [
-      //       new \LINE\LINEBot\MessageBuilder\TemplateBuilder\ImageCarouselColumnTemplateBuilder(
-      //         'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
-      //
-      //       ),
-      //     ]),
-      //   ]
-      // ));
-      MyLineBot::bot()->replyMessage($event->getReplyToken(), $builder);
-
+      // ->reply ($event->getReplyToken());
     }
-
   }
-
 }

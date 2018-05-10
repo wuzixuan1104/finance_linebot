@@ -72,7 +72,6 @@ class MyLineBotMsg {
 
   public function __construct() {
   }
-
   public static function create() {
     return new MyLineBotMsg();
   }
@@ -150,14 +149,11 @@ class MyLineBotMsg {
     $this->builder = new TemplateMessageBuilder($text, $builder->getBuilder());
     return $this;
   }
-
-
 }
 
 class MyLineBotActionMsg {
   private $action;
   public function __construct() {
-
   }
   public static function create() {
     return new MyLineBotActionMsg();
@@ -179,5 +175,35 @@ class MyLineBotActionMsg {
   }
   public function imagemapUri($url, $x, $y, $width, $height) {
     return is_string($url) && is_numeric($x) && is_numeric($y) && is_numeric($width) && is_numeric($height) ? new ImagemapUriActionBuilder($url, new AreaBuilder($x, $y, $width, $height) ) : null;
+  }
+}
+
+class MyLineBotRichMenu {
+  public function getRichMenu() {
+
+  }
+  public function createRichMenu() {
+
+  }
+  public function deleteRichMenu() {
+
+  }
+  public function getRichMenuIdOfUser() {
+
+  }
+  public function linkRichMenuToUser() {
+
+  }
+  public function linkRichMenuFromUser() {
+
+  }
+  public function downloadRichMenuImage() {
+
+  }
+  public function uploadRichMenuImage() {
+    
+  }
+  public function getRichMenuList() {
+
   }
 }
