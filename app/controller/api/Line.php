@@ -8,7 +8,6 @@
  */
 
 class Line extends ApiController {
-
   public function __construct() {
     parent::__construct();
   }
@@ -16,29 +15,17 @@ class Line extends ApiController {
   public function index() {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
-    // print_r($events);
-    // die;
-    foreach( $events as $event ) {
-      // print_r($event->getUserId());
-      // die;
-      $obj = User::create( array('uid' => $event->getUserId() ));
 
-      // MyLineBotMsg::create()->template( '這訊息要用手機的賴才看得到喔！',
-      //   MyLineBotMsg::create()->templateImageCarousel([
-      //     MyLineBotMsg::create()->templateImageCarouselColumn(
-      //       'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
-      //       MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
-      //     ),
-      //     MyLineBotMsg::create()->templateImageCarouselColumn(
-      //       'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
-      //       MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
-      //     ),
-      //     MyLineBotMsg::create()->templateImageCarouselColumn(
-      //       'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg',
-      //       MyLineBotActionMsg::create()->uri("Google","http://www.google.com")
-      //     )
-      //   ]))
-      // ->reply ($event->getReplyToken());
+    foreach( $events as $event ) {
+      $user = $this->checkUserExist( $event->getUserId() );
+
     }
+  }
+
+  public function checkUserExist($uid) {
+    if( !$obj = User::find_by_uid($uid) )
+      if( !$obj = User::create( array('uid' => $uid) ) )
+        return false;
+    return $obj;
   }
 }
