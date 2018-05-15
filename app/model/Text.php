@@ -26,7 +26,24 @@ class Text extends Model {
   public function destroy () {
     if (!isset ($this->id))
       return false;
-    
+
     return $this->delete ();
+  }
+
+  public static function save($event) {
+    if( !$event->getText() )
+      return false;
+
+    $param = array(
+      'source_id' => '',
+      'speaker_id' => '',
+      'reply_token' => '',
+      'message_id' => '',
+      'text' => $event->getText(),
+    );
+
+    if( !$obj = Text::create( $param ) )
+      return false;
+
   }
 }

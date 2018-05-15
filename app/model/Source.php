@@ -54,10 +54,8 @@ class Source extends Model {
     Load::lib ('MyLineBot.php');
 
     $response = MyLineBot::bot()->getProfile($event->getUserId());
-    if ($response->isSucceeded()) {
-        $profile = $response->getJSONDecodedBody();
+    if ( $response->isSucceeded() && $profile = $response->getJSONDecodedBody() )
         return $profile['displayName'];
-    }
     return '';
   }
 
@@ -78,10 +76,26 @@ class Source extends Model {
         return false;
     }
 
-    return true;
+    return $obj;
   }
 
   public static function checkSpeakerExist($event) {
+    if( !(self::getType($event) == Source::TYPE_USER && $userId = $event->getUserId()) )
+      return false;
 
+    if( !$obj = Source::find('one', array('where' => array('sid = ?', $userId) ) ) ) {
+      $param = array(
+        'sid' => $userId,
+        'title' => Source::getTitle($event),
+        'type' => Source::TYPE_USER,
+      );
+      $transaction = function() use (&$obj, $param){
+        return $obj = Source::create( $param );
+      };
+      if( !Source::transaction( $transaction, $obj, $param ) )
+        return false;
+    }
+
+    return $obj;
   }
 }

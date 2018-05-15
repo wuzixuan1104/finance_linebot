@@ -16,8 +16,15 @@ class Line extends ApiController {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-      Source::checkSourceExist($event);
+      if( !$source = Source::checkSourceExist($event) )
+        continue;
+      $speaker = Source::checkSpeakerExist($event);
 
+      echo $event->getMessageType();
+      die;
+      switch( $event->getMessageType() ) {
+
+      }
       // $sid = $event->getEventSourceId();
       // if( !$user = $this->checkUserExist( $event->getUserId() ) )
       //   return false;
