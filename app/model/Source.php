@@ -39,7 +39,7 @@ class Source extends Model {
   public function destroy () {
     if (!isset ($this->id))
       return false;
-    
+
     return $this->delete ();
   }
 
@@ -50,4 +50,7 @@ class Source extends Model {
     return Source::TYPE_OTHER;
   }
 
+  public function checkExistOrCreate($uid) {
+
+  }
 }
