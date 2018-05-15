@@ -43,14 +43,45 @@ class Source extends Model {
     return $this->delete ();
   }
 
-  public function getType($event) {
+  public static function getType($event) {
     if( $event->isUserEvent() ) return Source::TYPE_USER;
     if( $event->isGroupEvent() ) return Source::TYPE_GROUP;
     if( $event->isRoomEvent() ) return Source::TYPE_ROOM;
     return Source::TYPE_OTHER;
   }
 
-  public function checkExistOrCreate($uid) {
+  public static function getTitle($event) {
+    Load::lib ('MyLineBot.php');
+
+    $response = MyLineBot::bot()->getProfile($event->getUserId());
+    if ($response->isSucceeded()) {
+        $profile = $response->getJSONDecodedBody();
+        return $profile['displayName'];
+    }
+    return '';
+  }
+
+  public static function checkSourceExist($event) {
+    if( !$sid = $event->getEventSourceId() )
+      return false;
+
+    if( !$obj = Source::find('one', array('where' => array('sid = ?', $sid) ) ) ) {
+      $param = array(
+        'sid' => $sid,
+        'title' => Source::getTitle($event),
+        'type' => self::getType($event),
+      );
+      $transaction = function() use (&$obj, $param){
+        return $obj = Source::create( $param );
+      };
+      if( !Source::transaction( $transaction, $obj, $param ) )
+        return false;
+    }
+
+    return true;
+  }
+
+  public static function checkSpeakerExist($event) {
 
   }
 }

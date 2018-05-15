@@ -15,17 +15,14 @@ class Line extends ApiController {
   public function index() {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
-
     foreach( $events as $event ) {
-      $user = $this->checkUserExist( $event->getUserId() );
+      Source::checkSourceExist($event);
 
+      // $sid = $event->getEventSourceId();
+      // if( !$user = $this->checkUserExist( $event->getUserId() ) )
+      //   return false;
     }
   }
 
-  public function checkUserExist($uid) {
-    if( !$obj = User::find_by_uid($uid) )
-      if( !$obj = User::create( array('uid' => $uid) ) )
-        return false;
-    return $obj;
-  }
+
 }
