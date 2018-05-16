@@ -30,20 +30,20 @@ class Text extends Model {
     return $this->delete ();
   }
 
-  public static function save($event) {
+  public static function save($source, $speaker, $event) {
     if( !$event->getText() )
       return false;
 
     $param = array(
-      'source_id' => '',
-      'speaker_id' => '',
-      'reply_token' => '',
-      'message_id' => '',
+      'source_id' => $source->sid,
+      'speaker_id' => $speaker->sid,
+      'reply_token' => $event->getReplyToken(),
+      'message_id' => $event->getMessageId(),
       'text' => $event->getText(),
     );
 
     if( !$obj = Text::create( $param ) )
       return false;
-
+    return $obj;
   }
 }

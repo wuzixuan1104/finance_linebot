@@ -20,10 +20,14 @@ class Line extends ApiController {
         continue;
       $speaker = Source::checkSpeakerExist($event);
 
-      echo $event->getMessageType();
-      die;
       switch( $event->getMessageType() ) {
+        case 'text':
+          if( $obj = Text::save($source, $speaker, $event) )
+            MyLineBotMsg::create()
+              ->text($event->getText())
+              ->reply($event->getReplyToken());
 
+          break;
       }
       // $sid = $event->getEventSourceId();
       // if( !$user = $this->checkUserExist( $event->getUserId() ) )
