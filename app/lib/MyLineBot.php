@@ -67,6 +67,36 @@ class MyLineBot extends LINEBot{
   }
 }
 
+class MyLineBotLog {
+  public $event = null;
+  public function __construct() {
+
+  }
+  public static function create($source, $speaker, $event) {
+    $event->getType() == 'message' && $this->setParam( $source, $speaker, $event );
+
+    $type = lcfirst( get_class($event) );
+    is_callable( $type ) && $this->{$type}($param);
+
+  }
+  private function setParam( $source, $speaker, $event ) {
+    $this->param = array(
+      'source_id' => $source->id,
+      'speaker_id' => $speaker->id,
+      'reply_token' => $event->getReplyToken() ? $event->getReplyToken() : '',
+      'message_id' => $event->getMessageId() ? $event->getMessageId() : '',
+      'timestamp' => $event->getTimestamp() ? $event->getTimestamp() : '',
+    );
+  }
+  private function getParam() {
+    return $this->param;
+  }
+  
+  private function textMessage($param) {
+
+  }
+}
+
 class MyLineBotMsg {
   private $builder;
 
@@ -179,6 +209,7 @@ class MyLineBotActionMsg {
 }
 
 class MyLineBotRichMenu {
+
   public function getRichMenu() {
 
   }
@@ -201,7 +232,7 @@ class MyLineBotRichMenu {
 
   }
   public function uploadRichMenuImage() {
-    
+
   }
   public function getRichMenuList() {
 

@@ -22,10 +22,22 @@ class Line extends ApiController {
 
       switch( $event->getMessageType() ) {
         case 'text':
-          if( $obj = Text::save($source, $speaker, $event) )
-            MyLineBotMsg::create()
-              ->text($event->getText())
-              ->reply($event->getReplyToken());
+          $param = array(
+            'source_id' => '',
+            'speaker_id' => '',
+            'reply_token' => $event->getReplyToken(),
+            'message_id' => $event->getMessageId(),
+            'text' => $event->getText(),
+            'timestamp' => $event->getTimestamp() ? $event->getTimestamp() : '',
+          );
+
+          if( !$obj = Text::create( $param ) )
+            return false;
+
+          // if( $obj = Text::save($source, $speaker, $event) )
+          MyLineBotMsg::create()
+            ->text($event->getText())
+            ->reply($event->getReplyToken());
 
           break;
       }
