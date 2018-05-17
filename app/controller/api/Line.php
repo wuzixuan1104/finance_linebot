@@ -23,8 +23,8 @@ class Line extends ApiController {
       switch( $event->getMessageType() ) {
         case 'text':
           $param = array(
-            'source_id' => '',
-            'speaker_id' => '',
+            'source_id' => $source->id,
+            'speaker_id' => $speaker->id,
             'reply_token' => $event->getReplyToken(),
             'message_id' => $event->getMessageId(),
             'text' => $event->getText(),
