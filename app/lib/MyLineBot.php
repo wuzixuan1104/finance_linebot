@@ -68,15 +68,12 @@ class MyLineBot extends LINEBot{
 }
 
 class MyLineBotLog {
-  public $event = null;
-  public function __construct() {
-
-  }
+  private $param;
   public static function create($source, $speaker, $event) {
     $event->getType() == 'message' && $this->setParam( $source, $speaker, $event );
 
     $type = lcfirst( get_class($event) );
-    is_callable( $type ) && $this->{$type}($param);
+    return is_callable( $type ) && $this->{$type}();
 
   }
   private function setParam( $source, $speaker, $event ) {
@@ -91,8 +88,15 @@ class MyLineBotLog {
   private function getParam() {
     return $this->param;
   }
-  
-  private function textMessage($param) {
+
+  private function textMessage() {
+    $param = $this->getParam();
+    return Text::transaction( function() use ($param) {
+      return Text::create($param);
+    });
+  }
+
+  private function fileMessage() {
 
   }
 }

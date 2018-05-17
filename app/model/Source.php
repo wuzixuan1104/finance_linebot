@@ -80,7 +80,7 @@ class Source extends Model {
   }
 
   public static function checkSpeakerExist($event) {
-    if( !(self::getType($event) == Source::TYPE_USER && $userId = $event->getUserId()) )
+    if( !($userId = $event->getUserId()) )
       return false;
 
     if( !$obj = Source::find('one', array('where' => array('sid = ?', $userId) ) ) ) {
