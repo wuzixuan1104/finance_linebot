@@ -68,21 +68,28 @@ class MyLineBot extends LINEBot{
 }
 
 class MyLineBotLog {
-  private $param;
-  public static function create($source, $speaker, $event) {
-    $event->getType() == 'message' && $this->setParam( $source, $speaker, $event );
-
-    $type = lcfirst( get_class($event) );
-    return is_callable( $type ) && $this->{$type}();
-
+  private $param = null, $source = null, $speaker = null, $event = null;
+  public function __construct($source, $speaker, $event) {
+    $this->source = $source;
+    $this->speaker = $speaker;
+    $this->event = $event;
   }
-  private function setParam( $source, $speaker, $event ) {
+  public static function init($source, $speaker, $event) {
+    return new MyLineBotLog($source, $speaker, $event);
+  }
+  public function create() {
+    $this->event->getType() == 'message' && $this->getParam() == null && $this->setParam();
+    $split = explode("\\", get_class($this->event));
+    $type = lcfirst( $split[count($split)-1] );
+    return method_exists( __CLASS__, $type ) && $this->{$type}($this->event);
+  }
+  private function setParam() {
     $this->param = array(
-      'source_id' => $source->id,
-      'speaker_id' => $speaker->id,
-      'reply_token' => $event->getReplyToken() ? $event->getReplyToken() : '',
-      'message_id' => $event->getMessageId() ? $event->getMessageId() : '',
-      'timestamp' => $event->getTimestamp() ? $event->getTimestamp() : '',
+      'source_id' => $this->source->id,
+      'speaker_id' => $this->speaker->id,
+      'reply_token' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '',
+      'message_id' => $this->event->getMessageId() ? $this->event->getMessageId() : '',
+      'timestamp' => $this->event->getTimestamp() ? $this->event->getTimestamp() : '',
     );
   }
   private function getParam() {
@@ -90,7 +97,7 @@ class MyLineBotLog {
   }
 
   private function textMessage() {
-    $param = $this->getParam();
+    $param = array_merge( $this->getParam(), array('text' => $this->event->getText()) );
     return Text::transaction( function() use ($param) {
       return Text::create($param);
     });

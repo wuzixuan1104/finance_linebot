@@ -18,9 +18,10 @@ class Line extends ApiController {
     foreach( $events as $event ) {
       if( !$source = Source::checkSourceExist($event) )
         continue;
-        
+
       $speaker = Source::checkSpeakerExist($event);
-      $log = MyLineBotLog::create($source, $speaker, $event);
+
+      $log = MyLineBotLog::init($source, $speaker, $event)->create();
 
       switch( $event->getMessageType() ) {
         case 'text':
