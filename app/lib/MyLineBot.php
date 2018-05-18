@@ -69,6 +69,7 @@ class MyLineBot extends LINEBot{
 
 class MyLineBotLog {
   private $param = null, $source = null, $speaker = null, $event = null;
+
   public function __construct($source, $speaker, $event) {
     $this->source = $source;
     $this->speaker = $speaker;
@@ -77,8 +78,14 @@ class MyLineBotLog {
   public static function init($source, $speaker, $event) {
     return new MyLineBotLog($source, $speaker, $event);
   }
+
   public function create() {
-    $this->event->getType() == 'message' && $this->getParam() == null && $this->setParam();
+    if( $this->event->getType() != 'message' )
+      return false;
+
+    if( !($this->getParam() == null && $this->setParam() ) )
+      return false;
+
     $split = explode("\\", get_class($this->event));
     $type = lcfirst( $split[count($split)-1] );
     return method_exists( __CLASS__, $type ) && $this->{$type}($this->event);
