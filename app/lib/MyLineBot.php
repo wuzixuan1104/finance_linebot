@@ -83,8 +83,7 @@ class MyLineBotLog {
     if( $this->event->getType() != 'message' )
       return false;
 
-    if( !($this->getParam() == null && $this->setParam() ) )
-      return false;
+    $this->getParam() == null && $this->setParam();
 
     $split = explode("\\", get_class($this->event));
     $type = lcfirst( $split[count($split)-1] );
