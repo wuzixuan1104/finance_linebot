@@ -35,6 +35,7 @@ class Line extends ApiController {
           break;
         case 'image':
           $url = str_replace('http', 'https', $log->file->url());
+          Log::info($url);
           MyLineBotMsg::create()
             ->image($url, $url)
             ->reply ($event->getReplyToken());
