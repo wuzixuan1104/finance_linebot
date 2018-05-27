@@ -16,25 +16,31 @@ class Line extends ApiController {
     Load::lib ('MyLineBot.php');
     $events = MyLineBot::events();
     foreach( $events as $event ) {
+
       if( !$source = Source::checkSourceExist($event) )
         continue;
 
       $speaker = Source::checkSpeakerExist($event);
 
-      if (!MyLineBotLog::init($source, $speaker, $event)->create())
-        return false;
+      // if (!MyLineBotLog::init($source, $speaker, $event)->create())
+      //   return false;
 
       switch( $event->getMessageType() ) {
         case 'text':
           MyLineBotMsg::create()
             ->text($event->getText())
             ->reply($event->getReplyToken());
-
+          break;
+        case 'image':
+          $url = 'https://api.line.me/v2/bot/message/'. $event->getMessageId() .'/content';
+          $image = file_get_contents($url);
+          Log::info('=======');
+          Log::info($image);
+          // MyLineBotMsg::create()
+          //   ->image($url, $url)
+          //   ->reply ($event->getReplyToken());
           break;
       }
-      // $sid = $event->getEventSourceId();
-      // if( !$user = $this->checkUserExist( $event->getUserId() ) )
-      //   return false;
     }
   }
 
