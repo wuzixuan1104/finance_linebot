@@ -32,9 +32,10 @@ class Line extends ApiController {
             ->reply($event->getReplyToken());
           break;
         case 'image':
-          $url = 'https://api.line.me/v2/bot/message/'. $event->getMessageId() .'/content';
-          Log::info('url:' . $url);
-          $image = file_get_contents($url);
+          // $url = 'https://api.line.me/v2/bot/message/'. $event->getMessageId() .'/content';
+          // Log::info('url:' . $url);
+          $image = MyLineBot::bot()->getMessageContent( $event->getMessageId() );
+
           Log::info('=======');
           Log::info($image);
           // MyLineBotMsg::create()
