@@ -114,7 +114,7 @@ class MyLineBotLog {
   }
 
   private function imageMessage() {
-    if ( !$obj = MyLineBot::bot()->getMessageContent( '8023694538607' ) )
+    if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
       return false;
     if ( !$obj->isSucceeded() )
       return false;
