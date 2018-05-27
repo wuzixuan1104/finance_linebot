@@ -36,6 +36,7 @@ class Line extends ApiController {
         case 'image':
           Log::info('===========123242');
           $url = $log->file->url();
+      
           Log::info($url);
           MyLineBotMsg::create()
             ->image($url, $url)
