@@ -25,6 +25,7 @@ class Line extends ApiController {
       // if (!MyLineBotLog::init($source, $speaker, $event)->create())
       //   return false;
       Log::info('=======123');
+      Log::info($event->getMessageType());
       switch( $event->getMessageType() ) {
         case 'text':
           MyLineBotMsg::create()
