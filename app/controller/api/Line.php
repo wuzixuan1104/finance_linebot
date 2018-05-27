@@ -25,7 +25,6 @@ class Line extends ApiController {
       // if (!MyLineBotLog::init($source, $speaker, $event)->create())
       //   return false;
       Log::info('=======123');
-      Log::info($event->getMessageType());
       switch( $event->getMessageType() ) {
         case 'text':
           MyLineBotMsg::create()
@@ -34,6 +33,7 @@ class Line extends ApiController {
           break;
         case 'image':
           $url = 'https://api.line.me/v2/bot/message/'. $event->getMessageId() .'/content';
+          Log::info('url:' . $url);
           $image = file_get_contents($url);
           Log::info('=======');
           Log::info($image);
