@@ -87,8 +87,12 @@ class MyLineBotLog {
 
     $split = explode("\\", get_class($this->event));
     $type = lcfirst( $split[count($split)-1] );
-    return method_exists( __CLASS__, $type ) && $this->{$type}($this->event);
+
+    if( method_exists( __CLASS__, $type ) )
+      return $this->{$type}($this->event);
+    return false;
   }
+
   private function setParam() {
     $this->param = array(
       'source_id' => $this->source->id,
@@ -107,6 +111,23 @@ class MyLineBotLog {
     return Text::transaction( function() use ($param) {
       return Text::create($param);
     });
+  }
+
+  private function imageMessage() {
+    if ( !$obj = MyLineBot::bot()->getMessageContent( '8023694538607' ) )
+      return false;
+    if ( !$obj->isSucceeded() )
+      return false;
+
+    $param = array_merge( $this->getParam(), array('file' => '') );
+    $filename = 'tmp/' . 'image.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+
+    if ( !(write_file( $filename, $obj->getRawBody()) && $image = Image::create($param) ) )
+      return false;
+    if( !$image->file->put($filename) )
+      return false;
+
+    return $image;
   }
 
   private function fileMessage() {

@@ -22,7 +22,7 @@ return array (
   'drivers' => array (
       'local' => array (
           'base_dir' => array ('upload'),
-          'base_url' => 'http://dev.ximen.wifi/',
+          'base_url' => 'http://dev.angel.com.tw/',
           'd4_url' => '',
         ),
       's3' => array (

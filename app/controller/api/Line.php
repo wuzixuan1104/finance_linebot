@@ -14,6 +14,8 @@ class Line extends ApiController {
 
   public function index() {
     Load::lib ('MyLineBot.php');
+    Load::sysFunc('file.php');
+
     $events = MyLineBot::events();
     foreach( $events as $event ) {
 
@@ -22,9 +24,9 @@ class Line extends ApiController {
 
       $speaker = Source::checkSpeakerExist($event);
 
-      // if (!MyLineBotLog::init($source, $speaker, $event)->create())
-      //   return false;
-      Log::info('=======123');
+      if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
+        return false;
+
       switch( $event->getMessageType() ) {
         case 'text':
           MyLineBotMsg::create()
@@ -32,15 +34,9 @@ class Line extends ApiController {
             ->reply($event->getReplyToken());
           break;
         case 'image':
-          // $url = 'https://api.line.me/v2/bot/message/'. $event->getMessageId() .'/content';
-          // Log::info('url:' . $url);
-          $image = MyLineBot::bot()->getMessageContent( $event->getMessageId() );
-
-          Log::info('=======');
-          Log::info($image);
-          // MyLineBotMsg::create()
-          //   ->image($url, $url)
-          //   ->reply ($event->getReplyToken());
+          MyLineBotMsg::create()
+            ->image($log->file->url(), $log->file->url())
+            ->reply ($event->getReplyToken());
           break;
       }
     }
