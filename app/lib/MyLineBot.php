@@ -112,6 +112,18 @@ class MyLineBotLog {
   private function fileMessage() {
 
   }
+
+  private function locationMessage() {
+
+  }
+
+  private function stickerMessage() {
+
+  }
+
+  private function videioMessage() {
+
+  }
 }
 
 class MyLineBotMsg {
