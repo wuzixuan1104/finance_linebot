@@ -21,12 +21,18 @@ class Video extends Model {
 
   public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {
     parent::__construct ($attrs, $guardAttrs, $instantiatingViafind, $newRecord);
+
+    // 設定檔案上傳器
+    Uploader::bind ('file', 'VideoFileFileUploader');
   }
 
   public function destroy () {
     if (!isset ($this->id))
       return false;
-    
+
     return $this->delete ();
   }
+}
+/* -- 檔案上傳器物件 ------------------------------------------------------------------ */
+class VideoFileFileUploader extends FileUploader {
 }

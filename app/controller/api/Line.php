@@ -18,8 +18,7 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-      Log::info('msgId:' . $event->getMessageId() );
-      die;
+
       if( !$source = Source::checkSourceExist($event) )
         continue;
 
@@ -41,7 +40,11 @@ class Line extends ApiController {
             ->reply ($event->getReplyToken());
           break;
         case 'video':
-          Log::info('msgId:' . $this->event->getMessageId());
+          Log::info('msgId:' . $event->getMessageId());
+          $url = $log->file->url();
+          MyLineBotMsg::create()
+            ->video($url, $url)
+            ->reply ($event->getReplyToken());
           break;
       }
     }

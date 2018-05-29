@@ -136,8 +136,16 @@ class MyLineBotLog {
     if ( !$obj->isSucceeded() )
       return false;
 
-    print_r($obj);
-    die;
+    $param = array_merge( $this->getParam(), array('file' => '') );
+    $filename = 'tmp/' . 'video.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+
+    if ( !(write_file( $filename, $obj->getRawBody()) && $video = Video::create($param) ) )
+      return false;
+    if( !$video->file->put($filename) )
+      return false;
+
+    return $video;
+
   }
 
   private function fileMessage() {
