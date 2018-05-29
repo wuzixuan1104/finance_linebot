@@ -130,6 +130,16 @@ class MyLineBotLog {
     return $image;
   }
 
+  private function videoMessage() {
+    if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
+      return false;
+    if ( !$obj->isSucceeded() )
+      return false;
+
+    print_r($obj);
+    die;
+  }
+
   private function fileMessage() {
 
   }
@@ -139,10 +149,6 @@ class MyLineBotLog {
   }
 
   private function stickerMessage() {
-
-  }
-
-  private function videioMessage() {
 
   }
 }
