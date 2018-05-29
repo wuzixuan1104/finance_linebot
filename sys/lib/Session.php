@@ -57,8 +57,7 @@ class Session {
     if (isset ($_COOKIE[self::$cookie['name']]) && !(is_string ($_COOKIE[self::$cookie['name']]) && preg_match ('#\A' . self::$sidRegexp . '\z#', $_COOKIE[self::$cookie['name']])))
       unset ($_COOKIE[self::$cookie['name']]);
 
-    session_start ();
-
+    session_start();
     if ((empty ($_SERVER['HTTP_X_REQUESTED_WITH']) || strtolower ($_SERVER['HTTP_X_REQUESTED_WITH']) !== 'xmlhttprequest') && self::$time2Update > 0) {
 
       if (!isset ($_SESSION['__oaci_last_regenerate']))
@@ -129,7 +128,7 @@ class Session {
     } else {
       $bitsPerCharacter = (int) ini_get ('session.sid_bits_per_character');
       $sidLength        = (int) ini_get ('session.sid_length');
-      
+
       if (($bits = $sidLength * $bitsPerCharacter) < 160) {
         $sidLength += (int) ceil ((160 % $bits) / $bitsPerCharacter);
         ini_set ('session.sid_length', $sidLength);

@@ -21,12 +21,28 @@ class Image extends Model {
 
   public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {
     parent::__construct ($attrs, $guardAttrs, $instantiatingViafind, $newRecord);
+    // 設定圖片上傳器
+    Uploader::bind ('file', 'ImageFileImageUploader');
   }
 
   public function destroy () {
     if (!isset ($this->id))
       return false;
-    
+
     return $this->delete ();
+  }
+}
+
+/* -- 圖片上傳器物件 ------------------------------------------------------------------ */
+class ImageFileImageUploader extends ImageUploader {
+  public function d4Url () {
+    return Asset::url ('assets/img/d4.jpg');
+  }
+  public function getVersions () {
+    return array (
+        '' => array (),
+        'w500' => array ('resize', 500, 500, 'width'),
+        'c1200x630' => array ('adaptiveResizeQuadrant', 1200, 630, 't')
+      );
   }
 }

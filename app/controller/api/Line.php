@@ -14,14 +14,17 @@ class Line extends ApiController {
 
   public function index() {
     Load::lib ('MyLineBot.php');
+    Load::sysFunc('file.php');
+
     $events = MyLineBot::events();
     foreach( $events as $event ) {
+
       if( !$source = Source::checkSourceExist($event) )
         continue;
 
       $speaker = Source::checkSpeakerExist($event);
 
-      if (!MyLineBotLog::init($source, $speaker, $event)->create())
+      if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
 
       switch( $event->getMessageType() ) {
@@ -29,12 +32,17 @@ class Line extends ApiController {
           MyLineBotMsg::create()
             ->text($event->getText())
             ->reply($event->getReplyToken());
-
+          break;
+        case 'image':
+          Log::info('===========123242');
+          $url = $log->file->url();
+      
+          Log::info($url);
+          MyLineBotMsg::create()
+            ->image($url, $url)
+            ->reply ($event->getReplyToken());
           break;
       }
-      // $sid = $event->getEventSourceId();
-      // if( !$user = $this->checkUserExist( $event->getUserId() ) )
-      //   return false;
     }
   }
 
