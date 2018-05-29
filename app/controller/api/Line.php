@@ -18,7 +18,7 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-      Log::info('msgId:' . $this->event->getMessageId());
+      Log::info('msgId:' . $event->getMessageId() );
       die;
       if( !$source = Source::checkSourceExist($event) )
         continue;
