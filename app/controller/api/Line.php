@@ -22,10 +22,10 @@ class Line extends ApiController {
         continue;
 
       $speaker = Source::checkSpeakerExist($event);
-
+      Log::info('1----------'. $event->getMessageId());
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
-
+      Log::info('2----------');
       switch( $event->getMessageType() ) {
         case 'text':
           MyLineBotMsg::create()
