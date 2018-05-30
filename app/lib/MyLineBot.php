@@ -147,8 +147,9 @@ class MyLineBotLog {
   }
 
   private function audioMessage() {
+    Log::info('=====================');
     if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
-      return false;
+      Log::info('bot fail');
     if ( !$obj->isSucceeded() )
       Log::info('audio fail');
 
