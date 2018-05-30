@@ -150,7 +150,10 @@ class MyLineBotLog {
     if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
       return false;
     if ( !$obj->isSucceeded() )
-      return false;
+      Log::info('audio fail');
+
+    Log::info( json_encode($obj) );
+      // return false;
     // print_r($obj); die;
     $param = array_merge( $this->getParam(), array('file' => '') );
     $filename = 'tmp/' . 'audio.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
