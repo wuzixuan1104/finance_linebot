@@ -53,6 +53,13 @@ class Line extends ApiController {
             ->audio($url, 60000)
             ->reply ($event->getReplyToken());
           break;
+        case 'file':
+          break;
+        case 'location':
+          MyLineBotMsg::create()
+            ->location($log->title, $log->address, $log->latitude, $log->longitude)
+            ->reply ($event->getReplyToken());
+          break;
       }
     }
   }

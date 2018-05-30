@@ -164,24 +164,20 @@ class MyLineBotLog {
   }
 
   private function fileMessage() {
-    if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
-      return false;
-    if ( !$obj->isSucceeded() )
-      return false;
-
-    $param = array_merge( $this->getParam(), array('name' => $this->event->getFileName(), 'size' => $this->event->getFileSize(), 'file' => '') );
-    $filename = 'tmp/' . 'file.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
-
-    if ( !(write_file( $filename, $obj->getRawBody()) && $file = File::create($param) ) )
-      return false;
-
-    if( !$file->file->put($filename) )
-      return false;
-    return $file;
+    $param = array_merge( $this->getParam(), array('text' => $this->event->getText()) );
+    return Text::transaction( function() use ($param) {
+      return Text::create($param);
+    });
   }
 
   private function locationMessage() {
-
+    $param = array_merge( $this->getParam(), array('title' => $this->event->getTitle(), 'address' => $this->event->getAddress(), 'latitude' => $this->event->getLatitude(), 'longitude' => $this->event->getLongitude()) );
+    if( !Location::getTransactionError(function ($param, &$obj) {
+      return $obj = Location::create($param);
+    }, $param, $obj) ) {
+      return false;
+    }
+    return $obj;
   }
 
   private function stickerMessage() {
