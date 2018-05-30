@@ -8,7 +8,7 @@
  */
 
 class Audio extends Model {
-  static $table_name = 'audio';
+  static $table_name = 'audios';
 
   static $has_one = array (
   );
