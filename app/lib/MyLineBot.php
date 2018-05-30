@@ -162,8 +162,8 @@ class MyLineBotLog {
     if ( !write_file( $filename, $obj->getRawBody() ) )
       Log::info('write file fail');
 
-    if( !$audio = Audio::create($param) )
-      Log::info('create fail');
+    if( $audio = Audio::create($param) )
+      Log::info('create success');
     // if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
     //   return false;
 
