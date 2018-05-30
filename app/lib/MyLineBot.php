@@ -177,7 +177,7 @@ class MyLineBotLog {
 
     if( !$file->file->put($filename) )
       return false;
-    return $audio;
+    return $file;
   }
 
   private function locationMessage() {
