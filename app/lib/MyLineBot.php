@@ -143,9 +143,23 @@ class MyLineBotLog {
       return false;
     if( !$video->file->put($filename) )
       return false;
-
     return $video;
+  }
 
+  private function audioMessage() {
+    if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
+      return false;
+    if ( !$obj->isSucceeded() )
+      return false;
+
+    $param = array_merge( $this->getParam(), array('file' => '') );
+    $filename = 'tmp/' . 'audio.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+
+    if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
+      return false;
+    if( !$audio->file->put($filename) )
+      return false;
+    return $audio;
   }
 
   private function fileMessage() {

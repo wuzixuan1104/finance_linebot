@@ -46,6 +46,13 @@ class Line extends ApiController {
             ->video($url, $url)
             ->reply ($event->getReplyToken());
           break;
+        case 'audio':
+          Log::info('msgId:' . $event->getMessageId() );
+          $url = $log->file->url();
+          MyLineBotMsg::create()
+            ->audio($url, 60000)
+            ->reply ($event->getReplyToken());
+          break;
       }
     }
   }
