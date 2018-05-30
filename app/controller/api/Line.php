@@ -48,7 +48,6 @@ class Line extends ApiController {
           break;
 
         case 'audio':
-          Log::info('msgId:' . $event->getMessageId() );
           $url = $log->file->url();
           MyLineBotMsg::create()
             ->audio($url, 60000)
