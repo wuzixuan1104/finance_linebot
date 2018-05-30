@@ -149,16 +149,17 @@ class MyLineBotLog {
   private function audioMessage() {
     Log::info('=====================');
     if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
-      Log::info('bot fail');
+      return false;
     if ( !$obj->isSucceeded() )
-      Log::info('audio fail');
+      return false;
 
     Log::info( json_encode($obj) );
       // return false;
     // print_r($obj); die;
     $param = array_merge( $this->getParam(), array('file' => '') );
     $filename = 'tmp/' . 'audio.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
-
+    Log::info($filename);
+    Log::info($obj->getRawBody());
     if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
       return false;
 
