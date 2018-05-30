@@ -33,19 +33,21 @@ class Line extends ApiController {
             ->text($event->getText())
             ->reply($event->getReplyToken());
           break;
+
         case 'image':
           $url = $log->file->url();
           MyLineBotMsg::create()
             ->image($url, $url)
             ->reply ($event->getReplyToken());
           break;
+
         case 'video':
-          Log::info('msgId:' . $event->getMessageId());
           $url = $log->file->url();
           MyLineBotMsg::create()
             ->video($url, $url)
             ->reply ($event->getReplyToken());
           break;
+
         case 'audio':
           Log::info('msgId:' . $event->getMessageId() );
           $url = $log->file->url();
