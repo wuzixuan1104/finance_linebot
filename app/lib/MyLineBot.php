@@ -154,12 +154,13 @@ class MyLineBotLog {
 
     $param = array_merge( $this->getParam(), array('file' => '') );
     $filename = 'tmp/' . 'audio.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
-    Log::info( 'extension:' .get_extension_by_mime( $obj->getHeader('Content-Type')));
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
       return false;
+    Log::info('======================');
     if( !$audio->file->put($filename) )
       return false;
+    Log::info('true');
     return $audio;
   }
 
