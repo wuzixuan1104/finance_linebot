@@ -56,6 +56,7 @@ class Line extends ApiController {
         case 'file':
           break;
         case 'location':
+          Log::info($event->getMessageId());
           MyLineBotMsg::create()
             ->location($log->title, $log->address, $log->latitude, $log->longitude)
             ->reply ($event->getReplyToken());
