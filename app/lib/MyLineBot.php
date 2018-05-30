@@ -158,7 +158,7 @@ class MyLineBotLog {
     // print_r($obj); die;
     $param = array_merge( $this->getParam(), array('file' => '') );
     $filename = 'tmp/' . 'audio.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
-
+  Log::info( json_encode($param) );
     if ( !write_file( $filename, $obj->getRawBody() ) )
       Log::info('write file fail');
 
