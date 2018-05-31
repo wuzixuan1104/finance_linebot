@@ -172,26 +172,9 @@ class MyLineBotLog {
   }
 
   private function locationMessage() {
-    // Log::info('hello：' . date('H:i') );
-    // if( method_exists($this->event, 'getTitle') ) {
-    //   Log::info('yes');
-    //
-    //   $a = $this->event->getTitle();
-    //   Log::info($a);
-    //   echo 'yes';
-    // } else {
-    //   Log::info('no');
-    //   echo 'no';
-    // }
-    // die;
-    // Log::info($this->event->getTitle());
-    // Log::info( json_encode($this->event) );
-    //
-    // Log::info( json_encode($this->event->getTitle()) );
-    // Log::info('=================');
-
-    $param = array_merge( $this->getParam(), array('title' => $this->event->getTitle(), 'address' => $this->event->getAddress(), 'latitude' => $this->event->getLatitude(), 'longitude' => $this->event->getLongitude()) );
-
+    $param = array_merge( $this->getParam(),
+      array('title' => ( $this->event->getTitle() ? $this->event->getTitle(): ''), 'address' => $this->event->getAddress(), 'latitude' => $this->event->getLatitude(), 'longitude' => $this->event->getLongitude()) 
+    );
     if( !Location::getTransactionError(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
       return false;
     }
