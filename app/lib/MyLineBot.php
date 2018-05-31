@@ -174,6 +174,8 @@ class MyLineBotLog {
     Log::info('hello：' . date('H:i') );
     if( method_exists($this->event, 'getTitle') ) {
       Log::info('yes');
+      $a = $this->event->getTitle();
+      Log::info($a);
       echo 'yes';
     } else {
       Log::info('no');
