@@ -174,11 +174,11 @@ class MyLineBotLog {
     Log::info('helloo1111');
     Log::info($this->event->getTitle());
     Log::info('=================');
+
     $param = array_merge( $this->getParam(), array('title' => $this->event->getTitle(), 'address' => $this->event->getAddress(), 'latitude' => $this->event->getLatitude(), 'longitude' => $this->event->getLongitude()) );
-    Log::info(json_encode($param));
 
     if( !Location::getTransactionError(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
-      Log::info('error===========');
+      // Log::info('error===========');
       return false;
     }
     return $obj;
