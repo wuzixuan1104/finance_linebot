@@ -173,6 +173,12 @@ class MyLineBotLog {
   private function locationMessage() {
     Log::info('helloo1111');
     Log::info($this->event->getTitle());
+    Log::info( json_encode($this->event) );
+
+    if( method_exists($this->event->getTitle() ) ) {
+      Log::info('exist');
+    }
+    Log::info( json_encode($this->event->getTitle()) );
     Log::info('=================');
 
     $param = array_merge( $this->getParam(), array('title' => $this->event->getTitle(), 'address' => $this->event->getAddress(), 'latitude' => $this->event->getLatitude(), 'longitude' => $this->event->getLongitude()) );
