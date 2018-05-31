@@ -176,6 +176,8 @@ class MyLineBotLog {
     if( !Location::transaction(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
       return false;
     }
+    // echo 123;
+    // print_R($obj);die;
     return $obj;
   }
 
@@ -220,11 +222,7 @@ class MyLineBotMsg {
     return $this;
   }
   public function location($title, $add, $lat, $lon) {
-    echo $title;
-    die;
     $this->builder = is_string($title) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($title, $add, $lat, $lon) : null;
-    print_r($this);
-    die;
     return $this;
   }
   public function imagemap($url, $altText, $weight, $height, array $actionBuilders) {
