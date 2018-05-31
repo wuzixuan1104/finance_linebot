@@ -172,9 +172,12 @@ class MyLineBotLog {
   }
 
   private function locationMessage() {
-    $param = array_merge( $this->getParam(),
-      array('title' => ( $this->event->getTitle() ? $this->event->getTitle(): ''), 'address' => $this->event->getAddress(), 'latitude' => $this->event->getLatitude(), 'longitude' => $this->event->getLongitude()) 
-    );
+    $param = array_merge( $this->getParam(), array(
+        'title' =>  $this->event->getTitle() ? $this->event->getTitle() : '',
+        'address' =>  $this->event->getAddress() ? $this->event->getAddress() : '',
+        'latitude' =>  $this->event->getLatitude() ? $this->event->getLatitude() : '',
+        'longitude' =>  $this->event->getLongitude() ? $this->event->getLongitude() : '',
+    ));
     if( !Location::getTransactionError(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
       return false;
     }
