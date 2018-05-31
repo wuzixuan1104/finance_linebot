@@ -172,6 +172,14 @@ class MyLineBotLog {
 
   private function locationMessage() {
     Log::info('hello：' . date('H:i') );
+    if( method_exists($this->event, 'getTitle') ) {
+      Log::info('yes');
+      echo 'yes';
+    } else {
+      Log::info('no');
+      echo 'no';
+    }
+    die;
     Log::info($this->event->getTitle());
     Log::info( json_encode($this->event) );
 
