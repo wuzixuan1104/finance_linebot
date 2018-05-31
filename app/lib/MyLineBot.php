@@ -175,10 +175,6 @@ class MyLineBotLog {
     Log::info($this->event->getTitle());
     Log::info( json_encode($this->event) );
 
-    if( method_exists($this->event->getTitle() ) ) {
-      Log::info('exist');
-    }
-
     Log::info( json_encode($this->event->getTitle()) );
     Log::info('=================');
 
