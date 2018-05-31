@@ -172,13 +172,8 @@ class MyLineBotLog {
   }
 
   private function locationMessage() {
-    $param = array_merge( $this->getParam(), array(
-        'title' =>  $this->event->getTitle() ? $this->event->getTitle() : '',
-        'address' =>  $this->event->getAddress() ? $this->event->getAddress() : '',
-        'latitude' =>  $this->event->getLatitude() ? $this->event->getLatitude() : '',
-        'longitude' =>  $this->event->getLongitude() ? $this->event->getLongitude() : '',
-    ));
-    if( !Location::getTransactionError(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
+    $param = array_merge( $this->getParam(), array( 'title' =>  $this->event->getTitle(), 'address' =>  $this->event->getAddress(), 'latitude' =>  $this->event->getLatitude(), 'longitude' =>  $this->event->getLongitude(), ));
+    if( !Location::transaction(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
       return false;
     }
     return $obj;
@@ -225,7 +220,11 @@ class MyLineBotMsg {
     return $this;
   }
   public function location($title, $add, $lat, $lon) {
+    echo $title;
+    die;
     $this->builder = is_string($title) && is_string($add) && is_numeric($lat) && is_numeric($lon) ? new LocationMessageBuilder($title, $add, $lat, $lon) : null;
+    print_r($this);
+    die;
     return $this;
   }
   public function imagemap($url, $altText, $weight, $height, array $actionBuilders) {
