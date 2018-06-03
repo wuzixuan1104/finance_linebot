@@ -81,6 +81,7 @@ class MyLineBotLog {
   }
 
   public function create() {
+    Log::info('create msg');
     if( $this->event->getType() == 'message' )
       $this->getParam() == null && $this->setParam();
 
