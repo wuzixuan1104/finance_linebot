@@ -25,7 +25,7 @@ class Line extends ApiController {
         return false;
       Log::info('log success');
 
-      switch( $event->getMessageType() ) {
+      switch( $event->getType() ) {
         case 'postback':
           Log::info('postback method======');
           MyLineBotMsg::create()
@@ -33,49 +33,61 @@ class Line extends ApiController {
             ->reply($event->getReplyToken());
           Log::info('end');
           break;
-        case 'text':
-          // MyLineBotMsg::create()
-          //   ->text($event->getText())
-          //   ->reply($event->getReplyToken());
-          Log::info($event->getText());
-          $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-              MyLineBotMsg::create()->templateConfirm( '你是女生？', [
-                MyLineBotActionMsg::create()->message('是', 'true'),
-                MyLineBotActionMsg::create()->postback('否', 'https://chestnut.kerker.tw/api/line'),
-              ])
-          )->reply ($event->getReplyToken());
-          Log::info('=====end');
-          break;
+          
+        case 'message':
+          switch( $event->getMessageType() ) {
+            case 'postback':
+              Log::info('postback method======');
+              MyLineBotMsg::create()
+                ->text('hehehe')
+                ->reply($event->getReplyToken());
+              Log::info('end');
+              break;
+            case 'text':
+              // MyLineBotMsg::create()
+              //   ->text($event->getText())
+              //   ->reply($event->getReplyToken());
+              Log::info($event->getText());
+              $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+                  MyLineBotMsg::create()->templateConfirm( '你是女生？', [
+                    MyLineBotActionMsg::create()->message('是', 'true'),
+                    MyLineBotActionMsg::create()->postback('否', 'https://chestnut.kerker.tw/api/line'),
+                  ])
+              )->reply ($event->getReplyToken());
+              Log::info('=====end');
+              break;
 
-        case 'image':
-          $url = $log->file->url();
-          Log::info($url);
-          MyLineBotMsg::create()
-            ->image($url, $url)
-            ->reply ($event->getReplyToken());
-          break;
+            case 'image':
+              $url = $log->file->url();
+              Log::info($url);
+              MyLineBotMsg::create()
+                ->image($url, $url)
+                ->reply ($event->getReplyToken());
+              break;
 
-        case 'video':
-          $url = $log->file->url();
-          MyLineBotMsg::create()
-            ->video($url, $url)
-            ->reply ($event->getReplyToken());
-          break;
+            case 'video':
+              $url = $log->file->url();
+              MyLineBotMsg::create()
+                ->video($url, $url)
+                ->reply ($event->getReplyToken());
+              break;
 
-        case 'audio':
-          $url = $log->file->url();
-          MyLineBotMsg::create()
-            ->audio($url, 60000)
-            ->reply ($event->getReplyToken());
-          break;
+            case 'audio':
+              $url = $log->file->url();
+              MyLineBotMsg::create()
+                ->audio($url, 60000)
+                ->reply ($event->getReplyToken());
+              break;
 
-        case 'file':
-          break;
+            case 'file':
+              break;
 
-        case 'location':
-          MyLineBotMsg::create()
-            ->location($log->title, $log->address, $log->latitude, $log->longitude)
-            ->reply ($event->getReplyToken());
+            case 'location':
+              MyLineBotMsg::create()
+                ->location($log->title, $log->address, $log->latitude, $log->longitude)
+                ->reply ($event->getReplyToken());
+              break;
+          }
           break;
       }
     }
