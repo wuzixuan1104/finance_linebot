@@ -27,9 +27,24 @@ class Line extends ApiController {
 
       switch( $event->getMessageType() ) {
         case 'text':
-          MyLineBotMsg::create()
-            ->text($event->getText())
-            ->reply($event->getReplyToken());
+          // MyLineBotMsg::create()
+          //   ->text($event->getText())
+          //   ->reply($event->getReplyToken());
+          $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+              MyLineBotMsg::create()->templateCarousel( [
+                MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
+                  MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'date', '', '', ''),
+                  MyLineBotActionMsg::create()->uri("Google", "http://www.google.com"),
+                  MyLineBotActionMsg::create()->postback('label', 'postback', 'https://chestnut.kerker.tw/api/line'),
+                ]),
+                MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
+                  MyLineBotActionMsg::create()->datetimePicker('date', date('Y-m-d'), 'date', '', '', ''),
+                  MyLineBotActionMsg::create()->message('label', 'test'),
+                  MyLineBotActionMsg::create()->postback('label', 'postback', 'https://chestnut.kerker.tw/api/line'),
+                ]),
+              ])
+          )->reply ($event->getReplyToken());
+
           break;
 
         case 'image':
