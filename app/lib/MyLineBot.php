@@ -84,12 +84,15 @@ class MyLineBotLog {
     if( $this->event->getType() == 'message' )
       $this->getParam() == null && $this->setParam();
 
+    Log::info($this->event->getType());
     $split = explode("\\", get_class($this->event));
     $type = lcfirst( $split[count($split)-1] );
 
     if( method_exists( __CLASS__, $type ) )
       return $this->{$type}($this->event);
-    return;
+
+    Log::info('true');
+    return true;
   }
 
   private function setParam() {
