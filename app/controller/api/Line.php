@@ -47,6 +47,7 @@ class Line extends ApiController {
               //   ->text($event->getText())
               //   ->reply($event->getReplyToken());
               Log::info($event->getText());
+              Log::info(123);
               $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
                   MyLineBotMsg::create()->templateConfirm( '你是女生？', [
                     MyLineBotActionMsg::create()->message('是', 'true'),
