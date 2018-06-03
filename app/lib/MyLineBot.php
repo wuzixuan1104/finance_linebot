@@ -83,10 +83,10 @@ class MyLineBotLog {
   public function create() {
     if( $this->event->getType() != 'message' )
       return false;
-
+    Log::info($this->event->getType());
     if( $this->event->getType() == 'postback' )
       return true;
-      
+
     $this->getParam() == null && $this->setParam();
 
     $split = explode("\\", get_class($this->event));
