@@ -23,7 +23,7 @@ class Line extends ApiController {
         continue;
 
       $speaker = Source::checkSpeakerExist($event);
-
+      Log::info('===========123242');
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
 
@@ -36,7 +36,7 @@ class Line extends ApiController {
         case 'image':
           Log::info('===========123242');
           $url = $log->file->url();
-      
+
           Log::info($url);
           MyLineBotMsg::create()
             ->image($url, $url)
