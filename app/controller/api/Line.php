@@ -28,7 +28,6 @@ class Line extends ApiController {
       switch( $event->getType() ) {
         case 'postback':
           Log::info('postback-data:' . $event->getPostbackData() );
-          Log::info('postback-date:' . $event->getPostbackParams() );
           MyLineBotMsg::create()
             ->text('hehehe')
             ->reply($event->getReplyToken());
@@ -51,7 +50,7 @@ class Line extends ApiController {
               $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
                   MyLineBotMsg::create()->templateConfirm( '你是女生？', [
                     MyLineBotActionMsg::create()->message('是', 'true'),
-                    MyLineBotActionMsg::create()->postback('否', 'https://chestnut.kerker.tw/api/line'),
+                    MyLineBotActionMsg::create()->postback('否', 'aaa=123'),
                   ])
               )->reply ($event->getReplyToken());
               Log::info('=====end');
