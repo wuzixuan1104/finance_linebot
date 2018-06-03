@@ -18,12 +18,10 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-
       if( !$source = Source::checkSourceExist($event) )
         continue;
 
       $speaker = Source::checkSpeakerExist($event);
-      Log::info('===========123242');
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
 
@@ -33,13 +31,35 @@ class Line extends ApiController {
             ->text($event->getText())
             ->reply($event->getReplyToken());
           break;
-        case 'image':
-          Log::info('===========123242');
-          $url = $log->file->url();
 
+        case 'image':
+          $url = $log->file->url();
           Log::info($url);
           MyLineBotMsg::create()
             ->image($url, $url)
+            ->reply ($event->getReplyToken());
+          break;
+
+        case 'video':
+          $url = $log->file->url();
+          MyLineBotMsg::create()
+            ->video($url, $url)
+            ->reply ($event->getReplyToken());
+          break;
+
+        case 'audio':
+          $url = $log->file->url();
+          MyLineBotMsg::create()
+            ->audio($url, 60000)
+            ->reply ($event->getReplyToken());
+          break;
+
+        case 'file':
+          break;
+
+        case 'location':
+          MyLineBotMsg::create()
+            ->location($log->title, $log->address, $log->latitude, $log->longitude)
             ->reply ($event->getReplyToken());
           break;
       }

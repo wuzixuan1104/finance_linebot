@@ -60,6 +60,7 @@ class MyLineBot extends LINEBot{
       return false;
 
     try {
+      Log::info( file_get_contents ("php://input") );
       return MyLineBot::bot()->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE]);
     } catch (Exception $e) {
       return $e;
@@ -130,7 +131,57 @@ class MyLineBotLog {
     return $image;
   }
 
+  private function videoMessage() {
+    if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
+      return false;
+    if ( !$obj->isSucceeded() )
+      return false;
+
+    $param = array_merge( $this->getParam(), array('file' => '') );
+    $filename = 'tmp/' . 'video.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+
+    if ( !(write_file( $filename, $obj->getRawBody()) && $video = Video::create($param) ) )
+      return false;
+    if( !$video->file->put($filename) )
+      return false;
+    return $video;
+  }
+
+  private function audioMessage() {
+    if ( !$obj = MyLineBot::bot()->getMessageContent( $this->event->getMessageId() ) )
+      return false;
+    if ( !$obj->isSucceeded() )
+      return false;
+
+    $param = array_merge( $this->getParam(), array('file' => '') );
+    $filename = 'tmp/' . 'audio.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+
+    if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
+      return false;
+
+    if( !$audio->file->put($filename) )
+      return false;
+    return $audio;
+  }
+
   private function fileMessage() {
+    $param = array_merge( $this->getParam(), array('text' => $this->event->getText()) );
+    return Text::transaction( function() use ($param) {
+      return Text::create($param);
+    });
+  }
+
+  private function locationMessage() {
+    $param = array_merge( $this->getParam(), array( 'title' =>  $this->event->getTitle(), 'address' =>  $this->event->getAddress(), 'latitude' =>  $this->event->getLatitude(), 'longitude' =>  $this->event->getLongitude(), ));
+    if( !Location::transaction(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
+      return false;
+    }
+    // echo 123;
+    // print_R($obj);die;
+    return $obj;
+  }
+
+  private function stickerMessage() {
 
   }
 }

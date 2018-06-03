@@ -7,8 +7,8 @@
  * @link        https://www.ioa.tw/
  */
 
-class Video extends Model {
-  static $table_name = 'videos';
+class File extends Model {
+  static $table_name = 'files';
 
   static $has_one = array (
   );
@@ -23,16 +23,24 @@ class Video extends Model {
     parent::__construct ($attrs, $guardAttrs, $instantiatingViafind, $newRecord);
 
     // 設定檔案上傳器
-    Uploader::bind ('file', 'VideoFileFileUploader');
+    Uploader::bind ('file', 'FileFileFileUploader');
   }
 
   public function destroy () {
     if (!isset ($this->id))
       return false;
-
+    
     return $this->delete ();
   }
+
+  public function putFiles ($files) {
+    foreach ($files as $key => $file)
+      if (isset ($files[$key]) && $files[$key] && isset ($this->$key) && $this->$key instanceof Uploader && !$this->$key->put ($files[$key]))
+        return false;
+    return true;
+  }
 }
+
 /* -- 檔案上傳器物件 ------------------------------------------------------------------ */
-class VideoFileFileUploader extends FileUploader {
+class FileFileFileUploader extends FileUploader {
 }
