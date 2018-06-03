@@ -84,6 +84,9 @@ class MyLineBotLog {
     if( $this->event->getType() != 'message' )
       return false;
 
+    if( $this->event->getType() == 'postback' )
+      return true;
+      
     $this->getParam() == null && $this->setParam();
 
     $split = explode("\\", get_class($this->event));
@@ -176,8 +179,6 @@ class MyLineBotLog {
     if( !Location::transaction(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
       return false;
     }
-    // echo 123;
-    // print_R($obj);die;
     return $obj;
   }
 
