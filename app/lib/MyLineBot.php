@@ -81,10 +81,8 @@ class MyLineBotLog {
   }
 
   public function create() {
-    if( $this->event->getType() != 'message' )
-      return false;
-
-    $this->getParam() == null && $this->setParam();
+    if( $this->event->getType() == 'message' )
+      $this->getParam() == null && $this->setParam();
 
     $split = explode("\\", get_class($this->event));
     $type = lcfirst( $split[count($split)-1] );
@@ -176,13 +174,39 @@ class MyLineBotLog {
     if( !Location::transaction(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
       return false;
     }
-    // echo 123;
-    // print_R($obj);die;
     return $obj;
   }
 
   private function stickerMessage() {
 
+  }
+
+  private function followEvent() {
+    $param = array( 'source_id' => $this->source->id, 'reply_token' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '', 'timestamp' => $this->event->getTimestamp() ? $this->event->getTimestamp() : '');
+    if( !Follow::transaction( function($param) { return Follow::create($param); }, $param ) )
+      return false;
+    return true;
+  }
+
+  private function unfollowEvent() {
+    $param = array( 'source_id' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
+    if( !Unfollow::transaction( function($param) { return Unfollow::create($param); }, $param ))
+      return false;
+    return true;
+  }
+
+  private function joinEvent() {
+    $param = array( 'source_id' => $this->source->id, 'reply_token' => $this->event->getReplyToken(), 'timestamp' => $this->event->getTimestamp() );
+    if( !Join::transaction( function($param) { return Join::create($param); }, $param ))
+      return false;
+    return true;
+  }
+
+  private function leaveEvent() {
+    $param = array( 'source_id' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
+    if( !Leave::transaction( function($param) { return Leave::create($param); }, $param ))
+      return false;
+    return true;
   }
 }
 
