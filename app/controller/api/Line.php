@@ -24,7 +24,6 @@ class Line extends ApiController {
       $speaker = Source::checkSpeakerExist($event);
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
-      Log::info('log success');
 
       switch( $event->getType() ) {
         case 'postback':
