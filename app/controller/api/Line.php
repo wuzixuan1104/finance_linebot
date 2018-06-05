@@ -34,6 +34,7 @@ class Line extends ApiController {
               MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
             ])
           )->reply($event->getReplyToken());
+          Log::info('end============');
           break;
 
         case 'message':
