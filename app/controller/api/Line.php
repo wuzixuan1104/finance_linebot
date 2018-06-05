@@ -27,25 +27,17 @@ class Line extends ApiController {
 
       switch( $event->getType() ) {
         case 'postback':
-          MyLineBotMsg::create()
-            ->text('hehehe')
-            ->reply($event->getReplyToken());
+          Log::info('postback');
+          MyLineBotMsg::create()->template('抬頭',
+            MyLineBotMsg::create()->templateButton('按鈕', '説明', 'url=123', [
+              MyLineBotActionMsg::create()->message('是', 'true'),
+              MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
+            ])
+          )->reply($event->getReplyToken());
           break;
 
         case 'message':
           switch( $event->getMessageType() ) {
-            case 'postback':
-            Log::info('postback');
-              // MyLineBotMsg::create()
-              //   ->text('hehehe')
-              //   ->reply($event->getReplyToken());
-              MyLineBotMsg::create()->template('抬頭',
-                MyLineBotMsg::create()->templateButton('按鈕', '説明', 'url=123', [
-                  MyLineBotActionMsg::create()->message('是', 'true'),
-                  MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
-                ])
-              )->reply($event->getReplyToken());
-              break;
             case 'text':
               // MyLineBotMsg::create()
               //   ->text($event->getText())
