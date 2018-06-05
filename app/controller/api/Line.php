@@ -25,6 +25,16 @@ class Line extends ApiController {
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
 
+        $builder = MyLineBotMsg::create()->template('抬頭',
+          MyLineBotMsg::create()->templateButton('按鈕', '説明', 'url=123', [
+            MyLineBotActionMsg::create()->message('是', 'true'),
+            MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
+          ])
+        )->reply($event->getReplyToken());
+        Log::info('123');
+        print_R($builder);
+        die;
+
       switch( $event->getType() ) {
         case 'postback':
           Log::info('postback');
