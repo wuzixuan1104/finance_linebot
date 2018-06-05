@@ -26,17 +26,8 @@ class Line extends ApiController {
         return false;
       Log::info('log success');
 
-<<<<<<< HEAD
-      if( $event->getType() != 'message' )
-        return;
-
-      switch( $event->getMessageType() ) {
-        case 'text':
-=======
       switch( $event->getType() ) {
         case 'postback':
-          Log::info('postback-data:' . $event->getPostbackData() );
->>>>>>> a0024c8888985aa9d51ced7d5e138f08bc42241d
           MyLineBotMsg::create()
             ->text('hehehe')
             ->reply($event->getReplyToken());
@@ -45,11 +36,15 @@ class Line extends ApiController {
         case 'message':
           switch( $event->getMessageType() ) {
             case 'postback':
-              Log::info('postback method======');
-              MyLineBotMsg::create()
-                ->text('hehehe')
-                ->reply($event->getReplyToken());
-              Log::info('end');
+              // MyLineBotMsg::create()
+              //   ->text('hehehe')
+              //   ->reply($event->getReplyToken());
+              MyLineBot::create()->template('抬頭',
+                MyLineBotMsg::create()->templateButton('按鈕', '説明', 'url=123', [
+                  MyLineBotActionMsg::create()->message('是', 'true'),
+                  MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
+                ])
+              )->reply($event->getReplyToken());
               break;
             case 'text':
               // MyLineBotMsg::create()
@@ -62,12 +57,10 @@ class Line extends ApiController {
                     MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
                   ])
               )->reply ($event->getReplyToken());
-              Log::info('=====end');
               break;
 
             case 'image':
               $url = $log->file->url();
-              Log::info($url);
               MyLineBotMsg::create()
                 ->image($url, $url)
                 ->reply ($event->getReplyToken());
