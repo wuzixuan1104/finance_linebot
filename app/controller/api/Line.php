@@ -28,7 +28,7 @@ class Line extends ApiController {
         $builder = MyLineBotMsg::create()->template('抬頭',
           MyLineBotMsg::create()->templateButton('按鈕', '説明', 'url=123', [
             MyLineBotActionMsg::create()->message('是', 'true'),
-            MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
+            MyLineBotActionMsg::create()->message('tes', 'true'),
           ])
         )->reply($event->getReplyToken());
         Log::info('123');
