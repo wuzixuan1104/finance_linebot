@@ -89,7 +89,7 @@ class MyLineBotLog {
 
     if( method_exists( __CLASS__, $type ) )
       return $this->{$type}($this->event);
-    return false;
+    return true;
   }
 
   private function setParam() {

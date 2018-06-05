@@ -21,50 +21,81 @@ class Line extends ApiController {
 
       if( !$source = Source::checkSourceExist($event) )
         continue;
-
       $speaker = Source::checkSpeakerExist($event);
-
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
+      Log::info('log success');
 
+<<<<<<< HEAD
       if( $event->getType() != 'message' )
         return;
 
       switch( $event->getMessageType() ) {
         case 'text':
+=======
+      switch( $event->getType() ) {
+        case 'postback':
+          Log::info('postback-data:' . $event->getPostbackData() );
+>>>>>>> a0024c8888985aa9d51ced7d5e138f08bc42241d
           MyLineBotMsg::create()
-            ->text($event->getText())
+            ->text('hehehe')
             ->reply($event->getReplyToken());
           break;
 
-        case 'image':
-          $url = $log->file->url();
-          MyLineBotMsg::create()
-            ->image($url, $url)
-            ->reply ($event->getReplyToken());
-          break;
+        case 'message':
+          switch( $event->getMessageType() ) {
+            case 'postback':
+              Log::info('postback method======');
+              MyLineBotMsg::create()
+                ->text('hehehe')
+                ->reply($event->getReplyToken());
+              Log::info('end');
+              break;
+            case 'text':
+              // MyLineBotMsg::create()
+              //   ->text($event->getText())
+              //   ->reply($event->getReplyToken());
 
-        case 'video':
-          $url = $log->file->url();
-          MyLineBotMsg::create()
-            ->video($url, $url)
-            ->reply ($event->getReplyToken());
-          break;
+              $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+                  MyLineBotMsg::create()->templateConfirm( '你是女生？', [
+                    MyLineBotActionMsg::create()->message('是', 'true'),
+                    MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
+                  ])
+              )->reply ($event->getReplyToken());
+              Log::info('=====end');
+              break;
 
-        case 'audio':
-          $url = $log->file->url();
-          MyLineBotMsg::create()
-            ->audio($url, 60000)
-            ->reply ($event->getReplyToken());
-          break;
+            case 'image':
+              $url = $log->file->url();
+              Log::info($url);
+              MyLineBotMsg::create()
+                ->image($url, $url)
+                ->reply ($event->getReplyToken());
+              break;
 
-        case 'file':
-          break;
+            case 'video':
+              $url = $log->file->url();
+              MyLineBotMsg::create()
+                ->video($url, $url)
+                ->reply ($event->getReplyToken());
+              break;
 
-        case 'location':
-          MyLineBotMsg::create()
-            ->location($log->title, $log->address, $log->latitude, $log->longitude)
-            ->reply ($event->getReplyToken());
+            case 'audio':
+              $url = $log->file->url();
+              MyLineBotMsg::create()
+                ->audio($url, 60000)
+                ->reply ($event->getReplyToken());
+              break;
+
+            case 'file':
+              break;
+
+            case 'location':
+              MyLineBotMsg::create()
+                ->location($log->title, $log->address, $log->latitude, $log->longitude)
+                ->reply ($event->getReplyToken());
+              break;
+          }
           break;
       }
     }
