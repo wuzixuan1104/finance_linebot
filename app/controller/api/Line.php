@@ -39,7 +39,7 @@ class Line extends ApiController {
               // MyLineBotMsg::create()
               //   ->text('hehehe')
               //   ->reply($event->getReplyToken());
-              MyLineBot::create()->template('抬頭',
+              MyLineBotMsg::create()->template('抬頭',
                 MyLineBotMsg::create()->templateButton('按鈕', '説明', 'url=123', [
                   MyLineBotActionMsg::create()->message('是', 'true'),
                   MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
