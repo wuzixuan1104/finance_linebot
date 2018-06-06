@@ -24,7 +24,9 @@ class Line extends ApiController {
       $speaker = Source::checkSpeakerExist($event);
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
+
       Log::info(get_class($log));
+
       switch( get_class($log) ) {
         case 'Join':
           break;
@@ -33,8 +35,16 @@ class Line extends ApiController {
         case 'Follow':
           MyLineBotMsg::create ()
             ->multi ([
-             MyLineBotMsg::create ()->text ('歡迎使用理財小精靈:)'),
-             MyLineBotMsg::create ()->text ('hello')
+             MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
+             MyLineBotMsg::create ()->text ('以下是我們功能！'),
+             MyLineBotMsg::create()->template('抬頭',
+               MyLineBotMsg::create()->templateButton('外匯查詢', '請選擇種類', 'https://example.com/bot/images/image.jpg', [
+                 MyLineBotActionMsg::create()->postback('美金', 'cash=ua'),
+                 MyLineBotActionMsg::create()->postback('日幣', 'cash=japan'),
+                 MyLineBotActionMsg::create()->postback('澳幣', 'cash=aus'),
+                 MyLineBotActionMsg::create()->postback('人民幣', 'cash=china'),
+               ])
+             )
             ])
             ->reply ($event->getReplyToken());
           break;
