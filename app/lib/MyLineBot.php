@@ -168,7 +168,7 @@ class MyLineBotLog {
       return false;
 
     $param = array_merge( $this->getParam(), array('file' => '') );
-    $filename = FCPATH . 'tmp' . DIRECTORY_SEPERATOR . uniqid( rand() . '_' ) . '.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+    $filename = FCPATH . 'tmp' . DIRECTORY_SEPERATOR . uniqid( rand() . '_' ) . get_extension_by_mime( $obj->getHeader('Content-Type') );
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
       return false;
