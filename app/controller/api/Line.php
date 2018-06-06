@@ -27,16 +27,16 @@ class Line extends ApiController {
       Log::info(get_class($log));
       switch( get_class($log) ) {
         case 'Join':
+          break;
+        case 'Leave':
+          break;
+        case 'Follow':
           MyLineBotMsg::create ()
             ->multi ([
              MyLineBotMsg::create ()->text ('歡迎使用理財小精靈:)'),
              MyLineBotMsg::create ()->text ('hello')
             ])
             ->reply ($event->getReplyToken());
-          break;
-        case 'Leave':
-          break;
-        case 'Follow':
           break;
         case 'Unfollow':
           break;
