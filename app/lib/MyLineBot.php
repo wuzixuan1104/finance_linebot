@@ -327,15 +327,16 @@ class MyLineBotActionMsg {
   public function datetimePicker($label, $data, $mode, $initial = null, $max = null, $min = null) {
     return is_string($label) && is_string($data) && in_array($mode, ['date', 'time', 'datetime']) ? new DatetimePickerTemplateActionBuilder($label, $data, $mode, $initial, $max, $min) : null;
   }
-  public function message($text1, $text2) {
-    return is_string($text1) && is_string($text2) ? new MessageTemplateActionBuilder($text1, $text2) : null;
+  public function message($label, $text) {
+    return is_string($label) && is_string($text) ? new MessageTemplateActionBuilder($label, $text) : null;
   }
-  public function uri($text, $url) {
-    return is_string($text) && (isHttp($url) || isHttps($url)) ? new UriTemplateActionBuilder($text, $url) : null;
+  public function uri($label, $url) {
+    return is_string($label) && (isHttp($url) || isHttps($url)) ? new UriTemplateActionBuilder($label, $url) : null;
   }
-  public function postback($text, $href) {
-    return is_string($text) && is_string($href) ? new PostbackTemplateActionBuilder($text, $href) : null;
+  public function postback($label, $data, $text = '') {
+    return is_string($label) && ($data = is_array($data) ? json_encode($data) : $data ) && is_string($text) ? new PostbackTemplateActionBuilder($label, $data, $text) : null;
   }
+
   public function imagemapMsg($text, $x, $y, $width, $height) {
     return is_string($text) && is_numeric($x) && is_numeric($y) && is_numeric($width) && is_numeric($height) ? new ImagemapMessageActionBuilder($text, new AreaBuilder($x, $y, $width, $height) ) : null;
   }
