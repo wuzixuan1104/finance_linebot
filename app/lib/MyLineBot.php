@@ -40,6 +40,20 @@ use LINE\LINEBot\ImagemapActionBuilder\AreaBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\ImagemapUriActionBuilder;
 
+use LINE\LINEBot\Event\MessageEvent\TextMessage;
+use LINE\LINEBot\Event\MessageEvent\VideoMessage;
+use LINE\LINEBot\Event\MessageEvent\StickerMessage;
+use LINE\LINEBot\Event\MessageEvent\LocationMessage;
+use LINE\LINEBot\Event\MessageEvent\ImageMessage;
+use LINE\LINEBot\Event\MessageEvent\AudioMessage;
+use LINE\LINEBot\Event\MessageEvent\FileMessage;
+
+use LINE\LINEBot\Event\JoinEvent;
+use LINE\LINEBot\Event\LeaveEvent;
+use LINE\LINEBot\Event\FollowEvent;
+use LINE\LINEBot\Event\UnfollowEvent;
+use LINE\LINEBot\Event\PostbackEvent;
+
 class MyLineBot extends LINEBot{
   static $bot;
 
@@ -154,7 +168,7 @@ class MyLineBotLog {
       return false;
 
     $param = array_merge( $this->getParam(), array('file' => '') );
-    $filename = 'tmp/' . 'audio.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+    $filename = FCPATH . 'tmp' . DIRECTORY_SEPERATOR . uniqid( rand() . '_' ) . '.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
       return false;
