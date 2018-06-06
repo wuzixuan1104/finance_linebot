@@ -24,7 +24,7 @@ class Line extends ApiController {
       $speaker = Source::checkSpeakerExist($event);
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
-
+      Log::info(get_class($log));
       switch( get_class($log) ) {
         case 'Join':
           MyLineBotMsg::create ()
