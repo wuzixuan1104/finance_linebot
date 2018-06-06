@@ -27,6 +27,7 @@ class Line extends ApiController {
 
       switch( $event->getType() ) {
         case 'postback':
+          Log::info('postback');
           MyLineBotMsg::create()->template('抬頭',
             MyLineBotMsg::create()->templateButton('外匯查詢', '請選擇種類', 'https://example.com/bot/images/image.jpg', [
               MyLineBotActionMsg::create()->postback('美金', 'cash=ua'),
@@ -43,7 +44,7 @@ class Line extends ApiController {
               // MyLineBotMsg::create()
               //   ->text($event->getText())
               //   ->reply($event->getReplyToken());
-
+              Log::info('bbb=123');
               $builder = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
                   MyLineBotMsg::create()->templateConfirm( '你是女生？', [
                     MyLineBotActionMsg::create()->message('是', 'true'),
@@ -71,9 +72,6 @@ class Line extends ApiController {
               MyLineBotMsg::create()
                 ->audio($url, 60000)
                 ->reply ($event->getReplyToken());
-              break;
-
-            case 'file':
               break;
 
             case 'location':
