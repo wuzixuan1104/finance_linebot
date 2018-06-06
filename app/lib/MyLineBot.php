@@ -135,7 +135,7 @@ class MyLineBotLog {
       return false;
 
     $param = array_merge( $this->getParam(), array('file' => '') );
-    $filename = 'tmp/' . 'image.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+    $filename = FCPATH . 'tmp' . DIRECTORY_SEPARATOR . uniqid( rand() . '_' ) . get_extension_by_mime( $obj->getHeader('Content-Type') );
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $image = Image::create($param) ) )
       return false;
@@ -152,7 +152,7 @@ class MyLineBotLog {
       return false;
 
     $param = array_merge( $this->getParam(), array('file' => '') );
-    $filename = 'tmp/' . 'video.' . get_extension_by_mime( $obj->getHeader('Content-Type') );
+    $filename = FCPATH . 'tmp' . DIRECTORY_SEPARATOR . uniqid( rand() . '_' ) . get_extension_by_mime( $obj->getHeader('Content-Type') );
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $video = Video::create($param) ) )
       return false;
