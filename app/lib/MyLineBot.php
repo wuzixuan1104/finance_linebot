@@ -185,34 +185,34 @@ class MyLineBotLog {
 
   private function followEvent() {
     $param = array( 'source_id' => $this->source->id, 'reply_token' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '', 'timestamp' => $this->event->getTimestamp() ? $this->event->getTimestamp() : '');
-    if( !Follow::transaction( function($param) { return Follow::create($param); }, $param ) )
+    if( !Follow::transaction( function($param, &$obj) { return $obj = Follow::create($param); }, $param, $obj ) )
       return false;
-    return true;
+    return $obj;
   }
 
   private function unfollowEvent() {
     $param = array( 'source_id' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
-    if( !Unfollow::transaction( function($param) { return Unfollow::create($param); }, $param ))
+    if( !Unfollow::transaction( function($param, &$obj) { return $obj = Unfollow::create($param); }, $param, $obj ))
       return false;
-    return true;
+    return $obj;
   }
 
   private function joinEvent() {
     $param = array( 'source_id' => $this->source->id, 'reply_token' => $this->event->getReplyToken(), 'timestamp' => $this->event->getTimestamp() );
-    if( !Join::transaction( function($param) { return Join::create($param); }, $param ))
+    if( !Join::transaction( function($param, &$obj) { return $obj = Join::create($param); }, $param, $obj ))
       return false;
-    return true;
+    return $obj;
   }
 
   private function leaveEvent() {
     $param = array( 'source_id' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
-    if( !Leave::transaction( function($param) { return Leave::create($param); }, $param ))
+    if( !Leave::transaction( function($param, &$obj) { return $obj = Leave::create($param); }, $param, $obj ))
       return false;
-    return true;
+    return $obj;
   }
 
   private function postbackEvent() {
-    $param = array( 'source_id' => $this->source->id, 'speaker_id' => $this->speaker->id, 'reply_token' => $this->event->getReplyToken(), 'data' => $this->event->getPostbackData(), 'params' => '123', 'timestamp' => $this->event->getTimestamp());
+    $param = array( 'source_id' => $this->source->id, 'speaker_id' => $this->speaker->id, 'reply_token' => $this->event->getReplyToken(), 'data' => $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams() ? json_encode($this->event->getPostbackParams()):'', 'timestamp' => $this->event->getTimestamp());
     if( !Postback::transaction( function($param, &$obj) { return $obj = Postback::create($param); }, $param, $obj ))
       return false;
     return $obj;
