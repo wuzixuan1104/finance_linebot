@@ -123,9 +123,10 @@ class MyLineBotLog {
 
   private function textMessage() {
     $param = array_merge( $this->getParam(), array('text' => $this->event->getText()) );
-    return Text::transaction( function() use ($param) {
-      return Text::create($param);
-    });
+    if( !Text::transaction( function() use ($param, &$obj) { return $obj = Text::create($param); }) )
+      return false;
+    return $obj;
+
   }
 
   private function imageMessage() {
