@@ -25,9 +25,31 @@ class Line extends ApiController {
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
 
+      switch( get_class($log) ) {
+        case 'Join':
+          MyLineBotMsg::create ()
+            ->multi ([
+             MyLineBotMsg::create ()->text ('歡迎使用理財小精靈:)'),
+             MyLineBotMsg::create ()->text ('hello')
+            ])
+            ->reply ($event->getReplyToken());
+          break;
+        case 'Leave':
+          break;
+        case 'Follow':
+          break;
+        case 'Unfollow':
+          break;
+        case 'Text':
+          break;
+        case 'Image':
+          break;
+        case 'Postback':
+          break;
+      }
+
       switch( $event->getType() ) {
         case 'postback':
-          Log::info('postback');
           MyLineBotMsg::create()->template('抬頭',
             MyLineBotMsg::create()->templateButton('外匯查詢', '請選擇種類', 'https://example.com/bot/images/image.jpg', [
               MyLineBotActionMsg::create()->postback('美金', 'cash=ua'),
