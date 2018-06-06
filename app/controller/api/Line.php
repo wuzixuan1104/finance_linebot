@@ -75,14 +75,9 @@ class Line extends ApiController {
           break;
 
         case 'Postback':
-          MyLineBotMsg::create()->template('',
-            MyLineBotMsg::create()->templateButton('外匯查詢', '請選擇種類', 'https://example.com/bot/images/image.jpg', [
-              MyLineBotActionMsg::create()->postback('美金', 'cash=ua'),
-              MyLineBotActionMsg::create()->postback('日幣', 'cash=japan'),
-              MyLineBotActionMsg::create()->postback('澳幣', 'cash=aus'),
-              MyLineBotActionMsg::create()->postback('人民幣', 'cash=china'),
-            ])
-          )->reply($event->getReplyToken());
+          MyLineBotMsg::create()
+            ->text('postback message')
+            ->reply($event->getReplyToken());
           break;
       }
     }
