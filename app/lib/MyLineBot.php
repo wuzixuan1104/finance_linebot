@@ -208,6 +208,13 @@ class MyLineBotLog {
       return false;
     return true;
   }
+
+  private function postbackEvent() {
+    $param = array( 'source_id' => $this->source->id, 'speaker_id' => $this->speaker->id, 'reply_token' => $this->event->getReplyToken(), 'data' => $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams(), 'timestamp' => $this->event->getTimestamp());
+    if( !Postback::transaction( function($param) { return Postback::create($param); }, $param ))
+      return false;
+    return true;
+  }
 }
 
 class MyLineBotMsg {
