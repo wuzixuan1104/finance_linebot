@@ -37,6 +37,7 @@ class Line extends ApiController {
         case 'Unfollow':
           break;
         case 'Text':
+          Log::info('text');
           MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
               MyLineBotMsg::create()->templateConfirm( '我問你個問題', [
                 MyLineBotActionMsg::create()->message('好', 'true'),
