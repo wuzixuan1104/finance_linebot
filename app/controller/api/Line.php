@@ -47,7 +47,7 @@ class Line extends ApiController {
         case 'Postback':
           break;
       }
-
+      die;
       switch( $event->getType() ) {
         case 'postback':
           MyLineBotMsg::create()->template('抬頭',
