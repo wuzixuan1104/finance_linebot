@@ -24,8 +24,6 @@ class Line extends ApiController {
       $speaker = Source::checkSpeakerExist($event);
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
-      Log::info('show============');
-      Log::info( get_class($log) );
 
       switch( get_class($log) ) {
         case 'Join':
@@ -43,7 +41,7 @@ class Line extends ApiController {
           MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
               MyLineBotMsg::create()->templateConfirm( '我問你個問題', [
                 MyLineBotActionMsg::create()->message('好', 'true'),
-                MyLineBotActionMsg::create()->message('不', 'bbb=123'),
+                MyLineBotActionMsg::create()->postback('不', 'bbb=123'),
               ])
           )->reply ($event->getReplyToken());
           break;
