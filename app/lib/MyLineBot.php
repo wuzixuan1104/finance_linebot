@@ -215,7 +215,8 @@ class MyLineBotLog {
     $param = array( 'source_id' => $this->source->id, 'speaker_id' => $this->speaker->id, 'reply_token' => $this->event->getReplyToken(), 'data' => $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams(), 'timestamp' => $this->event->getTimestamp());
     Log::info('param============');
     if( !Postback::transaction( function($param) { return Postback::create($param); }, $param ))
-      return false;
+      Log::info('fail');
+      // return false;
     return true;
   }
 }
