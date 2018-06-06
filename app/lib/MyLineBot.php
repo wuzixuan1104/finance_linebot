@@ -217,8 +217,9 @@ class MyLineBotLog {
     Log::info('data:'.$this->event->getPostbackData());
     Log::info('param:'.$this->event->getPostbackParams());
     Log::info(json_encode($param));
+
     if( !Postback::transaction( function($param) { return Postback::create($param); }, $param ))
-      Log::info('fail');
+      return false;
       // return false;
     return true;
   }
