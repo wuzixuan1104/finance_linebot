@@ -87,8 +87,10 @@ class MyLineBotLog {
     $split = explode("\\", get_class($this->event));
     $type = lcfirst( $split[count($split)-1] );
 
+    Log::info($type);
     if( method_exists( __CLASS__, $type ) )
       return $this->{$type}($this->event);
+    Log::info('true==========');
     return true;
   }
 
