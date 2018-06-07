@@ -10,10 +10,13 @@
 return array (
     'up' => "CREATE TABLE `bank_currency_records` (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-        `bank_id` int(11) unsigned NOT NULL,
         `currency_id` int(11) unsigned NOT NULL,
-        `bank_buy` DOUBLE NOT NULL COMMENT '銀行買進',
-        `bank_sell` DOUBLE NOT NULL COMMENT '銀行賣出',
+        `currency_time_id` int(11) unsigned NOT NULL,
+        `bank_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '銀行名稱',
+        `buy_cash` DOUBLE NOT NULL COMMENT '現鈔買進',
+        `sell_cash` DOUBLE NOT NULL COMMENT '現鈔賣出',
+        `buy_passbook` DOUBLE NOT NULL COMMENT '牌告買進',
+        `sell_passbook` DOUBLE NOT NULL COMMENT '牌告賣出',
         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
         `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
         PRIMARY KEY (`id`)

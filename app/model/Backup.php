@@ -26,7 +26,7 @@ class Backup extends Model {
     self::STATUS_FAILURL => '失敗',
     self::STATUS_SUCCESS => '成功',
   );
-  
+
   const TYPE_DATABASE  = 'datebase';
   const TYPE_QUERY_LOG = 'query-log';
   const TYPE_LOG       = 'log';
@@ -46,7 +46,7 @@ class Backup extends Model {
     self::READ_YES  => '已讀',
     self::READ_NO => '未讀',
   );
-  
+
   public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {
     parent::__construct ($attrs, $guardAttrs, $instantiatingViafind, $newRecord);
 
@@ -57,7 +57,7 @@ class Backup extends Model {
   public function destroy () {
     if (!isset ($this->id))
       return false;
-    
+
     return $this->delete ();
   }
 
