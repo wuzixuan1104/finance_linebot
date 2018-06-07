@@ -25,8 +25,6 @@ class Line extends ApiController {
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
 
-      Log::info( get_class($log) );
-      Log::info('success');
       switch( get_class($log) ) {
         case 'Join':
           $this->initIntro();
@@ -39,7 +37,6 @@ class Line extends ApiController {
         case 'Unfollow':
           break;
         case 'Text':
-          Log::info('text');
           MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
               MyLineBotMsg::create()->templateConfirm( '我問你個問題', [
                 MyLineBotActionMsg::create()->message('好', 'true'),
@@ -91,10 +88,10 @@ class Line extends ApiController {
        MyLineBotMsg::create ()->text ('以下是我們功能！'),
        MyLineBotMsg::create()->template('理財小精靈',
          MyLineBotMsg::create()->templateButton('外匯查詢', '請選擇種類', 'https://example.com/bot/images/image.jpg', [
-           MyLineBotActionMsg::create()->postback('美金', 'cash=ua'),
-           MyLineBotActionMsg::create()->postback('日幣', 'cash=japan'),
-           MyLineBotActionMsg::create()->postback('澳幣', 'cash=aus'),
-           MyLineBotActionMsg::create()->postback('人民幣', 'cash=china'),
+           MyLineBotActionMsg::create()->postback('美金', 'cash=usa', 'USA'),
+           MyLineBotActionMsg::create()->postback('日幣', 'cash=japan', 'Japan'),
+           MyLineBotActionMsg::create()->postback('澳幣', 'cash=australia', 'Australia'),
+           MyLineBotActionMsg::create()->postback('人民幣', 'cash=china', 'China'),
          ])
        )
       ])
