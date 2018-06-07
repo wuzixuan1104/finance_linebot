@@ -75,6 +75,7 @@ class Line extends ApiController {
           break;
 
         case 'Postback':
+
           MyLineBotMsg::create()
             ->text('postback message')
             ->reply($event->getReplyToken());
