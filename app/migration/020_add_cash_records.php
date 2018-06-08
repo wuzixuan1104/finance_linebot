@@ -12,7 +12,7 @@ return array (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
         `currency_id` int(11) unsigned NOT NULL,
         `currency_time_id` int(11) unsigned NOT NULL,
-        `bank_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '銀行名稱',
+        `bank_id` int(11) unsigned NOT NULL,
         `buy` DOUBLE NOT NULL COMMENT '牌告買進',
         `sell` DOUBLE NOT NULL COMMENT '牌告賣出',
         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',

@@ -45,14 +45,21 @@ class Cli extends Controller {
       echo "貨幣ID: " . $currency->id . "\r\n";
       echo "=======================================\r\n";
 
+      $bankContainer = [];
       foreach( $checkContents['data'] as $checkContent ) {
         $query = phpQuery::newDocument ($checkContent[0]);
-        $bankName = pq ("a", $query)->text ();
+        $bankName = trim( pq ("a", $query)->text () );
+        if( !isset($bankContainer[$bankName]) ) {
+          if( !$bank = Bank::find_by_name($bankName) )
+            if( !$bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) ) )
+              return false;
+          $bankContainer[$bankName] = $bank->id;
+        }
 
         $passbookTimes[] = date('Y') . '-' . str_replace('/', '-', $checkContent[3]);
         $passbookRecords[] =array(
           'currency_id' => $currency->id,
-          'bank_name' => $bankName,
+          'bank_id' => $bankContainer[$bankName],
           'buy' => $checkContent[1],
           'sell' => $checkContent[2],
         );
@@ -61,12 +68,18 @@ class Cli extends Controller {
 
       foreach( $cashContents['data'] as $cashContent ) {
         $query = phpQuery::newDocument ($cashContent[0]);
-        $bankName = pq ("a", $query)->text ();
+        $bankName = trim( pq ("a", $query)->text () );
+        if( !isset($bankContainer[$bankName]) ) {
+          if( !$bank = Bank::find_by_name($bankName) )
+            if( !$bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) ) )
+              return false;
+          $bankContainer[$bankName] = $bank->id;
+        }
 
         $cashTimes[] = date('Y') . '-' . str_replace('/', '-', $cashContent[3]);
         $cashRecords[] =array(
           'currency_id' => $currency->id,
-          'bank_name' => $bankName,
+          'bank_id' => $bankContainer[$bankName],
           'buy' => $cashContent[1],
           'sell' => $cashContent[2],
         );
@@ -80,7 +93,7 @@ class Cli extends Controller {
           return false;
         if ( !PassbookRecord::create( array_merge( $passbookRecord, array('currency_time_id' => $time->id) ) ) )
           return false;
-        echo "牌告新增成功 -> 貨幣ID: " . $passbookRecord['currency_id'] . " |  銀行: " . $passbookRecord['bank_name'] . "\r\n";
+        echo "牌告新增成功 -> 貨幣ID: " . $passbookRecord['currency_id'] . " |  銀行ID: " . $passbookRecord['bank_id'] . "\r\n";
       }
       return true;
     };
@@ -91,7 +104,7 @@ class Cli extends Controller {
           return false;
         if ( !CashRecord::create( array_merge( $cashRecord, array('currency_time_id' => $time->id) ) ) )
           return false;
-        echo "現鈔新增成功 -> 貨幣ID: " . $cashRecord['currency_id'] . " |  銀行: " . $cashRecord['bank_name'] . "\r\n";
+        echo "現鈔新增成功 -> 貨幣ID: " . $cashRecord['currency_id'] . " |  銀行ID: " . $cashRecord['bank_id'] . "\r\n";
       }
       return true;
     };
