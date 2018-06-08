@@ -81,7 +81,7 @@ class Line extends ApiController {
         case 'Postback':
 
           MyLineBotMsg::create()
-            ->text( $this->event->getPostbackData() )
+            ->text( $this->event->getPostbackParams() )
             ->reply($event->getReplyToken());
           break;
       }
