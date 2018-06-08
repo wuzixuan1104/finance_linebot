@@ -39,7 +39,6 @@ use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\AreaBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\ImagemapUriActionBuilder;
-use LINE\LINEBot\TemplateActionBuilder\Log;
 
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot\Event\MessageEvent\VideoMessage;

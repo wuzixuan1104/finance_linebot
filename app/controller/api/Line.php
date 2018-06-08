@@ -99,9 +99,9 @@ class Line extends ApiController {
     MyLineBotMsg::create ()
       ->multi ([
        MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
-       MyLineBotMsg::create ()->text ('以下是我們功能！'),
-       MyLineBotMsg::create()->template('理財小精靈',
-         MyLineBotMsg::create()->templateButton('外匯查詢', '請選擇種類', 'https://example.com/bot/images/image.jpg', [
+       MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
+       MyLineBotMsg::create()->template('銀行',
+         MyLineBotMsg::create()->templateButton('請選擇銀行', '查詢外匯', 'https://example.com/bot/images/image.jpg', [
            MyLineBotActionMsg::create()->postback('美金', 'cash=usa', 'USA'),
            MyLineBotActionMsg::create()->postback('日幣', 'cash=japan', 'Japan'),
            MyLineBotActionMsg::create()->postback('澳幣', 'cash=australia', 'Australia'),
