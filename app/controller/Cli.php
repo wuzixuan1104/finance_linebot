@@ -53,8 +53,9 @@ class Cli extends Controller {
         echo $bankName . "\r\n";
 
         // $bank = Bank::find_by_name($bankName);
-        // $bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) );
-        print_R( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) );
+        $bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) );
+        echo "bank: \r\n";
+        print_R($bank);
 
         if( !isset($bankContainer[$bankName]) ) {
           if( !$bank = Bank::find_by_name($bankName) )
