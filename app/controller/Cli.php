@@ -47,10 +47,11 @@ class Cli extends Controller {
       // print_R($checkContents['data']);
       $bankContainer = [];
       foreach( $checkContents['data'] as $checkContent ) {
-        echo "1111111111111\r\n";
         $query = phpQuery::newDocument ($checkContent[0]);
         $bankName = trim( pq ("a", $query)->text () );
+        echo "1111111111111\r\n";
         if( !isset($bankContainer[$bankName]) ) {
+          echo "222222222222222\r\n";
           if( !$bank = Bank::find_by_name($bankName) )
             if( !$bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) ) )
               return false;
