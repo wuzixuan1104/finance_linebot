@@ -97,15 +97,6 @@ class Line extends ApiController {
     // print_R($actionArr);
     // die;
     // Log::info();
-    $a = MyLineBotMsg::create()->template('抬頭',
-        MyLineBotMsg::create()->templateButton('按鈕', '説明', 'https://example.com/bot/images/image.jpg', [
-          MyLineBotActionMsg::create()->message('是', 'true'),
-          MyLineBotActionMsg::create()->postback('否', 'bbb=123', '123'),
-        ])
-    )->reply($event->getReplyToken());
-    print_R($a);
-    // ->reply($event->getReplyToken());
-    die;
 
     MyLineBotMsg::create ()
       ->multi ([
