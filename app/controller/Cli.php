@@ -50,6 +50,7 @@ class Cli extends Controller {
         $query = phpQuery::newDocument ($checkContent[0]);
         $bankName = trim( pq ("a", $query)->text () );
         echo "1111111111111\r\n";
+        echo $bankName . "\r\n";
         if( !isset($bankContainer[$bankName]) ) {
           if( !$bank = Bank::find_by_name($bankName) )
             if( !$bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) ) )
