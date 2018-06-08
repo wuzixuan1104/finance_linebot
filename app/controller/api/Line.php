@@ -97,20 +97,13 @@ class Line extends ApiController {
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
     }
 
-
-    $a = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-        MyLineBotMsg::create()->templateCarousel( $columnArr )
-    )->reply ($event->getReplyToken());
-    print_R($a);
-    // ->reply ($event->getReplyToken());
-    die;
     MyLineBotMsg::create ()
       ->multi ([
-       MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
-       MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
-       MyLineBotMsg::create()->template('銀行',
-         MyLineBotMsg::create()->templateButton('請選擇銀行', '查詢外匯', 'https://example.com/bot/images/image.jpg', $actionArr)
-       )
+        MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
+        MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
+        MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+          MyLineBotMsg::create()->templateCarousel( $columnArr )
+        )
      ])->reply ($event->getReplyToken());
 
 
