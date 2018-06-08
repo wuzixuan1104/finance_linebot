@@ -119,10 +119,8 @@ class Cli extends Controller {
   }
 
   public function currency() {
-    Load::lib('phpQuery.php');
     $bankQuery = $this->getHtml('https://tw.rter.info/bank/');
     $items = pq(".dropdown-menu", $bankQuery)->eq(0)->find('li');
-
     $length = $items->length();
 
     $currencies = [];
