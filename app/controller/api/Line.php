@@ -18,8 +18,6 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-      $this->initIntro($event);
-      // die;
       if( !$source = Source::checkSourceExist($event) )
         continue;
       $speaker = Source::checkSpeakerExist($event);
@@ -38,12 +36,20 @@ class Line extends ApiController {
         case 'Unfollow':
           break;
         case 'Text':
-          MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-              MyLineBotMsg::create()->templateConfirm( '我問你個問題', [
-                MyLineBotActionMsg::create()->message('好', 'true'),
-                MyLineBotActionMsg::create()->postback('不', 'bbb=123', 'postback'),
-              ])
-          )->reply ($event->getReplyToken());
+          $pattern = 'hello';
+          $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
+          preg_match_all ($pattern, $log->text, $result);
+
+          if ($result['k'])
+            $this->initIntro($event);
+
+          //
+          // MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+          //     MyLineBotMsg::create()->templateConfirm( '我問你個問題', [
+          //       MyLineBotActionMsg::create()->message('好', 'true'),
+          //       MyLineBotActionMsg::create()->postback('不', 'bbb=123', 'postback'),
+          //     ])
+          // )->reply ($event->getReplyToken());
           break;
         case 'Image':
           $url = $log->file->url();
@@ -89,12 +95,10 @@ class Line extends ApiController {
     $banks = array_chunk( $banks, 3 );
     foreach( $banks as $key => $bank ) {
       if($key > 9) break;
-
       $actionArr = [];
-      foreach( $bank as $vbank ) {
+      foreach( $bank as $vbank )
         $actionArr[] = MyLineBotActionMsg::create()->postback($vbank->name, 'bank_id=' . $vbank->id, $vbank->name);
-      }
-      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
+      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('查詢銀行外匯', '選擇銀行', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
     }
 
     MyLineBotMsg::create ()
@@ -104,12 +108,9 @@ class Line extends ApiController {
         MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
           MyLineBotMsg::create()->templateCarousel( $columnArr )
         )
-     ])->reply ($event->getReplyToken());
+    ])->reply ($event->getReplyToken());
 
-
-     print_r($a);
-     die;
-    Log::info('success');
+    die;
   }
 
 }
