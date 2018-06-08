@@ -91,6 +91,7 @@ class Line extends ApiController {
       $cnt++;
       $actionMsg = MyLineBotActionMsg::create()->postback($bank->name, 'bank_id=' . $bank->id, $bank->name);
       $actionArr[] = $actionMsg;
+      break;
       if($cnt == 5)
         break;
     }
