@@ -18,8 +18,8 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-      $this->initIntro();
-      die;
+      // $this->initIntro();
+      // die;
       if( !$source = Source::checkSourceExist($event) )
         continue;
       $speaker = Source::checkSpeakerExist($event);
@@ -110,7 +110,9 @@ class Line extends ApiController {
        )
       ])
       ->reply ($event->getReplyToken());
+      Log::info('postback');
       die;
+
     MyLineBotMsg::create ()
       ->multi ([
        MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
