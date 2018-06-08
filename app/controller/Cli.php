@@ -55,6 +55,9 @@ class Cli extends Controller {
         // $bank = Bank::find_by_name($bankName);
         $param = array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON );
         print_r($param);
+        $bank = Bank::find('all');
+        print_r($bank);
+        die;
         $bank = Bank::create( $param );
         echo "bank: \r\n";
         print_R($bank);
