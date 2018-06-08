@@ -332,10 +332,13 @@ class MyLineBotActionMsg {
     return is_string($label) && is_string($text) ? new MessageTemplateActionBuilder($label, $text) : null;
   }
   public function uri($label, $url) {
-    return is_string($label) && (isHttp($url) || isHttps($url)) ? new UriTemplateActionBuilder($label, $url) : null;
+    return is_string($label) && (isHttp($url) || isHttps($usrl)) ? new UriTemplateActionBuilder($label, $url) : null;
   }
   public function postback($label, $data, $text) {
-    Log::info('postback');
+    $obj =  new PostbackTemplateActionBuilder($label, $data, $text);
+    if( $obj ) {
+      Log::info('postback true');
+    }
     return is_string($label) && ($data = is_array($data) ? json_encode($data) : $data ) && !is_null($text) ? new PostbackTemplateActionBuilder($label, $data, $text) : null;
   }
 
