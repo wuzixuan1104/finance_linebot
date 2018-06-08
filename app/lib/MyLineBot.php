@@ -39,6 +39,7 @@ use LINE\LINEBot\TemplateActionBuilder\PostbackTemplateActionBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\AreaBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\ImagemapMessageActionBuilder;
 use LINE\LINEBot\ImagemapActionBuilder\ImagemapUriActionBuilder;
+use LINE\LINEBot\TemplateActionBuilder\Log;
 
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot\Event\MessageEvent\VideoMessage;
@@ -335,10 +336,6 @@ class MyLineBotActionMsg {
     return is_string($label) && (isHttp($url) || isHttps($usrl)) ? new UriTemplateActionBuilder($label, $url) : null;
   }
   public function postback($label, $data, $text) {
-    $obj =  new PostbackTemplateActionBuilder($label, $data, $text);
-    if( $obj ) {
-      Log::info('postback true');
-    }
     return is_string($label) && ($data = is_array($data) ? json_encode($data) : $data ) && !is_null($text) ? new PostbackTemplateActionBuilder($label, $data, $text) : null;
   }
 

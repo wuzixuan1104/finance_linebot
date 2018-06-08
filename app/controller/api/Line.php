@@ -92,22 +92,36 @@ class Line extends ApiController {
     //   $actionArr[] = $actionMsg;
     //   break;
     // }
+
     // var_dump($actionMsg);
     // print_R($actionArr);
-    Log::info('action 123');
     // die;
     MyLineBotMsg::create ()
       ->multi ([
        MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
-       MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
-       MyLineBotMsg::create()->template('銀行',
-         MyLineBotMsg::create()->templateButton('請選擇銀行', '查詢外匯', 'https://example.com/bot/images/image.jpg', [
-           MyLineBotActionMsg::create()->postback(123, 'bank_id=123', 123),
-           MyLineBotActionMsg::create()->postback(123, 'bank_id=123', 123),
+       MyLineBotMsg::create ()->text ('以下是我們功能！'),
+       MyLineBotMsg::create()->template('理財小精靈',
+         MyLineBotMsg::create()->templateButton('外匯查詢', '請選擇種類', 'https://example.com/bot/images/image.jpg', [
+           MyLineBotActionMsg::create()->postback('美金', 'cash=usa', 'USA'),
+           MyLineBotActionMsg::create()->postback('日幣', 'cash=japan', 'Japan'),
+           MyLineBotActionMsg::create()->postback('澳幣', 'cash=australia', 'Australia'),
+           MyLineBotActionMsg::create()->postback('人民幣', 'cash=china', 'China'),
          ])
        )
       ])
       ->reply ($event->getReplyToken());
+    // MyLineBotMsg::create ()
+    //   ->multi ([
+    //    MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
+    //    MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
+    //    MyLineBotMsg::create()->template('銀行',
+    //      MyLineBotMsg::create()->templateButton('請選擇銀行', '查詢外匯', 'https://example.com/bot/images/image.jpg', [
+    //        MyLineBotActionMsg::create()->postback(123, 'bank_id=123', 123),
+    //        MyLineBotActionMsg::create()->postback(123, 'bank_id=123', 123),
+    //      ])
+    //    )
+    //   ])
+    //   ->reply ($event->getReplyToken());
 
     Log::info('success');
   }
