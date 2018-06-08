@@ -44,7 +44,7 @@ class Cli extends Controller {
 
       echo "貨幣ID: " . $currency->id . "\r\n";
       echo "=======================================\r\n";
-
+      print_R($checkContents);
       $bankContainer = [];
       foreach( $checkContents['data'] as $checkContent ) {
         $query = phpQuery::newDocument ($checkContent[0]);
@@ -55,7 +55,7 @@ class Cli extends Controller {
               return false;
           $bankContainer[$bankName] = $bank->id;
         }
-
+        echo "123\r\n";
         $passbookTimes[] = date('Y') . '-' . str_replace('/', '-', $checkContent[3]);
         $passbookRecords[] =array(
           'currency_id' => $currency->id,
