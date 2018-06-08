@@ -44,33 +44,17 @@ class Cli extends Controller {
 
       echo "貨幣ID: " . $currency->id . "\r\n";
       echo "=======================================\r\n";
-      // print_R($checkContents['data']);
       $bankContainer = [];
       foreach( $checkContents['data'] as $checkContent ) {
         $query = phpQuery::newDocument ($checkContent[0]);
         $bankName = trim( pq ("a", $query)->text () );
-        echo "1111111111111\r\n";
-        echo $bankName . "\r\n";
-
-        // $bank = Bank::find_by_name($bankName);
-        $param = array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON );
-        print_r($param);
-        $bank = Currency::find('all');
-        print_r($bank);
-        die;
-        $bank = Bank::create( $param );
-        echo "bank: \r\n";
-        print_R($bank);
-
         if( !isset($bankContainer[$bankName]) ) {
           if( !$bank = Bank::find_by_name($bankName) )
             if( !$bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) ) )
               return false;
           $bankContainer[$bankName] = $bank->id;
-          echo "222222222222222\r\n";
         }
-        echo "==========================123\r\n";
-        die;
+
         $passbookTimes[] = date('Y') . '-' . str_replace('/', '-', $checkContent[3]);
         $passbookRecords[] =array(
           'currency_id' => $currency->id,
