@@ -18,7 +18,7 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-      // $this->initIntro();
+      $this->initIntro();
       // die;
       if( !$source = Source::checkSourceExist($event) )
         continue;
@@ -96,13 +96,15 @@ class Line extends ApiController {
     // var_dump($actionMsg);
     // print_R($actionArr);
     // die;
-    Log::info(123);
-    MyLineBotMsg::create()->template('抬頭',
-    MyLineBotMsg::create()->templateButton('按鈕', '説明', 'https://example.com/bot/images/image.jpg', [
-      MyLineBotActionMsg::create()->message('是', 'true'),
-      MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
-    ])
-)->reply($event->getReplyToken());
+    Log::info(12323423);
+    $builder = MyLineBotMsg::create()->template('抬頭',
+        MyLineBotMsg::create()->templateButton('按鈕', '説明', 'https://example.com/bot/images/image.jpg', [
+          MyLineBotActionMsg::create()->message('是', 'true'),
+          MyLineBotActionMsg::create()->postback('否', 'bbb=123', 123),
+        ])
+    );
+    print_r($builder);
+
 die;
     MyLineBotMsg::create ()
       ->multi ([
