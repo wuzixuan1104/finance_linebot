@@ -94,7 +94,7 @@ class Line extends ApiController {
     // }
     // var_dump($actionMsg);
     // print_R($actionArr);
-    // // Log::info('action 123');
+    Log::info('action 123');
     // die;
     MyLineBotMsg::create ()
       ->multi ([
