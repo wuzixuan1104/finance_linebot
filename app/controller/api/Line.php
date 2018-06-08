@@ -18,7 +18,8 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-
+      $this->initIntro();
+      die;
       if( !$source = Source::checkSourceExist($event) )
         continue;
       $speaker = Source::checkSpeakerExist($event);
@@ -81,25 +82,34 @@ class Line extends ApiController {
   }
 
   public function initIntro() {
-    if( !$banks = Bank::find('all', array('where' => array('enable' => Bank::ENABLE_ON ) ) ) )
-      return false;
-
-    $actionArr = [];
-    foreach( $banks as $bank ) {
-      $actionArr[] = MyLineBotActionMsg::create()->postback($bank->name, 'bank_id=' . $bank->id, $bank->name);
-    }
-    Log::info( json_encode($actionArr) );
-    Log::info('action 123');
-
+    // if( !$banks = Bank::find('all', array('where' => array('enable' => Bank::ENABLE_ON ) ) ) )
+    //   return false;
+    //
+    // $actionArr = [];
+    // foreach( $banks as $bank ) {
+    //   // $actionMsg = MyLineBotActionMsg::create()->postback($bank->name, 'bank_id=' . $bank->id, $bank->name);
+    //   $actionMsg = MyLineBotActionMsg::create()->message(123, 'bank_id=' . 123, 123);
+    //   $actionArr[] = $actionMsg;
+    //   break;
+    // }
+    // var_dump($actionMsg);
+    // print_R($actionArr);
+    // // Log::info('action 123');
+    // die;
     MyLineBotMsg::create ()
       ->multi ([
        MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
        MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
        MyLineBotMsg::create()->template('銀行',
-         MyLineBotMsg::create()->templateButton('請選擇銀行', '查詢外匯', 'https://example.com/bot/images/image.jpg', $actionArr)
+         MyLineBotMsg::create()->templateButton('請選擇銀行', '查詢外匯', 'https://example.com/bot/images/image.jpg', [
+           MyLineBotActionMsg::create()->postback(123, 'bank_id=' . 123, 123),
+           MyLineBotActionMsg::create()->postback(123, 'bank_id=' . 123, 123),
+         ])
        )
       ])
       ->reply ($event->getReplyToken());
+
+    Log::info('success');
   }
 
 }
