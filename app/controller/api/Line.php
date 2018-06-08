@@ -109,7 +109,7 @@ class Line extends ApiController {
          ])
        )
      ])->reply ($event->getReplyToken());
-
+     die;
     Log::info('success');
   }
 
