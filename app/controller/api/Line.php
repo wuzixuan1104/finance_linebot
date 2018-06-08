@@ -82,73 +82,24 @@ class Line extends ApiController {
   }
 
   public function initIntro($event) {
-    // if( !$banks = Bank::find('all', array('where' => array('enable' => Bank::ENABLE_ON ) ) ) )
-    //   return false;
-    //
-    // $actionArr = [];
-    // $cnt = 0;
-    // foreach( $banks as $bank ) {
-    //   $cnt++;
-    //   $actionMsg = MyLineBotActionMsg::create()->postback($bank->name, 'bank_id=' . $bank->id, $bank->name);
-    //   $actionArr[] = $actionMsg;
-    //   break;
-    //   if($cnt == 5)
-    //     break;
-    // }
+    if( !$banks = Bank::find('all', array('where' => array('enable' => Bank::ENABLE_ON ) ) ) )
+      return false;
+
+    $columnArr = [];
+    $banks = array_chunk( $banks, 3 );
+    foreach( $banks as $key => $bank ) {
+      if($key > 9) break;
+
+      $actionArr = [];
+      foreach( $bank as $vbank ) {
+        $actionArr[] = MyLineBotActionMsg::create()->postback($vbank->name, 'bank_id=' . $vbank->id, $vbank->name);
+      }
+      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
+    }
+
 
     $a = MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-        MyLineBotMsg::create()->templateCarousel( [
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-          MyLineBotMsg::create()->templateCarouselColumn('標題', '哈哈哈哈哈', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', [
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-            MyLineBotActionMsg::create()->postback('label', 'postback', 'postback'),
-          ]),
-        ])
+        MyLineBotMsg::create()->templateCarousel( $columnArr )
     )->reply ($event->getReplyToken());
     print_R($a);
     // ->reply ($event->getReplyToken());
