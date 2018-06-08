@@ -117,7 +117,7 @@ class Line extends ApiController {
        MyLineBotMsg::create()->template('銀行',
          MyLineBotMsg::create()->templateButton('請選擇銀行', '查詢外匯', 'https://example.com/bot/images/image.jpg', [
            MyLineBotActionMsg::create()->postback(123, 'bank_id=123', 123),
-           MyLineBotActionMsg::create()->postback(123, 'bank_id=123', 123),
+           MyLineBotActionMsg::create()->postback(234, 'bank_id=234', 234),
          ])
        )
       ])
