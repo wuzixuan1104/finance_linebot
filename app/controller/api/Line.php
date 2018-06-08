@@ -43,7 +43,7 @@ class Line extends ApiController {
           if ($result['k'])
             $this->initIntro($event);
 
-          //
+
           // MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
           //     MyLineBotMsg::create()->templateConfirm( '我問你個問題', [
           //       MyLineBotActionMsg::create()->message('好', 'true'),
@@ -80,12 +80,13 @@ class Line extends ApiController {
 
         case 'Postback':
           Log::info('test');
-          Log::info( 'data: ' .$this->event->getPostbackData() );
+          Log::info( 'data: ' . $this->event->getPostbackData() );
           Log::info( 'param: '. $this->event->getPostbackParams());
-
-          MyLineBotMsg::create()
-            ->text( $this->event->getPostbackParams() )
-            ->reply($event->getReplyToken());
+          Log::info('end');
+          // MyLineBotMsg::create()
+          //   ->text( $this->event->getPostbackParams() )
+          //   ->reply($event->getReplyToken());
+          //   Log
           break;
       }
     }
