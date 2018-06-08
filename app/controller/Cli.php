@@ -51,11 +51,11 @@ class Cli extends Controller {
         $bankName = trim( pq ("a", $query)->text () );
         echo "1111111111111\r\n";
         if( !isset($bankContainer[$bankName]) ) {
-          echo "222222222222222\r\n";
           if( !$bank = Bank::find_by_name($bankName) )
             if( !$bank = Bank::create( array( 'name' => $bankName, 'enable' => Bank::ENABLE_ON ) ) )
               return false;
           $bankContainer[$bankName] = $bank->id;
+          echo "222222222222222\r\n";
         }
         echo "==========================123\r\n";
         die;
