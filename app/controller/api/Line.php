@@ -18,8 +18,8 @@ class Line extends ApiController {
 
     $events = MyLineBot::events();
     foreach( $events as $event ) {
-      $this->initIntro();
-      die;
+      // $this->initIntro();
+      // die;
       if( !$source = Source::checkSourceExist($event) )
         continue;
       $speaker = Source::checkSpeakerExist($event);
