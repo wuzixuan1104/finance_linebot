@@ -44,9 +44,10 @@ class Cli extends Controller {
 
       echo "貨幣ID: " . $currency->id . "\r\n";
       echo "=======================================\r\n";
-      print_R($checkContents['data']);
+      // print_R($checkContents['data']);
       $bankContainer = [];
       foreach( $checkContents['data'] as $checkContent ) {
+        echo "1111111111111\r\n";
         $query = phpQuery::newDocument ($checkContent[0]);
         $bankName = trim( pq ("a", $query)->text () );
         if( !isset($bankContainer[$bankName]) ) {
