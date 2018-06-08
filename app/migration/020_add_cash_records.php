@@ -8,19 +8,17 @@
  */
 
 return array (
-    'up' => "CREATE TABLE `bank_currency_records` (
+    'up' => "CREATE TABLE `cash_records` (
         `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
         `currency_id` int(11) unsigned NOT NULL,
         `currency_time_id` int(11) unsigned NOT NULL,
         `bank_name` varchar(190) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '銀行名稱',
-        `buy_cash` DOUBLE NOT NULL COMMENT '現鈔買進',
-        `sell_cash` DOUBLE NOT NULL COMMENT '現鈔賣出',
-        `buy_passbook` DOUBLE NOT NULL COMMENT '牌告買進',
-        `sell_passbook` DOUBLE NOT NULL COMMENT '牌告賣出',
+        `buy` DOUBLE NOT NULL COMMENT '牌告買進',
+        `sell` DOUBLE NOT NULL COMMENT '牌告賣出',
         `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '新增時間',
         `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新時間',
         PRIMARY KEY (`id`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;",
-    'down' => "DROP TABLE `bank_currency_records`;",
-    'at' => "2018-06-07 10:50:03",
+    'down' => "DROP TABLE `cash_records`;",
+    'at' => "2018-06-08 10:03:49",
   );

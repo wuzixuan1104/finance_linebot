@@ -32,6 +32,7 @@ class Cli extends Controller {
       $this->errorOutput(__METHOD__, '查無貨幣table資料');
 
     foreach( $currencies as $currency ) {
+
       if( !$checkContents = file_get_contents($this->checkUrl . $currency->iso) )
         $this->errorOutput(__METHOD__, '查無' . $currency->name . '牌告匯率');
 
@@ -41,33 +42,67 @@ class Cli extends Controller {
       $checkContents = json_decode($checkContents, true);
       $cashContents = json_decode($cashContents, true);
 
+      echo "貨幣ID: " . $currency->id . "\r\n";
+      echo "=======================================\r\n";
+
       foreach( $checkContents['data'] as $checkContent ) {
         $query = phpQuery::newDocument ($checkContent[0]);
         $bankName = pq ("a", $query)->text ();
 
-        $records[] =array(
+        $passbookTimes[] = date('Y') . '-' . str_replace('/', '-', $checkContent[3]);
+        $passbookRecords[] =array(
           'currency_id' => $currency->id,
-          'currency_time_id' => '',
           'bank_name' => $bankName,
-          'buy_cash' => '',
+          'buy' => $checkContent[1],
+          'sell' => $checkContent[2],
         );
+        echo "暫存資料外匯牌告 -> 銀行: " . $bankName . "\r\n";
       }
 
+      foreach( $cashContents['data'] as $cashContent ) {
+        $query = phpQuery::newDocument ($cashContent[0]);
+        $bankName = pq ("a", $query)->text ();
+
+        $cashTimes[] = date('Y') . '-' . str_replace('/', '-', $cashContent[3]);
+        $cashRecords[] =array(
+          'currency_id' => $currency->id,
+          'bank_name' => $bankName,
+          'buy' => $cashContent[1],
+          'sell' => $cashContent[2],
+        );
+        echo "暫存資料外匯牌告 -> 銀行: " . $bankName . "\r\n";
+      }
     }
-    $transaction = function ($oriAds) {
-      foreach ( $oriAds as $voriAd ) {
-        $picUrl = $voriAd['pic'];
-        $voriAd['pic'] = '';
-        if ( !( ($oriAd = OriAd::create($voriAd)) && $oriAd->pic->putUrl($picUrl) ) )
+
+    $transactionPass = function ($passbookTimes, $passbookRecords) {
+      foreach ( $passbookRecords as $key => $passbookRecord ) {
+        if ( !$time = CurrencyTime::create( array('datetime' => $passbookTimes[$key]) ) )
           return false;
+        if ( !PassbookRecord::create( array_merge( $passbookRecord, array('currency_time_id' => $time->id) ) ) )
+          return false;
+        echo "牌告新增成功 -> 貨幣ID: " . $passbookRecord['currency_id'] . " |  銀行: " . $passbookRecord['bank_name'] . "\r\n";
       }
       return true;
     };
 
-    if ($error = BankCurrencyRecord::getTransactionError ($transaction, $oriAds))
-      exit('新增bank_currency_records資料表錯誤');
+    $transactionCash = function ($cashTimes, $cashRecords) {
+      foreach ( $cashRecords as $key => $cashRecord ) {
+        if ( !$time = CurrencyTime::create( array('datetime' => $cashTimes[$key]) ) )
+          return false;
+        if ( !CashRecord::create( array_merge( $cashRecord, array('currency_time_id' => $time->id) ) ) )
+          return false;
+        echo "現鈔新增成功 -> 貨幣ID: " . $cashRecord['currency_id'] . " |  銀行: " . $cashRecord['bank_name'] . "\r\n";
+      }
+      return true;
+    };
 
-    return true;
+    if ($error = PassbookRecord::getTransactionError ($transactionPass, $passbookTimes, $passbookRecords))
+      exit('新增passbook_records資料表錯誤');
+
+    if ($error = CashRecord::getTransactionError ($transactionCash, $cashTimes, $cashRecords))
+      exit('新增cash_records資料表錯誤');
+
+    echo "執行" . __METHOD__ . " success";
   }
 
   public function currency() {

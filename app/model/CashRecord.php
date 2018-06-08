@@ -7,8 +7,8 @@
  * @link        https://www.ioa.tw/
  */
 
-class BankCurrencyRecord extends Model {
-  static $table_name = 'bank_currency_records';
+class CashRecord extends Model {
+  static $table_name = 'cash_records';
 
   static $has_one = array (
   );
@@ -26,7 +26,7 @@ class BankCurrencyRecord extends Model {
   public function destroy () {
     if (!isset ($this->id))
       return false;
-
+    
     return $this->delete ();
   }
 }
