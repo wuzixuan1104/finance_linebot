@@ -28,12 +28,12 @@ class Line extends ApiController {
 
       switch( get_class($log) ) {
         case 'Join':
-          $this->initIntro();
+          $this->initIntro($event);
           break;
         case 'Leave':
           break;
         case 'Follow':
-          $this->initIntro();
+          $this->initIntro($event);
           break;
         case 'Unfollow':
           break;
@@ -81,7 +81,7 @@ class Line extends ApiController {
     }
   }
 
-  public function initIntro() {
+  public function initIntro($event) {
     // if( !$banks = Bank::find('all', array('where' => array('enable' => Bank::ENABLE_ON ) ) ) )
     //   return false;
     //
