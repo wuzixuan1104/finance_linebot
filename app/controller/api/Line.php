@@ -23,7 +23,7 @@ class Line extends ApiController {
       $speaker = Source::checkSpeakerExist($event);
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
-
+      Log::info( 'class:'  . get_class($log));
       switch( get_class($log) ) {
         case 'Join':
           $this->initIntro($event);
@@ -79,8 +79,10 @@ class Line extends ApiController {
           break;
 
         case 'Postback':
+          Log::info('test');
           Log::info( 'data: ' .$this->event->getPostbackData() );
           Log::info( 'param: '. $this->event->getPostbackParams());
+
           MyLineBotMsg::create()
             ->text( $this->event->getPostbackParams() )
             ->reply($event->getReplyToken());
