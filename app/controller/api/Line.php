@@ -97,11 +97,17 @@ class Line extends ApiController {
     // print_R($actionArr);
     // die;
     Log::info(123);
+    MyLineBotMsg::create()->template('抬頭',
+    MyLineBotMsg::create()->templateButton('按鈕', '説明', 'https://example.com/bot/images/image.jpg', [
+      MyLineBotActionMsg::create()->message('是', 'true'),
+      MyLineBotActionMsg::create()->postback('否', 'bbb=123'),
+    ])
+)->reply($event->getReplyToken());
+die;
     MyLineBotMsg::create ()
       ->multi ([
        MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
        MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
-       
       ])
       ->reply ($event->getReplyToken());
     Log::info('postback');
