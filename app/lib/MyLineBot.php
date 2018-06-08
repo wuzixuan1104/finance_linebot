@@ -335,6 +335,7 @@ class MyLineBotActionMsg {
     return is_string($label) && (isHttp($url) || isHttps($url)) ? new UriTemplateActionBuilder($label, $url) : null;
   }
   public function postback($label, $data, $text) {
+    Log::info('postback');
     return is_string($label) && ($data = is_array($data) ? json_encode($data) : $data ) && !is_null($text) ? new PostbackTemplateActionBuilder($label, $data, $text) : null;
   }
 
