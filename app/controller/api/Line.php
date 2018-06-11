@@ -102,7 +102,7 @@ class Line extends ApiController {
     // print_r($currencies);die;s
     foreach( $currencies as $key => $currency ) {
       // print_r($currency);
-      // if($key > 7) break;
+      if($key > 7) break;
       $actionArr = [];
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'BankProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
