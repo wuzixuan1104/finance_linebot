@@ -16,5 +16,7 @@ class BankProcess {
   public function setBank($params) {
     Log::info( json_encode($params) );
     Log::info( __METHOD__);
+
+    return true;
   }
 }

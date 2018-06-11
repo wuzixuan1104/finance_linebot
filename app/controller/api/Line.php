@@ -80,8 +80,11 @@ class Line extends ApiController {
 
         case 'Postback':
           Log::info('postback test');
+
           $data = json_decode( $log->data, true );
-          isset( $data['lib'], $data['method'] ) && Load::lib( ($lib = $data['lib']) . '.php') && method_exists($lib, $method = $data['method']) && $msg = $lib::$method( $data['param'] );
+          Log::info('json_encode=============');
+          die;
+          isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($data['lib'], $data['method']) && $msg = $data['lib']::$data['method']( $data['param'] );
 
 
           Log::info('end');
