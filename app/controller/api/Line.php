@@ -114,7 +114,7 @@ class Line extends ApiController {
         MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
           MyLineBotMsg::create()->templateCarousel( $columnArr )
         )
-    ])->reply ($event->getReplyToken());
+    ])->reply ($event->getReplyToksen());
 
     die;
   }
