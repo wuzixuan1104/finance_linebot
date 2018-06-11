@@ -93,15 +93,14 @@ class Line extends ApiController {
               Log::info('load lib==================');
               if( method_exists($data['lib'], $data['method']) ) {
                 Log::info('method exist');
-                if( BankProcess::setBank($data['param']) ) {
-                  Log::info('bank process');
+
+                if( $msg = $data['lib']::$data['method']( $data['param'] ) ) {
+                  Log::info($msg);
                 }
-                // if( $data['lib']::$data['method']( $data['param'] ) ) {
-                //   Log::info('msg');
-                // }
               }
             }
           }
+          die;
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($data['lib'], $data['method']) && $msg = $data['lib']::$data['method']( $data['param'] );
 
 
