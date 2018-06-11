@@ -10,9 +10,25 @@
 class Line extends ApiController {
   public function __construct() {
     parent::__construct();
+
   }
 
   public function index() {
+
+    // $currencyId = 1;
+    // $records = PassbookRecord::find('all', array(
+    //   'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $currencyId),
+    // ));
+    // return Output::json(array_map(function($record) {
+    //   return array(
+    //     'id' => $record->bank->id,
+    //     'name' => $record->bank->name,
+    //   );
+    // }, $records));
+    //
+    // print_r($records);
+    // die;
+
     Load::lib ('MyLineBot.php');
     Load::sysFunc('file.php');
 
@@ -79,11 +95,17 @@ class Line extends ApiController {
           break;
 
         case 'Postback':
+          Log::info($log->data);
+
           $data = json_decode( $log->data, true );
+          Log::info('lib:' . $data['lib']);
+          Log::info('method:' . $data['method']);
+          
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
+          // print_r($msg);
+          // die;
+          // $msg->reply ($log);
 
-
-          Log::info('end');
           // MyLineBotMsg::create()
           //   ->text( $this->event->getPostbackParams() )
           //   ->reply($event->getReplyToken());

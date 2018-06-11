@@ -17,6 +17,7 @@ class PassbookRecord extends Model {
   );
 
   static $belongs_to = array (
+    array('bank', 'class_name' => 'bank'),
   );
 
   public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {
@@ -26,7 +27,7 @@ class PassbookRecord extends Model {
   public function destroy () {
     if (!isset ($this->id))
       return false;
-    
+
     return $this->delete ();
   }
 }
