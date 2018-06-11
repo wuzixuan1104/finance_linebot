@@ -84,6 +84,7 @@ class Line extends ApiController {
           $data = json_decode( $log->data, true );
           Log::info('lib:' . $data['lib']);
           Log::info('method:' . $data['method']);
+          Log::info('param:' . json_encode( $data['param'] ) );
 
           Log::info('json_encode=============');
           if( isset( $data['lib'], $data['method'] ) ) {
@@ -92,9 +93,12 @@ class Line extends ApiController {
               Log::info('load lib==================');
               if( method_exists($data['lib'], $data['method']) ) {
                 Log::info('method exist');
-                if( $data['lib']::$data['method']( $data['param'] ) ) {
-                  Log::info('msg');
+                if( BankProcess::setBank($data['param']) ) {
+                  Log::info('bank process');
                 }
+                // if( $data['lib']::$data['method']( $data['param'] ) ) {
+                //   Log::info('msg');
+                // }
               }
             }
           }
