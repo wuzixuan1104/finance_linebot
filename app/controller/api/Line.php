@@ -100,7 +100,7 @@ class Line extends ApiController {
     $columnArr = [];
     $currencies = array_chunk( $currencies, 3 );
     // print_r($currencies);die;s
-    foreach( $currencies as $currency ) {
+    foreach( $currencies as $key => $currency ) {
       if($key > 7) break;
       $actionArr = [];
       foreach( $currency as $vcurrency )
