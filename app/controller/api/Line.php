@@ -82,9 +82,6 @@ class Line extends ApiController {
           Log::info('postback test');
 
           $data = json_decode( $log->data, true );
-          Log::info('lib:' . $data['lib']);
-          Log::info('method:' . $data['method']);
-          Log::info('param:' . json_encode( $data['param'] ) );
 
           Log::info('json_encode=============');
           if( isset( $data['lib'], $data['method'] ) ) {
