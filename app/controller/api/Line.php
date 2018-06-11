@@ -94,7 +94,7 @@ class Line extends ApiController {
   }
 
   public function initIntro($event) {
-    if( !$banks = Currency::find('all', array('where' => array('enable' => Currency::ENABLE_ON ) ) ) )
+    if( !$currencies = Currency::find('all', array('where' => array('enable' => Currency::ENABLE_ON ) ) ) )
       return false;
 
     $columnArr = [];
