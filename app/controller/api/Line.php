@@ -107,7 +107,7 @@ class Line extends ApiController {
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
     }
 
-    MyLineBotMsg::create ()
+    $builder = MyLineBotMsg::create ()
       ->multi ([
         MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
         MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
@@ -115,7 +115,7 @@ class Line extends ApiController {
           MyLineBotMsg::create()->templateCarousel( $columnArr )
         )
     ])->reply ($event->getReplyToken());
-
+    print_R($builder);
     die;
   }
 
