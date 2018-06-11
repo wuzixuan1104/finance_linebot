@@ -79,10 +79,19 @@ class Line extends ApiController {
           break;
 
         case 'Postback':
+          if( $data = $event->getPostbackData() )
+            return false;
+
+          $data = explode('=', $data);
+          switch( $data[0] ) {
+            case 'bank_id':
+
+              break;
+          }
           Log::info('test');
 
 
-          Log::info( 'data: ' . $event->getPostbackData() );
+          Log::info( 'data: ' . json_encode($event->getPostbackData()) );
           Log::info( 'param: '. $event->getPostbackParams());
           Log::info('end');
           // MyLineBotMsg::create()
@@ -104,7 +113,7 @@ class Line extends ApiController {
       if($key > 9) break;
       $actionArr = [];
       foreach( $bank as $vbank )
-        $actionArr[] = MyLineBotActionMsg::create()->postback($vbank->name, 'bank_id=' . $vbank->id, $vbank->name);
+        $actionArr[] = MyLineBotActionMsg::create()->postback($vbank->name, array('lib' => 'BankProcess', 'method' => 'setBank', 'param' => array('bank_id' => $vbank->id) ), $vbank->name);
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('查詢銀行外匯', '選擇銀行', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
     }
 
