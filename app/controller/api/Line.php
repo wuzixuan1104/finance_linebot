@@ -100,13 +100,13 @@ class Line extends ApiController {
     $columnArr = [];
     $currencies = array_chunk( $currencies, 3 );
     foreach( $currencies as $key => $currency ) {
-      if($key > 8) break;
+      // if($key > 7) break;
       $actionArr = [];
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'BankProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
     }
-
+    // print_r($columnArr);die;
     $builder = MyLineBotMsg::create ()
       ->multi ([
         MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
