@@ -13,7 +13,8 @@ class BankProcess {
 
   }
 
-  public function setBank($params) {
+  public static function setBank($params) {
+
     Log::info( json_encode($params) );
     Log::info( __METHOD__);
 
