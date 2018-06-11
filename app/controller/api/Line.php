@@ -88,10 +88,10 @@ class Line extends ApiController {
             Log::info('isset==================');
             if( Load::lib( $data['lib'] . '.php') ) {
               Log::info('load lib==================');
-              if( method_exists($data['lib'], $data['method']) ) {
+              if( method_exists($lib = $data['lib'], $method = $data['method']) ) {
                 Log::info('method exist');
 
-                if( $msg = $data['lib']::$data['method']( $data['param'] ) ) {
+                if( $msg = $lib::$method( $data['param'] ) ) {
                   Log::info($msg);
                 }
               }
