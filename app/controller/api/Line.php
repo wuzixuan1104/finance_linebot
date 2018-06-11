@@ -23,7 +23,7 @@ class Line extends ApiController {
       $speaker = Source::checkSpeakerExist($event);
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
-      Log::info( 'class:'  . get_class($log));
+
       switch( get_class($log) ) {
         case 'Join':
           $this->initIntro($event);
@@ -39,7 +39,8 @@ class Line extends ApiController {
           $pattern = 'hello';
           $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           preg_match_all ($pattern, $log->text, $result);
-
+          Log::info('text');
+          Log::info($result['k']);
           if ($result['k'])
             $this->initIntro($event);
 
