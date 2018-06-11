@@ -99,7 +99,6 @@ class Line extends ApiController {
 
     $columnArr = [];
     $currencies = array_chunk( $currencies, 3 );
-    // print_r($currencies);die;s
     foreach( $currencies as $key => $currency ) {
       // print_r($currency);
       if($key > 7) break;
@@ -107,12 +106,11 @@ class Line extends ApiController {
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'BankProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
-      // print_r($actionArr);
     }
-
+    // die;
     // print_r($actionArr);die;
     // print_r($columnArr);die;
-    $builder = MyLineBotMsg::create ()
+    MyLineBotMsg::create ()
       ->multi ([
         MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
         MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
@@ -120,7 +118,7 @@ class Line extends ApiController {
           MyLineBotMsg::create()->templateCarousel( $columnArr )
         )
     ])->reply ($event->getReplyToken());
-    print_R($builder);
+
 
     die;
   }
