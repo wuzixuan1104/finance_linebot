@@ -83,7 +83,18 @@ class Line extends ApiController {
 
           $data = json_decode( $log->data, true );
           Log::info('json_encode=============');
-          die;
+          if( isset( $data['lib'], $data['method'] ) ) {
+            Log::info('isset==================');
+            if( Load::lib( $data['lib'] . '.php') ) {
+              Log::info('load lib==================');
+              if( method_exists($data['lib'], $data['method']) ) {
+                Log::info('method exist');
+                if( $msg = $data['lib']::$data['method']( $data['param'] ) ) {
+                  Log::info('msg');
+                }
+              }
+            }
+          }
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($data['lib'], $data['method']) && $msg = $data['lib']::$data['method']( $data['param'] );
 
 
