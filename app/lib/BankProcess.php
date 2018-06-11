@@ -13,9 +13,8 @@ class BankProcess {
 
   }
 
-  public static function setBank($params) {
+  public static function searchBank($params) {
 
-    
 
     return 1234;
   }

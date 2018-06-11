@@ -79,25 +79,7 @@ class Line extends ApiController {
           break;
 
         case 'Postback':
-          Log::info('postback test');
-
           $data = json_decode( $log->data, true );
-
-          // Log::info('json_encode=============');
-          // if( isset( $data['lib'], $data['method'] ) ) {
-          //   Log::info('isset==================');
-          //   if( Load::lib( $data['lib'] . '.php') ) {
-          //     Log::info('load lib==================');
-          //     if( method_exists($lib = $data['lib'], $method = $data['method']) ) {
-          //       Log::info('method exist');
-          //
-          //       if( $msg = $lib::$method( $data['param'] ) ) {
-          //         Log::info($msg);
-          //       }
-          //     }
-          //   }
-          // }
-          // die;
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
 
 
@@ -112,17 +94,17 @@ class Line extends ApiController {
   }
 
   public function initIntro($event) {
-    if( !$banks = Bank::find('all', array('where' => array('enable' => Bank::ENABLE_ON ) ) ) )
+    if( !$banks = Currency::find('all', array('where' => array('enable' => Currency::ENABLE_ON ) ) ) )
       return false;
 
     $columnArr = [];
-    $banks = array_chunk( $banks, 3 );
-    foreach( $banks as $key => $bank ) {
+    $currencies = array_chunk( $currencies, 3 );
+    foreach( $currencies as $key => $currency ) {
       if($key > 9) break;
       $actionArr = [];
-      foreach( $bank as $vbank )
-        $actionArr[] = MyLineBotActionMsg::create()->postback($vbank->name, array('lib' => 'BankProcess', 'method' => 'setBank', 'param' => array('bank_id' => $vbank->id) ), $vbank->name);
-      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('查詢銀行外匯', '選擇銀行', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
+      foreach( $currency as $vcurrency )
+        $actionArr[] = MyLineBotActionMsg::create()->postback($vcurrency->name, array('lib' => 'BankProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
+      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
     }
 
     MyLineBotMsg::create ()
