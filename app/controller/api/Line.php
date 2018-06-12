@@ -103,6 +103,7 @@ class Line extends ApiController {
 
           $lib = $data['lib'];
           $method = $data['method'];
+          Load::lib( $data['lib'] . '.php');
           $msg = $lib::$method( $data['param'] );
 
           // isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
