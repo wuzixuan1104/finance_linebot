@@ -17,7 +17,7 @@ class PassbookRecord extends Model {
   );
 
   static $belongs_to = array (
-    array('bank', 'class_name' => 'bank'),
+    array('bank', 'class_name' => 'Bank'),
   );
 
   public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {
