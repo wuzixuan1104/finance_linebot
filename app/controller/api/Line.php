@@ -74,14 +74,13 @@ class Line extends ApiController {
 
         case 'Postback':
           $data = json_decode( $log->data, true );
-          Log::info('param:'.$data['param']);
 
           if( isset( $data['lib'], $data['method'] ) ) {
             Log::info('if 1');
             Load::lib( $data['lib'] . '.php');
             if( method_exists($lib = $data['lib'], $method = $data['method']) ) {
               Log::info('if 2');
-              if( !$msg = $lib::$method( $data['param'] ) )
+              if( !$msg = BankProcess::searchBank( $data['param'] ) )
                 return false;
               Log::info('if 3');
             }
@@ -116,7 +115,7 @@ class Line extends ApiController {
       $actionArr = [];
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'BankProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
-      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', 'https://cdn.adpost.com.tw/adpost/production/uploads/adv_details/pic/00/00/00/00/00/00/06/5e/_29753e27ceb64b0f35b77aca7acf9a3e.jpg', $actionArr);
+      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', '', $actionArr);
     }
     MyLineBotMsg::create ()
       ->multi ([
