@@ -15,20 +15,6 @@ class Line extends ApiController {
 
   public function index() {
 
-    // $currencyId = 1;
-    // $records = PassbookRecord::find('all', array(
-    //   'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $currencyId),
-    // ));
-    // return Output::json(array_map(function($record) {
-    //   return array(
-    //     'id' => $record->bank->id,
-    //     'name' => $record->bank->name,
-    //   );
-    // }, $records));
-    //
-    // print_r($records);
-    // die;
-
     Load::lib ('MyLineBot.php');
     Load::sysFunc('file.php');
 
