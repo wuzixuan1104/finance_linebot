@@ -227,7 +227,7 @@ class MyLineBotLog {
   }
 
   private function postbackEvent() {
-    $param = array( 'source_id' => $this->source->id, 'speaker_id' => $this->speaker->id, 'reply_token' => $this->event->getReplyToken(), 'data' => $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams() ? json_encode($this->event->getPostbackParams()):'', 'timestamp' => $this->event->getTimestamp());
+    $param = array( 'source_id' => $this->source->id, 'speaker_id' => $this->speaker->id, 'reply_token' => $this->event->getReplyToken(), 'data' => is_array($this->event->getPostbackData())? json_encode($this->event->getPostbackData()) : $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams() ? json_encode($this->event->getPostbackParams()):'', 'timestamp' => $this->event->getTimestamp());
     if( !Postback::transaction( function($param, &$obj) { return $obj = Postback::create($param); }, $param, $obj ))
       return false;
     return $obj;

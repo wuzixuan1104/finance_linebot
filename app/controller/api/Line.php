@@ -22,6 +22,7 @@ class Line extends ApiController {
       if( !$source = Source::checkSourceExist($event) )
         continue;
       $speaker = Source::checkSpeakerExist($event);
+
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
 
@@ -72,9 +73,13 @@ class Line extends ApiController {
           break;
 
         case 'Postback':
+
           $data = json_decode( $log->data, true );
           Log::info('postback 1');
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
+
+          // print_r($msg);
+          // die;
           Log::info('postback test~~~~~~~~~~~~~');
           $msg->reply ($log);
           Log::info('postback end~~~~~~~~~~~~');
