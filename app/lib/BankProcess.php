@@ -19,7 +19,7 @@ class BankProcess {
       return false;
     Log::info('==> bank 2');
     Log::info('==> currency_id:' . $params['currency_id']);
-    PassbookRecord::first ();
+    PassbookRecord::find ('all');
     Log::info('==> currency_id:' . $params['currency_id']);
     exit;
 
