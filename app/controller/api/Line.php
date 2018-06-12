@@ -43,14 +43,6 @@ class Line extends ApiController {
 
           if ($result['k'])
             $this->initIntro($event);
-
-
-          // MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-          //     MyLineBotMsg::create()->templateConfirm( '我問你個問題', [
-          //       MyLineBotActionMsg::create()->message('好', 'true'),
-          //       MyLineBotActionMsg::create()->postback('不', 'bbb=123', 'postback'),
-          //     ])
-          // )->reply ($event->getReplyToken());
           break;
         case 'Image':
           $url = $log->file->url();
@@ -81,6 +73,7 @@ class Line extends ApiController {
 
         case 'Postback':
           $data = json_decode( $log->data, true );
+          Log::info('postback 1');
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
           Log::info('postback test~~~~~~~~~~~~~');
           $msg->reply ($log);
