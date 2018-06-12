@@ -303,7 +303,7 @@ class MyLineBotMsg {
     return $this;
   }
   public function templateCarouselColumn($title, $text, $imageUrl, array $actionBuilders) {
-    return is_string($title) && is_string($text) && is_string($imageUrl) && is_array($actionBuilders) ? new CarouselColumnTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
+    return is_string($title) && is_string($text) && is_array($actionBuilders) ? new CarouselColumnTemplateBuilder($title, $text, $imageUrl, $actionBuilders) : null;
   }
   public function templateCarousel(array $columnBuilders) {
     $this->builder = is_array($columnBuilders) ? new CarouselTemplateBuilder($columnBuilders) : null;
