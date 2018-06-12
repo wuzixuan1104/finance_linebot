@@ -100,8 +100,9 @@ class Line extends ApiController {
           $data = json_decode( $log->data, true );
           Log::info('lib:' . $data['lib']);
           Log::info('method:' . $data['method']);
-          
+
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
+          Log::info('bank process success');
           // print_r($msg);
           // die;
           // $msg->reply ($log);
