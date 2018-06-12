@@ -75,12 +75,14 @@ class Line extends ApiController {
         case 'Postback':
           $data = json_decode( $log->data, true );
           Log::info('postback 1');
-          isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
+
+          if ( !(isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] ) ))
+            return false;
 
           // print_r($msg);
           // die;
           Log::info('postback test~~~~~~~~~~~~~');
-          $msg->reply ($event->getReplyToken());
+          $msg->reply ($log);
           Log::info('postback end~~~~~~~~~~~~');
           // MyLineBotMsg::create()
           //   ->text( $this->event->getPostbackParams() )
