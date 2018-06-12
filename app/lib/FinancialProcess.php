@@ -53,7 +53,7 @@ class FinancialProcess {
     if( $cashes = CashRecord::find('one', $conditions) )
       $msg .= "現鈔匯率：\r\n => 賣出：" . $cashes->sell . "\r\n => 買入：" . $cashes->buy;
 
-    $msg .= "\r\n\r\n\r\n\r\n回選單首頁請輸入\"hello\"";
+    $msg .= "\r\n\r\n\r\n回選單首頁請輸入\"hello\"";
 
     return MyLineBotMsg::create()
               ->text($msg);
