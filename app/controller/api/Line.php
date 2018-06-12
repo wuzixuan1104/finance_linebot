@@ -74,7 +74,7 @@ class Line extends ApiController {
 
         case 'Postback':
           $data = json_decode( $log->data, true );
-          Log::info('postback 1');
+          Log::info('param:'.$data['param']);
 
           if( isset( $data['lib'], $data['method'] ) ) {
             Log::info('if 1');
