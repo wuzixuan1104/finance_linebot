@@ -14,7 +14,6 @@ class Line extends ApiController {
   }
 
   public function index() {
-
     Load::lib ('MyLineBot.php');
     Load::sysFunc('file.php');
 
@@ -88,9 +87,8 @@ class Line extends ApiController {
           Log::info('method:' . $data['method']);
 
           isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
-          print_r($msg);
-          die;
-          // $msg->reply ($log);
+
+          $msg->reply ($log);
 
           // MyLineBotMsg::create()
           //   ->text( $this->event->getPostbackParams() )
