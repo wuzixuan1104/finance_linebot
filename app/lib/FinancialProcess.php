@@ -9,7 +9,7 @@
 
 Load::lib ('MyLineBot.php');
 
-class BankProcess {
+class FinancialProcess {
   public function __construct() {
   }
 
@@ -27,12 +27,16 @@ class BankProcess {
       if(count($record) != 3) break;
       $actionArr = [];
       foreach( $record as $vrecord )
-        $actionArr[] = MyLineBotActionMsg::create()->postback( $vrecord->bank->name, array('lib' => 'BankProcess', 'method' => 'searchData', 'param' => array('currency_id' => $params['currency_id'], 'bank_id' => $vrecord->bank->id) ), $vrecord->bank->name);
+        $actionArr[] = MyLineBotActionMsg::create()->postback( $vrecord->bank->name, array('lib' => 'FinancialProcess', 'method' => 'getData', 'param' => array('currency_id' => $params['currency_id'], 'bank_id' => $vrecord->bank->id) ), $vrecord->bank->name);
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇銀行', '查詢外匯', null, $actionArr);
     }
 
     return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
       MyLineBotMsg::create()->templateCarousel( $columnArr )
     );
+  }
+
+  public static function getData($params) {
+    Log::info( '====> getData: ' . json_encode($params) );
   }
 }

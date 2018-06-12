@@ -77,10 +77,6 @@ class Line extends ApiController {
           if ( !(isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] ) ))
             return false;
           $msg->reply ($event->getReplyToken());
-          // MyLineBotMsg::create()
-          //   ->text( $this->event->getPostbackParams() )
-          //   ->reply($event->getReplyToken());
-          //   Log
           break;
       }
     }
@@ -98,7 +94,7 @@ class Line extends ApiController {
 
       $actionArr = [];
       foreach( $currency as $vcurrency )
-        $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'BankProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
+        $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'FinancialProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
     }
     MyLineBotMsg::create ()
