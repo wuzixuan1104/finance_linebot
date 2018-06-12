@@ -40,7 +40,12 @@ class FinancialProcess {
     if( !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
 
-    $msg = '';
+    if( !$currency = Currency::find_by_id($params['currency_id']) )
+      return false;
+    if( !$bank = Bank::find_by_id($params['bank_id']) )
+      return false;
+
+    $msg = "[ " . $currency->name . " / " . $bank->name . " ]\r\n\r\n";
     $conditions = array('where' => array('bank_id = ? and currency_id = ?', $params['bank_id'], $params['currency_id']), 'order' => 'created_at desc', 'limit' => 1 );
     if( $passbooks = PassbookRecord::find('one', $conditions) )
       $msg .= "牌告匯率：\r\n => 賣出：" . $passbooks->sell . "\r\n => 買入：" . $passbooks->buy . "\r\n================\r\n";
@@ -48,6 +53,8 @@ class FinancialProcess {
     if( $cashes = CashRecord::find('one', $conditions) )
       $msg .= "現鈔匯率：\r\n => 賣出：" . $cashes->sell . "\r\n => 買入：" . $cashes->buy;
 
+    $msg .= "\r\n\r\n\r\n\r\nps.回選單首頁請輸入'hello'！ ";
+    
     return MyLineBotMsg::create()
               ->text($msg);
   }
