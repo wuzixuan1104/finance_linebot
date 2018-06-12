@@ -74,17 +74,6 @@ class Line extends ApiController {
 
         case 'Postback':
           $data = json_decode( $log->data, true );
-
-          // if( isset( $data['lib'], $data['method'] ) ) {
-          //   Log::info('if 1');
-          //   Load::lib( $data['lib'] . '.php');
-          //   if( method_exists($lib = $data['lib'], $method = $data['method']) ) {
-          //     Log::info('if 2');
-          //     if( !$msg = BankProcess::searchBank( $data['param'] ) )
-          //       return false;
-          //     Log::info('if 3');
-          //   }
-          // }
           if ( !(isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] ) ))
             return false;
 
