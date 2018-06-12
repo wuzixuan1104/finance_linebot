@@ -18,6 +18,7 @@ class BankProcess {
     if( !isset($params['currency_id']) || empty($params['currency_id']) )
       return false;
     Log::info(__METHOD__ .':' . 2);
+    Log::info(__METHOD__ . ':' . $params['currency_id']);
     if( !$records = PassbookRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
       return false;
 
