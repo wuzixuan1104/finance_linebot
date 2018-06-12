@@ -105,7 +105,8 @@ class Line extends ApiController {
           $method = $data['method'];
           Load::lib( $data['lib'] . '.php');
           Log::info('load library');
-          $msg = $lib::$method( $data['param'] );
+          $msg = BankProcess::searchBank($data['param']);
+          // $msg = $lib::$method( $data['param'] );
 
           // isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] );
           Log::info('bank process success ');
