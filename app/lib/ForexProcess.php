@@ -47,8 +47,13 @@ class ForexProcess {
 
     $msg = "[ " . $currency->name . " / " . $bank->name . " ]\r\n\r\n";
     $conditions = array('where' => array('bank_id = ? and currency_id = ?', $params['bank_id'], $params['currency_id']), 'order' => 'created_at desc', 'limit' => 1 );
-    if( $passbooks = PassbookRecord::find('one', $conditions) )
+    if( $passbooks = PassbookRecord::find('one', $conditions) ) {
+      if( strtotime("now - 1 minutes") > strtotime($passbooks->created_at) ) {
+        Load::lib('JobTool.php');
+        JobTool::create()->updateRecord();
+      }
       $msg .= "牌告匯率：\r\n => 賣出：" . $passbooks->sell . "\r\n => 買入：" . $passbooks->buy . "\r\n================\r\n";
+    }
 
     if( $cashes = CashRecord::find('one', $conditions) )
       $msg .= "現鈔匯率：\r\n => 賣出：" . $cashes->sell . "\r\n => 買入：" . $cashes->buy;
