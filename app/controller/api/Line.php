@@ -46,8 +46,10 @@ class Line extends ApiController {
             $this->initIntro($event);
 
           if( !empty($source->action) ) {
+            
             $action = json_decode($source->action, true);
             if ( strtotime($action['time']) >= strtotime("now - 3 minutes") && is_numeric($event->getText()) && $money = $event->getText() ) {
+              Log::info('time');
               $msg = '';
               switch($action['data']['type']) {
                 case 'calcA': //台幣->xxx

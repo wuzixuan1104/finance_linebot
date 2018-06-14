@@ -82,6 +82,7 @@ class ForexProcess {
       'func' => __FUNCTION__,
       'data' => $params,
     ));
+    Log::info('hehehe: '.$source->action);
     $source->save();
     return  MyLineBotMsg::create ()->text('請輸入金額(元)');
   }
