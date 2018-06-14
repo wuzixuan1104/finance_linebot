@@ -63,19 +63,12 @@ class ForexProcess {
     return  MyLineBotMsg::create ()->multi ([
               MyLineBotMsg::create()->text($msg),
               MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-                MyLineBotMsg::create()->templateButton('歡迎使用匯率試算服務！', ':)',  'https://example.com/bot/images/image.jpg', [
-                  MyLineBotActionMsg::create()->postback( "台幣 -> " . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
-                  MyLineBotActionMsg::create()->postback( $currency->name . " -> 台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
-            ])),
-
-                // MyLineBotMsg::create()->templateCarousel([
-                //   MyLineBotMsg::create()->templateCarouselColumn('歡迎使用匯率試算服務！', '123', null, [
-                //     MyLineBotActionMsg::create()->postback( "台幣 -> " . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
-                //     MyLineBotActionMsg::create()->postback( $currency->name . " -> 台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
-                //   ])
-                // ]
-                // )
-              ]);
+                MyLineBotMsg::create()->templateCarousel([
+                  MyLineBotMsg::create()->templateCarouselColumn('歡迎使用匯率試算服務！', ':)', null, [
+                    MyLineBotActionMsg::create()->postback( "台幣 -> " . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
+                    MyLineBotActionMsg::create()->postback( $currency->name . " -> 台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
+                  ])]
+                ))]);
   }
 
   public function getCalcType($params) {
