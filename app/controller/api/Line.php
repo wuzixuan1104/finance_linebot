@@ -54,7 +54,11 @@ class Line extends ApiController {
               return;
             }
 
+
             $money = (int)$event->getText();
+            if($money == 0) {
+              return;
+            }
             $msg = '';
             switch($action['data']['type']) {
               case 'calcA': //台幣->xxx
