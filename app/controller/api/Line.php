@@ -94,7 +94,7 @@ class Line extends ApiController {
 
       $actionArr = [];
       foreach( $currency as $vcurrency )
-        $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'FinancialProcess', 'method' => 'searchBank', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
+        $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
     }
     MyLineBotMsg::create ()

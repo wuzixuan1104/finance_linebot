@@ -9,11 +9,11 @@
 
 Load::lib ('MyLineBot.php');
 
-class FinancialProcess {
+class ForexProcess {
   public function __construct() {
   }
 
-  public static function searchBank($params) {
+  public static function getBanks($params) {
     if( !isset($params['currency_id']) || empty($params['currency_id']) )
       return false;
 
@@ -27,7 +27,7 @@ class FinancialProcess {
       if(count($record) != 3) break;
       $actionArr = [];
       foreach( $record as $vrecord )
-        $actionArr[] = MyLineBotActionMsg::create()->postback( $vrecord->bank->name, array('lib' => 'FinancialProcess', 'method' => 'getData', 'param' => array('currency_id' => $params['currency_id'], 'bank_id' => $vrecord->bank->id) ), $vrecord->bank->name);
+        $actionArr[] = MyLineBotActionMsg::create()->postback( $vrecord->bank->name, array('lib' => 'ForexProcess', 'method' => 'getRecords', 'param' => array('currency_id' => $params['currency_id'], 'bank_id' => $vrecord->bank->id) ), $vrecord->bank->name);
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇銀行', '查詢外匯', null, $actionArr);
     }
 
@@ -36,7 +36,7 @@ class FinancialProcess {
     );
   }
 
-  public static function getData($params) {
+  public static function getRecords($params) {
     if( !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
 
