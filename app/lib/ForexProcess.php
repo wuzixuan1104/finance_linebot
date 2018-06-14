@@ -40,7 +40,7 @@ class ForexProcess {
     if( !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
 
-    if( !$currency = Currency::find_by_id($params['\currency_id']) )
+    if( !$currency = Currency::find_by_id($params['currency_id']) )
       return false;
     if( !$bank = Bank::find_by_id($params['bank_id']) )
       return false;
@@ -72,7 +72,7 @@ class ForexProcess {
   public function getCalcType($params) {
     if( !isset($params['type']) || empty($params['type']) || !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
-  
+
 
   }
 }
