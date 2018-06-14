@@ -64,8 +64,8 @@ class ForexProcess {
               MyLineBotMsg::create()->text($msg),
               MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
                 MyLineBotMsg::create()->templateConfirm( '歡迎使用匯率試算！', [
-                  MyLineBotActionMsg::create()->postback( '台幣 -> ' . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
-                  MyLineBotActionMsg::create()->postback( $currency->name . ' -> 台幣', array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
+                  MyLineBotActionMsg::create()->postback( "台幣 \r\n-> \r\n" . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
+                  MyLineBotActionMsg::create()->postback( $currency->name . "\r\n -> \r\n台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
                 ]))]);
   }
 
