@@ -44,6 +44,29 @@ class Line extends ApiController {
 
           if ($result['k'])
             $this->initIntro($event);
+
+          if( !empty($source->action) ) {
+            $action = json_decode($source->action, true);
+            if ( strtotime($action['time']) >= strtotime("now - 3 minutes") && is_numeric($event->getText()) && $money = $event->getText() ) {
+              $msg = '';
+              switch($action['data']['type']) {
+                case 'calcA': //台幣->xxx
+                  $msg .= "台幣兌換". $action['data']['name'] ."\r\n=================\r\n";
+                  $msg .= "牌照： " . $money . "元台幣可以換" . $money * $action['data']['passbook_buy'] . "元" . $action['data']['name'] . "\r\n";
+                  $msg .= "現鈔： " . $money . "元台幣可以換" . $money * $action['data']['cash_buy'] . "元" . $action['data']['name'];
+                  break;
+                case 'calcB': //xxx->台幣
+                  $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
+                  $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "可以換" . $money * $action['data']['passbook_buy'] . "元台幣\r\n";
+                  $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "可以換" . $money * $action['data']['cash_buy'] . "元";
+                  break;
+              }
+              MyLineBotMsg::create ()->text($msg)->reply ($event->getReplyToken());
+            }
+            $source->action = null;
+            $source->save();
+          }
+
           break;
         case 'Image':
           $url = $log->file->url();
