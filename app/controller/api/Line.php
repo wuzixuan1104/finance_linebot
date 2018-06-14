@@ -48,31 +48,41 @@ class Line extends ApiController {
           if( !empty($source->action) ) {
             $action = json_decode($source->action, true);
 
-            if ( strtotime($action['time']) < strtotime("now - 3 minutes") ) {
-              $source->action = null;
-              $source->save();
-              return;
-            }
+            if ( strtotime($action['time']) >= strtotime("now - 3 minutes") ) {
+              $money = (int)$event->getText();
+              if($money == 0) {
+                return;
+              }
+              $msg = '';
+              switch($action['data']['type']) {
+                case 'calcA': //台幣->xxx
+                  $msg .= "台幣兌換". $action['data']['name'] ."\r\n=================\r\n";
+                  $msg .= "牌照： " . $money . "元台幣可以換" . round($money / $action['data']['passbook_buy'], 4) . "元" . $action['data']['name'] . "\r\n";
+                  $msg .= "現鈔： " . $money . "元台幣可以換" . round($money / $action['data']['cash_buy'], 4) . "元" . $action['data']['name'];
+                  break;
+                case 'calcB': //xxx->台幣
+                  $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
+                  $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['passbook_buy'] . "元台幣\r\n";
+                  $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['cash_buy'] . "元台幣";
+                  break;
+              }
 
+              MyLineBotMsg::create ()
+                ->multi ([
+                  MyLineBotMsg::create ()->text($msg),
+                  MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+                    MyLineBotMsg::create()->templateCarousel([
+                      MyLineBotMsg::create()->templateCarouselColumn('歡迎使用匯率試算服務！', 'by chestnuter :)', null, [
+                        MyLineBotActionMsg::create()->postback( "台幣 -> " . $action['data']['name'], array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $action['data']['currency_id'], 'bank_id' => $action['data']['bank_id'], 'passbook_buy' => $action['data']['passbook_buy'], 'cash_buy' => $action['data']['cash_buy'], 'name' => $action['data']['name'] ) ), '台幣 -> ' . $action['data']['name']),
+                        MyLineBotActionMsg::create()->postback( $action['data']['name'] . " -> 台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $action['data']['currency_id'], 'bank_id' => $action['data']['bank_id'], 'passbook_buy' => $action['data']['passbook_buy'], 'cash_buy' => $action['data']['cash_buy'], 'name' => $action['data']['name'] ) ), $action['data']['name'] . ' -> 台幣'),
+                      ])]
+                    )),
+              ])->reply ($event->getReplyToken());
+            }
+            $source->action = null;
+            $source->save();
 
-            $money = (int)$event->getText();
-            if($money == 0) {
-              return;
-            }
-            $msg = '';
-            switch($action['data']['type']) {
-              case 'calcA': //台幣->xxx
-                $msg .= "台幣兌換". $action['data']['name'] ."\r\n=================\r\n";
-                $msg .= "牌照： " . $money . "元台幣可以換" . round($money / $action['data']['passbook_buy'], 4) . "元" . $action['data']['name'] . "\r\n";
-                $msg .= "現鈔： " . $money . "元台幣可以換" . round($money / $action['data']['cash_buy'], 4) . "元" . $action['data']['name'];
-                break;
-              case 'calcB': //xxx->台幣
-                $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
-                $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['passbook_buy'] . "元台幣\r\n";
-                $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['cash_buy'] . "元台幣";
-                break;
-            }
-            MyLineBotMsg::create ()->text($msg)->reply ($event->getReplyToken());
+            // MyLineBotMsg::create ()->text($msg)->reply ($event->getReplyToken());
           }
 
           break;

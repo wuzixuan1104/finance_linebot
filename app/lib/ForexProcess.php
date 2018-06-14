@@ -36,7 +36,7 @@ class ForexProcess {
     );
   }
 
-  public static function getRecords($params, $log) {
+  public static function getRecords($params, $log = '') {
     if( !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
 
