@@ -48,13 +48,17 @@ class ForexProcess {
     $msg = "[ " . $currency->name . " / " . $bank->name . " ]\r\n\r\n";
     $conditions = array('where' => array('bank_id = ? and currency_id = ?', $params['bank_id'], $params['currency_id']), 'order' => 'created_at desc', 'limit' => 1 );
     if( $passbooks = PassbookRecord::find('one', $conditions) ) {
-      $msg .= "牌告匯率：\r\n => 賣出：" . $passbooks->sell . "\r\n => 買入：" . $passbooks->buy . "\r\n================\r\n";
+      $msg .= "牌告匯率：\r\n => 賣出：" . $passbooks->sell . "\r\n => 買入：" . $passbooks->buy;
+      if( $time = CurrencyTime::find_by_id($passbooks->currency_time_id))
+        $msg .= "\r\n\r\n(" . $time->datetime . ")" . "\r\n================\r\n";
     }
-    if( $cashes = CashRecord::find('one', $conditions) )
+    if( $cashes = CashRecord::find('one', $conditions) ) {
       $msg .= "現鈔匯率：\r\n => 賣出：" . $cashes->sell . "\r\n => 買入：" . $cashes->buy;
+      if( $time = CurrencyTime::find_by_id($passbooks->currency_time_id))
+        $msg .= "\r\n\r\n(" . $time->datetime . ")" . "\r\n";
+    }
 
-    $msg .= "\r\n\r\n\r\n回選單首頁請輸入\"hello\"";
-
+    $msg .= "\r\n\r\n回選單首頁請輸入\"hello\"";
     return MyLineBotMsg::create()
               ->text($msg);
   }
