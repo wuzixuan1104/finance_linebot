@@ -21,7 +21,7 @@ class Cli extends Controller {
 
   public function index($method) {
     Load::lib('JobTool.php');
-    return JobTool::create()->{$method}();
+    JobTool::create()->{$method}();
   }
 
   public function backupDB () {

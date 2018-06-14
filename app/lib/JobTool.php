@@ -40,8 +40,8 @@ class JobTool extends Controller{
       $checkContents = json_decode($checkContents, true);
       $cashContents = json_decode($cashContents, true);
 
-      echo "貨幣ID: " . $currency->id . "\r\n";
-      echo "=======================================\r\n";
+      // echo "貨幣ID: " . $currency->id . "\r\n";
+      // echo "=======================================\r\n";
       $bankContainer = [];
       foreach( $checkContents['data'] as $checkContent ) {
         $query = phpQuery::newDocument ($checkContent[0]);
@@ -60,7 +60,7 @@ class JobTool extends Controller{
           'buy' => $checkContent[1],
           'sell' => $checkContent[2],
         );
-        echo "暫存資料外匯牌告 -> 銀行: " . $bankName . "\r\n";
+        // echo "暫存資料外匯牌告 -> 銀行: " . $bankName . "\r\n";
       }
 
       foreach( $cashContents['data'] as $cashContent ) {
@@ -80,7 +80,7 @@ class JobTool extends Controller{
           'buy' => $cashContent[1],
           'sell' => $cashContent[2],
         );
-        echo "暫存資料外匯牌告 -> 銀行: " . $bankName . "\r\n";
+        // echo "暫存資料外匯牌告 -> 銀行: " . $bankName . "\r\n";
       }
     }
 
@@ -90,7 +90,7 @@ class JobTool extends Controller{
           return false;
         if ( !PassbookRecord::create( array_merge( $passbookRecord, array('currency_time_id' => $time->id) ) ) )
           return false;
-        echo "牌告新增成功 -> 貨幣ID: " . $passbookRecord['currency_id'] . " |  銀行ID: " . $passbookRecord['bank_id'] . "\r\n";
+        // echo "牌告新增成功 -> 貨幣ID: " . $passbookRecord['currency_id'] . " |  銀行ID: " . $passbookRecord['bank_id'] . "\r\n";
       }
       return true;
     };
@@ -101,7 +101,7 @@ class JobTool extends Controller{
           return false;
         if ( !CashRecord::create( array_merge( $cashRecord, array('currency_time_id' => $time->id) ) ) )
           return false;
-        echo "現鈔新增成功 -> 貨幣ID: " . $cashRecord['currency_id'] . " |  銀行ID: " . $cashRecord['bank_id'] . "\r\n";
+        // echo "現鈔新增成功 -> 貨幣ID: " . $cashRecord['currency_id'] . " |  銀行ID: " . $cashRecord['bank_id'] . "\r\n";
       }
       return true;
     };
@@ -112,7 +112,7 @@ class JobTool extends Controller{
     if ($error = CashRecord::getTransactionError ($transactionCash, $cashTimes, $cashRecords))
       exit('新增cash_records資料表錯誤');
 
-    echo "執行" . __METHOD__ . " success";
+    // echo "執行" s. __METHOD__ . " success";
     return true;
   }
 
