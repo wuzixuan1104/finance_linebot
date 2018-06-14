@@ -46,35 +46,29 @@ class Line extends ApiController {
             $this->initIntro($event);
 
           if( !empty($source->action) ) {
-            Log::info('not empty ~~~~~~~~~~~');
             $action = json_decode($source->action, true);
-            if( strtotime($action['time']) >= strtotime("now - 3 minutes") ) {
-              Log::info('time');
+
+            if ( strtotime($action['time']) < strtotime("now - 3 minutes") ) {
+              $source->action = null;
+              $source->save();
+              return;
             }
-            // if( is_numeric( $event->getText() ) ) {
-            //   Log::info('is number');
-            // }
-            Log::info($event->getText() );
-            if ( strtotime($action['time']) >= strtotime("now - 3 minutes") ) {
-              $money = (int)$event->getText();
-              Log::info('time');
-              $msg = '';
-              switch($action['data']['type']) {
-                case 'calcA': //台幣->xxx
-                  $msg .= "台幣兌換". $action['data']['name'] ."\r\n=================\r\n";
-                  $msg .= "牌照： " . $money . "元台幣可以換" . $money * $action['data']['passbook_buy'] . "元" . $action['data']['name'] . "\r\n";
-                  $msg .= "現鈔： " . $money . "元台幣可以換" . $money * $action['data']['cash_buy'] . "元" . $action['data']['name'];
-                  break;
-                case 'calcB': //xxx->台幣
-                  $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
-                  $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "需要花" . round($money / $action['data']['passbook_buy'], 4) . "元台幣\r\n";
-                  $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "需要花" . round($money / $action['data']['cash_buy'], 4) . "元台幣";
-                  break;
-              }
-              MyLineBotMsg::create ()->text($msg)->reply ($event->getReplyToken());
+
+            $money = (int)$event->getText();
+            $msg = '';
+            switch($action['data']['type']) {
+              case 'calcA': //台幣->xxx
+                $msg .= "台幣兌換". $action['data']['name'] ."\r\n=================\r\n";
+                $msg .= "牌照： " . $money . "元台幣可以換" . $money * $action['data']['passbook_buy'] . "元" . $action['data']['name'] . "\r\n";
+                $msg .= "現鈔： " . $money . "元台幣可以換" . $money * $action['data']['cash_buy'] . "元" . $action['data']['name'];
+                break;
+              case 'calcB': //xxx->台幣
+                $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
+                $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "需要花" . round($money / $action['data']['passbook_buy'], 4) . "元台幣\r\n";
+                $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "需要花" . round($money / $action['data']['cash_buy'], 4) . "元台幣";
+                break;
             }
-            $source->action = null;
-            $source->save();
+            MyLineBotMsg::create ()->text($msg)->reply ($event->getReplyToken());
           }
 
           break;
