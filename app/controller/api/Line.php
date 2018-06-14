@@ -54,7 +54,7 @@ class Line extends ApiController {
             // if( is_numeric( $event->getText() ) ) {
             //   Log::info('is number');
             // }
-            Log::info((int)$event->getText() );
+            Log::info($event->getText() );
             if ( strtotime($action['time']) >= strtotime("now - 3 minutes") ) {
               $money = (int)$event->getText();
               Log::info('time');
