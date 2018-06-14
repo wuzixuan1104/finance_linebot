@@ -71,7 +71,7 @@ class ForexProcess {
                 ))]);
   }
 
-  public function getCalcType($params, $log) {
+  public static function getCalcType($params, $log) {
     if( !isset($params['type']) || empty($params['type']) || !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
     if( !$source = Source::find_by_id($log->speaker_id) )
