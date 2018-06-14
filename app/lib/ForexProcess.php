@@ -13,7 +13,7 @@ class ForexProcess {
   public function __construct() {
   }
 
-  public static function getBanks($params) {
+  public static function getBanks($params, $log) {
     if( !isset($params['currency_id']) || empty($params['currency_id']) )
       return false;
 
@@ -36,7 +36,7 @@ class ForexProcess {
     );
   }
 
-  public static function getRecords($params) {
+  public static function getRecords($params, $log) {
     if( !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
 
@@ -64,17 +64,25 @@ class ForexProcess {
               MyLineBotMsg::create()->text($msg),
               MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
                 MyLineBotMsg::create()->templateCarousel([
-                  MyLineBotMsg::create()->templateCarouselColumn('歡迎使用匯率試算服務！', ':)', null, [
+                  MyLineBotMsg::create()->templateCarouselColumn('歡迎使用匯率試算服務！', 'by chestnuter :)', null, [
                     MyLineBotActionMsg::create()->postback( "台幣 -> " . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
                     MyLineBotActionMsg::create()->postback( $currency->name . " -> 台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
                   ])]
                 ))]);
   }
 
-  public function getCalcType($params) {
+  public function getCalcType($params, $log) {
     if( !isset($params['type']) || empty($params['type']) || !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
+    if( !$source = Source::find_by_id($log->speaker_id) )
+      return false;
 
-
+    $source->action = json_encode(array(
+      'time' => date('Y-m-d H:i:s'),
+      'func' => __FUNCTION__,
+      'data' => $params,
+    ));
+    $source->save();
+    return  MyLineBotMsg::create ()->text('請輸入金額(元)');
   }
 }

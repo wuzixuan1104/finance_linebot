@@ -74,7 +74,7 @@ class Line extends ApiController {
 
         case 'Postback':
           $data = json_decode( $log->data, true );
-          if ( !(isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'] ) ))
+          if ( !(isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'], $log ) ))
             return false;
           $msg->reply ($event->getReplyToken());
           break;
