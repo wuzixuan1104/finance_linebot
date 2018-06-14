@@ -57,8 +57,8 @@ class Line extends ApiController {
                   break;
                 case 'calcB': //xxx->台幣
                   $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
-                  $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "可以換" . $money * $action['data']['passbook_buy'] . "元台幣\r\n";
-                  $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "可以換" . $money * $action['data']['cash_buy'] . "元";
+                  $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "需要花" . round($money / $action['data']['passbook_buy'], 4) . "元台幣\r\n";
+                  $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "需要花" . round($money / $action['data']['cash_buy'], 4) . "元台幣";
                   break;
               }
               MyLineBotMsg::create ()->text($msg)->reply ($event->getReplyToken());

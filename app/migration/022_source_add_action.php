@@ -8,7 +8,7 @@
  */
 
 return array (
-    'up' => "ALTER TABLE `sources` ADD `action` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '動作' AFTER `type`;",
+    'up' => "ALTER TABLE `sources` ADD `action` TEXT COLLATE utf8mb4_unicode_ci COMMENT '動作' AFTER `type`;",
     'down' => "ALTER TABLE `sources` DROP COLUMN `action`;",
     'at' => "2018-06-14 15:09:47",
   );
