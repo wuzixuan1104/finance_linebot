@@ -46,8 +46,14 @@ class Line extends ApiController {
             $this->initIntro($event);
 
           if( !empty($source->action) ) {
-            
+            Log::info('not empty ~~~~~~~~~~~');
             $action = json_decode($source->action, true);
+            if( strtotime($action['time']) >= strtotime("now - 3 minutes") ) {
+              Log::info('time');
+            }
+            if( is_numeric($event->getText()) ) {
+              Log::info('is number');
+            }
             if ( strtotime($action['time']) >= strtotime("now - 3 minutes") && is_numeric($event->getText()) && $money = $event->getText() ) {
               Log::info('time');
               $msg = '';
