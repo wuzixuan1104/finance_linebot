@@ -40,7 +40,7 @@ class ForexProcess {
     if( !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
 
-    if( !$currency = Currency::find_by_id($params['currency_id']) )
+    if( !$currency = Currency::find_by_id($params['\currency_id']) )
       return false;
     if( !$bank = Bank::find_by_id($params['bank_id']) )
       return false;
@@ -59,7 +59,20 @@ class ForexProcess {
     }
 
     $msg .= "\r\n\r\n回選單首頁請輸入\"hello\"";
-    return MyLineBotMsg::create()
-              ->text($msg);
+
+    return  MyLineBotMsg::create ()->multi ([
+              MyLineBotMsg::create()->text($msg),
+              MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+                MyLineBotMsg::create()->templateConfirm( '歡迎使用匯率試算！', [
+                  MyLineBotActionMsg::create()->postback( '台幣 -> ' . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
+                  MyLineBotActionMsg::create()->postback( $currency->name . ' -> 台幣', array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
+                ]))]);
+  }
+
+  public function getCalcType($params) {
+    if( !isset($params['type']) || empty($params['type']) || !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
+      return false;
+  
+
   }
 }
