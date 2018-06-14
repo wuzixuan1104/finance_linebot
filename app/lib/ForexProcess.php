@@ -83,7 +83,8 @@ class ForexProcess {
       'data' => $params,
     ));
     Log::info('hehehe: '.$source->action);
-    $source->save();
+    if( !$source->save() )
+      Log::info('source insert fail');
     return  MyLineBotMsg::create ()->text('請輸入金額(元)');
   }
 }
