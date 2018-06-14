@@ -63,11 +63,11 @@ class ForexProcess {
     return  MyLineBotMsg::create ()->multi ([
               MyLineBotMsg::create()->text($msg),
               MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-                MyLineBotMsg::create()->templateCarousel(
+                MyLineBotMsg::create()->templateCarousel([
                   MyLineBotMsg::create()->templateCarouselColumn('請選擇銀行', '查詢外匯', null, [
                     MyLineBotActionMsg::create()->postback( "台幣 -> " . $currency->name, array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), '台幣 -> ' . $currency->name),
                     MyLineBotActionMsg::create()->postback( $currency->name . " -> 台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $params['currency_id'], 'bank_id' => $params['bank_id']) ), $currency->name . ' -> 台幣'),
-                  ])
+                  ])]
                 ))]);
   }
 
