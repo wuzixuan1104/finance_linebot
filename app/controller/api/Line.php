@@ -128,35 +128,48 @@ class Line extends ApiController {
     $columnArr = [];
     $currencies = array_chunk( $currencies, 3 );
     foreach( $currencies as $key => $currency ) {
-      if($key > 9) break;
+      // if($key > 9) break;
 
       $actionArr = [];
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
 
       //不足3補足
-      if( ($currencySub = 3 - count($currency)) != 0)
-        for($i = 0; $i < $currencySub; $i++ ) {
+      if( ($currencySub = 3 - count($currency)) != 0 )
+        for( $i = 0; $i < $currencySub; $i++ )
           $actionArr[] = MyLineBotActionMsg::create()->postback( '-', array(), '-');
-        }
 
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
     }
 
-    // $template = implode(',', array_map( function($columnArr) {
-    //   return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-    //     MyLineBotMsg::create()->templateCarousel( $columnArr )
-    //   );
-    // }, $columnArrs));
 
-    MyLineBotMsg::create ()
-      ->multi ([
-        MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
-        MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
-        MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-          MyLineBotMsg::create()->templateCarousel( $columnArr )
-        ),
-    ])->reply ($event->getReplyToken());
+
+    // $template = implode(',', array_map( function($column) {
+    //   return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+    //     MyLineBotMsg::create()->templateCarousel( $column )
+    //   );
+    // }, $columnArr ) );
+
+
+    // $c = MyLineBotMsg::create ()
+    //   ->multi ([
+    //     MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
+    //     MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
+    //     MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+    //       MyLineBotMsg::create()->templateCarousel( $columnArr )
+    //     ),
+    // ]);
+    $multiArr = [ MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'), MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯')];
+    $multiArr = array_merge( $multiArr, array_map( function($column) {
+      return  MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+        MyLineBotMsg::create()->templateCarousel( $column )
+      );
+    }, array_chunk($columnArr, 5) ));
+
+
+    MyLineBotMsg::create()->multi ($multiArr)->reply ($event->getReplyToken());;
+    // print_r($c);
+    // // ->reply ($event->getReplyToken());
 
 
     die;
