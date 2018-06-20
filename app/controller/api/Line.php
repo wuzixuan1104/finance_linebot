@@ -51,9 +51,9 @@ class Line extends ApiController {
           if ($result['k'] && $msg = ForexProcess::begin() )
             $msg->reply($event->getReplyToken());
 
-          if( $msg = ForexProcess::getCalcResult($source->action, $event->getText()) )
+          if( $msg = ForexProcess::getCalcResult($source, $event->getText()) )
             $msg->reply($event->getReplyToken());
-            
+
           // if( isset($source->action) && !empty($source->action) ) {
           //   $action = json_decode($source->action, true);
           //

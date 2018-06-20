@@ -136,12 +136,12 @@ class ForexProcess {
   /* 目的：顯示換算結果
    * 方法：使用者傳入text時偵測是否Source->action有東西且在時效內3min
    */
-  public function getCalcResult($action, $money) {
-    if( !isset($action) || empty($action) )
+  public static function getCalcResult($source, $money) {
+    if( !isset($source->action) || empty($source->action) )
       return false;
 
     $result = false;
-    $action = json_decode($action, true);
+    $action = json_decode($source->action, true);
     if ( strtotime($action['time']) >= strtotime("now - 3 minutes") ) {
       if( ($money = (int)$money ) == 0)
         return false;
@@ -172,7 +172,7 @@ class ForexProcess {
             )),
       ]);
     }
-    $source->action = null;
+    $source->action = '';
     $source->save();
 
     return $result;
