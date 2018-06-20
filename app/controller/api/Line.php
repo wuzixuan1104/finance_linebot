@@ -143,8 +143,6 @@ class Line extends ApiController {
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
     }
 
-    print_r($columnArr);
-    die;
     // $template = implode(',', array_map( function($columnArr) {
     //   return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
     //     MyLineBotMsg::create()->templateCarousel( $columnArr )
