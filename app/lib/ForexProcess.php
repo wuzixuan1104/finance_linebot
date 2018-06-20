@@ -22,7 +22,8 @@ class ForexProcess {
       $actionArr = [];
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
-      //不足3補足
+
+      //檢查是否每項為3個
       if( ($currencySub = 3 - count($currency)) != 0 )
         for( $i = 0; $i < $currencySub; $i++ )
           $actionArr[] = MyLineBotActionMsg::create()->postback( '-', array(), '-');
@@ -47,20 +48,33 @@ class ForexProcess {
     if( !$records = PassbookRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
       return false;
 
-    $columnArr = [];
-    $records = array_chunk( $records, 3 );
-    foreach( $records as $key => $record ) {
-      if($key > 9) break;
-      if(count($record) != 3) break;
+    foreach( array_chunk( $records, 3 ) as $key => $record ) {
+      // if($key > 9) break;
+      // if(count($record) != 3) break;
+
       $actionArr = [];
       foreach( $record as $vrecord )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vrecord->bank->name, array('lib' => 'ForexProcess', 'method' => 'getRecords', 'param' => array('currency_id' => $params['currency_id'], 'bank_id' => $vrecord->bank->id) ), $vrecord->bank->name);
+
+      //檢查是否每項為3個
+      if( ($recordSub = 3 - count($record)) != 0 )
+        for( $i = 0; $i < $recordSub; $i++ )
+          $actionArr[] = MyLineBotActionMsg::create()->postback( '-', array(), '-');
+
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇銀行', '查詢外匯', null, $actionArr);
     }
 
-    return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-      MyLineBotMsg::create()->templateCarousel( $columnArr )
-    );
+    $multiArr = array_map( function($column) {
+      return  MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+        MyLineBotMsg::create()->templateCarousel( $column )
+      );
+    }, array_chunk($columnArr, 10) );
+
+    return MyLineBotMsg::create()->multi ($multiArr);
+
+    // return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+    //   MyLineBotMsg::create()->templateCarousel( $columnArr )
+    // );
   }
 
   public static function getRecords($params, $log = '') {

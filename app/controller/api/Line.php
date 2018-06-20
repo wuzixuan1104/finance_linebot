@@ -29,12 +29,16 @@ class Line extends ApiController {
 
       switch( get_class($log) ) {
         case 'Join':
-          $this->initIntro($event);
+          if ( $msg = ForexProcess::begin() )
+            $msg->reply($event->getReplyToken());
+
           break;
         case 'Leave':
           break;
         case 'Follow':
-          $this->initIntro($event);
+          if ( $msg = ForexProcess::begin() )
+            $msg->reply($event->getReplyToken());
+
           break;
         case 'Unfollow':
           break;
@@ -89,67 +93,38 @@ class Line extends ApiController {
           $url = $log->file->url();
           MyLineBotMsg::create()
             ->image($url, $url)
-            ->reply ($event->getReplyToken());
+            ->reply($event->getReplyToken());
           break;
 
         case 'Video':
           $url = $log->file->url();
           MyLineBotMsg::create()
             ->video($url, $url)
-            ->reply ($event->getReplyToken());
+            ->reply($event->getReplyToken());
           break;
 
         case 'Audio':
           $url = $log->file->url();
           MyLineBotMsg::create()
             ->audio($url, 60000)
-            ->reply ($event->getReplyToken());
+            ->reply($event->getReplyToken());
           break;
 
         case 'Location':
           MyLineBotMsg::create()
             ->location($log->title, $log->address, $log->latitude, $log->longitude)
-            ->reply ($event->getReplyToken());
+            ->reply($event->getReplyToken());
           break;
 
         case 'Postback':
           $data = json_decode( $log->data, true );
-          if ( !(isset( $data['lib'], $data['method'] ) && Load::lib( $data['lib'] . '.php') && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'], $log ) ))
+          if ( !(isset( $data['lib'], $data['method'] ) && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'], $log ) ))
             return false;
-          $msg->reply ($event->getReplyToken());
+
+          $msg->reply($event->getReplyToken());
           break;
       }
     }
-  }
-
-  public function initIntro($event) {
-    if( !$currencies = Currency::find('all', array('where' => array('enable' => Currency::ENABLE_ON ) ) ) )
-      return false;
-
-    foreach( array_chunk( $currencies, 3 ) as $key => $currency ) {
-      $actionArr = [];
-      foreach( $currency as $vcurrency )
-        $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
-
-      //不足3補足
-      if( ($currencySub = 3 - count($currency)) != 0 )
-        for( $i = 0; $i < $currencySub; $i++ )
-          $actionArr[] = MyLineBotActionMsg::create()->postback( '-', array(), '-');
-
-      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
-    }
-
-    $multiArr = [ MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'), MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯')];
-    $multiArr = array_merge( $multiArr, array_map( function($column) {
-      return  MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-        MyLineBotMsg::create()->templateCarousel( $column )
-      );
-    }, array_chunk($columnArr, 10) ));
-
-
-    MyLineBotMsg::create()->multi ($multiArr)->reply ($event->getReplyToken());;
-
-    die;
   }
 
 }
