@@ -10,6 +10,7 @@
 Load::lib ('MyLineBot.php');
 
 class ForexProcess {
+
   public function __construct() {
   }
 
@@ -30,12 +31,13 @@ class ForexProcess {
     }
 
     $multiArr = [ MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'), MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯')];
-
-    return array_merge( $multiArr, array_map( function($column) {
+    $multiArr = array_merge( $multiArr, array_map( function($column) {
       return  MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
         MyLineBotMsg::create()->templateCarousel( $column )
       );
     }, array_chunk($columnArr, 10) ));
+
+    return MyLineBotMsg::create()->multi ($multiArr);
   }
 
   public static function getBanks($params, $log) {
