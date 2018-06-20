@@ -14,7 +14,8 @@ class Line extends ApiController {
   }
 
   public function index() {
-    Load::lib ('MyLineBot.php');
+    Load::lib('MyLineBot.php');
+    Load::lib('ForexProcess.php');
     Load::sysFunc('file.php');
 
     $events = MyLineBot::events();
@@ -42,8 +43,8 @@ class Line extends ApiController {
           $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           preg_match_all ($pattern, $log->text, $result);
 
-          if ($result['k'])
-            $this->initIntro($event);
+          if ($result['k'] && $msg = ForexProcess::begin() )
+            $msg->reply($event->getReplyToken());
 
           if( !empty($source->action) ) {
             $action = json_decode($source->action, true);
@@ -125,11 +126,7 @@ class Line extends ApiController {
     if( !$currencies = Currency::find('all', array('where' => array('enable' => Currency::ENABLE_ON ) ) ) )
       return false;
 
-    $columnArr = [];
-    $currencies = array_chunk( $currencies, 3 );
-    foreach( $currencies as $key => $currency ) {
-      // if($key > 9) break;
-
+    foreach( array_chunk( $currencies, 3 ) as $key => $currency ) {
       $actionArr = [];
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
@@ -142,35 +139,15 @@ class Line extends ApiController {
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
     }
 
-
-
-    // $template = implode(',', array_map( function($column) {
-    //   return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-    //     MyLineBotMsg::create()->templateCarousel( $column )
-    //   );
-    // }, $columnArr ) );
-
-
-    // $c = MyLineBotMsg::create ()
-    //   ->multi ([
-    //     MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'),
-    //     MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯'),
-    //     MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
-    //       MyLineBotMsg::create()->templateCarousel( $columnArr )
-    //     ),
-    // ]);
     $multiArr = [ MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'), MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯')];
     $multiArr = array_merge( $multiArr, array_map( function($column) {
       return  MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
         MyLineBotMsg::create()->templateCarousel( $column )
       );
-    }, array_chunk($columnArr, 5) ));
+    }, array_chunk($columnArr, 10) ));
 
 
     MyLineBotMsg::create()->multi ($multiArr)->reply ($event->getReplyToken());;
-    // print_r($c);
-    // // ->reply ($event->getReplyToken());
-
 
     die;
   }

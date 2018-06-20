@@ -13,6 +13,31 @@ class ForexProcess {
   public function __construct() {
   }
 
+  public static function begin() {
+    if( !$currencies = Currency::find('all', array('where' => array('enable' => Currency::ENABLE_ON ) ) ) )
+      return false;
+
+    foreach( array_chunk( $currencies, 3 ) as $key => $currency ) {
+      $actionArr = [];
+      foreach( $currency as $vcurrency )
+        $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
+      //不足3補足
+      if( ($currencySub = 3 - count($currency)) != 0 )
+        for( $i = 0; $i < $currencySub; $i++ )
+          $actionArr[] = MyLineBotActionMsg::create()->postback( '-', array(), '-');
+
+      $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
+    }
+
+    $multiArr = [ MyLineBotMsg::create ()->text ('歡迎使用理財小精靈: )'), MyLineBotMsg::create ()->text ('以下提供查詢各家銀行外匯')];
+
+    return array_merge( $multiArr, array_map( function($column) {
+      return  MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+        MyLineBotMsg::create()->templateCarousel( $column )
+      );
+    }, array_chunk($columnArr, 10) ));
+  }
+
   public static function getBanks($params, $log) {
     if( !isset($params['currency_id']) || empty($params['currency_id']) )
       return false;
@@ -82,9 +107,9 @@ class ForexProcess {
       'func' => __FUNCTION__,
       'data' => $params,
     ));
-    Log::info('hehehe: '.$source->action);
     if( !$source->save() )
       Log::info('source insert fail');
+
     return  MyLineBotMsg::create ()->text('請輸入金額(元)');
   }
 }
