@@ -83,50 +83,47 @@ class MyLineBot extends LINEBot{
 }
 
 class MyLineBotLog {
-  private $param = null, $source = null, $speaker = null, $event = null;
+  private $source, $speaker, $event, $param;
 
   public function __construct($source, $speaker, $event) {
     $this->source = $source;
     $this->speaker = $speaker;
     $this->event = $event;
+    $this->param = [];
   }
-  public static function init($source, $speaker, $event) {
+
+  public static function init( $source, $speaker, $event ) {
     return new MyLineBotLog($source, $speaker, $event);
   }
 
   public function create() {
-    if( $this->event->getType() == 'message' )
-      $this->getParam() == null && $this->setParam();
+    if( $this->event->getType() == ' message' )
+      $this->setMessageParam();
 
-    $split = explode("\\", get_class($this->event));
-    $type = lcfirst( $split[count($split)-1] );
+    $class = get_class($this->event);
+    $func = lcfirst( substr($class, ($pos = strripos($class, '\\')) + 1, strlen($class) - $pos ) );
 
-    Log::info($type);
-    if( method_exists( __CLASS__, $type ) )
-      return $this->{$type}($this->event);
-    Log::info('true==========');
-    return true;
+    if( method_exists(__CLASS__, $func) )
+      return $this->$func();
+    return false;
   }
 
-  private function setParam() {
-    $this->param = array(
+  public function setMessageParam() {
+    $this->param = [
       'source_id' => $this->source->id,
       'speaker_id' => $this->speaker->id,
       'reply_token' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '',
       'message_id' => $this->event->getMessageId() ? $this->event->getMessageId() : '',
       'timestamp' => $this->event->getTimestamp() ? $this->event->getTimestamp() : '',
-    );
-  }
-  private function getParam() {
-    return $this->param;
+    ];
+    return $this;
   }
 
   private function textMessage() {
-    $param = array_merge( $this->getParam(), array('text' => $this->event->getText()) );
+    $param = array_merge( $this->param, array('text' => $this->event->getText()) );
     if( !Text::transaction( function() use ($param, &$obj) { return $obj = Text::create($param); }) )
       return false;
     return $obj;
-
   }
 
   private function imageMessage() {
@@ -135,7 +132,7 @@ class MyLineBotLog {
     if ( !$obj->isSucceeded() )
       return false;
 
-    $param = array_merge( $this->getParam(), array('file' => '') );
+    $param = array_merge( $this->param, array('file' => '') );
     $filename = FCPATH . 'tmp' . DIRECTORY_SEPARATOR . uniqid( rand() . '_' ) . get_extension_by_mime( $obj->getHeader('Content-Type') );
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $image = Image::create($param) ) )
@@ -152,7 +149,7 @@ class MyLineBotLog {
     if ( !$obj->isSucceeded() )
       return false;
 
-    $param = array_merge( $this->getParam(), array('file' => '') );
+    $param = array_merge( $this->param, array('file' => '') );
     $filename = FCPATH . 'tmp' . DIRECTORY_SEPARATOR . uniqid( rand() . '_' ) . get_extension_by_mime( $obj->getHeader('Content-Type') );
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $video = Video::create($param) ) )
@@ -168,7 +165,7 @@ class MyLineBotLog {
     if ( !$obj->isSucceeded() )
       return false;
 
-    $param = array_merge( $this->getParam(), array('file' => '') );
+    $param = array_merge( $this->param, array('file' => '') );
     $filename = FCPATH . 'tmp' . DIRECTORY_SEPARATOR . uniqid( rand() . '_' ) . get_extension_by_mime( $obj->getHeader('Content-Type') );
 
     if ( !(write_file( $filename, $obj->getRawBody()) && $audio = Audio::create($param) ) )
@@ -180,22 +177,18 @@ class MyLineBotLog {
   }
 
   private function fileMessage() {
-    $param = array_merge( $this->getParam(), array('text' => $this->event->getText()) );
+    $param = array_merge( $this->param, array('text' => $this->event->getText()) );
     return Text::transaction( function() use ($param) {
       return Text::create($param);
     });
   }
 
   private function locationMessage() {
-    $param = array_merge( $this->getParam(), array( 'title' =>  $this->event->getTitle(), 'address' =>  $this->event->getAddress(), 'latitude' =>  $this->event->getLatitude(), 'longitude' =>  $this->event->getLongitude(), ));
+    $param = array_merge( $this->param, array( 'title' =>  $this->event->getTitle(), 'address' =>  $this->event->getAddress(), 'latitude' =>  $this->event->getLatitude(), 'longitude' =>  $this->event->getLongitude(), ));
     if( !Location::transaction(function ($param, &$obj) { return $obj = Location::create($param);}, $param, $obj) ) {
       return false;
     }
     return $obj;
-  }
-
-  private function stickerMessage() {
-
   }
 
   private function followEvent() {
