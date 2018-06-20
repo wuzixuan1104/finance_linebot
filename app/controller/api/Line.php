@@ -129,15 +129,15 @@ class Line extends ApiController {
     $currencies = array_chunk( $currencies, 3 );
     foreach( $currencies as $key => $currency ) {
       if($key > 9) break;
-      // if( count($currency) != 3 )
-      //   break;
+
       $actionArr = [];
       foreach( $currency as $vcurrency )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vcurrency->name, array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array('currency_id' => $vcurrency->id) ), $vcurrency->name);
 
+      //不足3補足
       if( ($currencySub = 3 - count($currency)) != 0)
         for($i = 0; $i < $currencySub; $i++ ) {
-          $actionArr[] = MyLineBotActionMsg::create()->postback( '===', array('lib' => 'ForexProcess', 'method' => 'getBanks', 'param' => array() ), '===');
+          $actionArr[] = MyLineBotActionMsg::create()->postback( '-', array(), '-');
         }
 
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
