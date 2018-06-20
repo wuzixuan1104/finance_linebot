@@ -75,13 +75,15 @@ class ForexProcess {
     return MyLineBotMsg::create()->multi ($multiArr);
   }
 
-  /* 目的：顯示選擇的貨幣銀行紀錄
+  /* 目的：顯示選擇的貨幣銀行紀錄 及 顯示換算的貨幣方式對話匡
    * 方法：postback回傳呼叫
    */
   public static function getRecords($params, $log = '') {
     if( !isset($params['currency_id']) || empty($params['currency_id']) || !isset($params['bank_id']) || empty($params['bank_id']) )
       return false;
-    if( !$currency = Currency::find_by_id($params['currency_id']) || !$bank = Bank::find_by_id($params['bank_id']) )
+    if( !$currency = Currency::find_by_id($params['currency_id']) )
+      return false;
+    if( !$bank = Bank::find_by_id($params['bank_id']) )
       return false;
 
     $msg = "[ " . $currency->name . " / " . $bank->name . " ]\r\n\r\n";
