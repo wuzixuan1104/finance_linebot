@@ -8,6 +8,7 @@
  */
 
 class Line extends ApiController {
+  static $cache;
   public function __construct() {
     parent::__construct();
 
@@ -50,6 +51,9 @@ class Line extends ApiController {
           if ($result['k'] && $msg = ForexProcess::begin() )
             $msg->reply($event->getReplyToken());
 
+          if( $msg = ForexProcess::getCalcResult($source->action, $event->getText()) )
+            $msg->reply($event->getReplyToken());
+            
           // if( isset($source->action) && !empty($source->action) ) {
           //   $action = json_decode($source->action, true);
           //
@@ -118,7 +122,8 @@ class Line extends ApiController {
 
         case 'Postback':
           $data = json_decode( $log->data, true );
-          if ( !(isset( $data['lib'], $data['method'] ) && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'], $log ) ))
+          if ( !( isset( $data['lib'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : true ) )
+               && method_exists($lib = $data['lib'], $method = $data['method']) && $msg = $lib::$method( $data['param'], $log ) ) )
             return false;
 
           $msg->reply($event->getReplyToken());

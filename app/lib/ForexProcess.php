@@ -132,4 +132,49 @@ class ForexProcess {
       return false;
     return  MyLineBotMsg::create ()->text('請輸入金額(元)');
   }
+
+  /* 目的：顯示換算結果
+   * 方法：使用者傳入text時偵測是否Source->action有東西且在時效內3min
+   */
+  public function getCalcResult($action, $money) {
+    if( !isset($action) || empty($action) )
+      return false;
+
+    $result = false;
+    $action = json_decode($action, true);
+    if ( strtotime($action['time']) >= strtotime("now - 3 minutes") ) {
+      if( ($money = (int)$money ) == 0)
+        return false;
+
+      $msg = '';
+      switch($action['data']['type']) {
+        case 'calcA': //台幣->xxx
+          $msg .= "台幣兌換". $action['data']['name'] ."\r\n=================\r\n";
+          $msg .= "牌照： " . $money . "元台幣可以換" . round($money / $action['data']['passbook_buy'], 4) . "元" . $action['data']['name'] . "\r\n";
+          $msg .= "現鈔： " . $money . "元台幣可以換" . round($money / $action['data']['cash_buy'], 4) . "元" . $action['data']['name'];
+          break;
+        case 'calcB': //xxx->台幣
+          $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
+          $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['passbook_buy'] . "元台幣\r\n";
+          $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['cash_buy'] . "元台幣";
+          break;
+      }
+
+      $result = MyLineBotMsg::create ()
+        ->multi ([
+          MyLineBotMsg::create ()->text($msg),
+          MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
+            MyLineBotMsg::create()->templateCarousel([
+              MyLineBotMsg::create()->templateCarouselColumn('歡迎使用匯率試算服務！', 'by chestnuter :)', null, [
+                MyLineBotActionMsg::create()->postback( "台幣 -> " . $action['data']['name'], array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcA', 'currency_id' => $action['data']['currency_id'], 'bank_id' => $action['data']['bank_id'], 'passbook_buy' => $action['data']['passbook_buy'], 'cash_buy' => $action['data']['cash_buy'], 'name' => $action['data']['name'] ) ), '台幣 -> ' . $action['data']['name']),
+                MyLineBotActionMsg::create()->postback( $action['data']['name'] . " -> 台幣", array('lib' => 'ForexProcess', 'method' => 'getCalcType', 'param' => array('type' => 'calcB', 'currency_id' => $action['data']['currency_id'], 'bank_id' => $action['data']['bank_id'], 'passbook_buy' => $action['data']['passbook_buy'], 'cash_buy' => $action['data']['cash_buy'], 'name' => $action['data']['name'] ) ), $action['data']['name'] . ' -> 台幣'),
+              ])]
+            )),
+      ]);
+    }
+    $source->action = null;
+    $source->save();
+
+    return $result;
+  }
 }
