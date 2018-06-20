@@ -128,7 +128,7 @@ class Line extends ApiController {
     $columnArr = [];
     $currencies = array_chunk( $currencies, 3 );
     foreach( $currencies as $key => $currency ) {
-      // if($key > 9) break;
+      if($key > 9) break;
       if( count($currency) != 3 )
         break;
       $actionArr = [];
@@ -143,7 +143,8 @@ class Line extends ApiController {
       $columnArr[] = MyLineBotMsg::create()->templateCarouselColumn('請選擇貨幣', '查詢外匯', null, $actionArr);
     }
 
-
+    print_r($columnArr);
+    die;
     // $template = implode(',', array_map( function($columnArr) {
     //   return MyLineBotMsg::create()->template('這訊息要用手機的賴才看的到哦',
     //     MyLineBotMsg::create()->templateCarousel( $columnArr )
