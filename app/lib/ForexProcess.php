@@ -51,8 +51,16 @@ class ForexProcess {
     if( !isset($params['currency_id']) || empty($params['currency_id']) )
       return false;
 
-    if( !$records = PassbookRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
+    if( !$passRecords = PassbookRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
+      $passRecords = [];
+
+    if( !$cashRecords = CashRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `cash_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
+      $cashRecords = [];
+
+    if( empty($passRecords) && empty($cashRecords) )
       return false;
+
+    $records = array_unique(array_merge( array_orm_column($passRecords, 'bank_id'), array_orm_column($cashRecords, 'bank_id') ));
 
     foreach( array_chunk( $records, 3 ) as $key => $record ) {
       $actionArr = [];
