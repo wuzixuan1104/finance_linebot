@@ -51,18 +51,22 @@ class ForexProcess {
     if( !isset($params['currency_id']) || empty($params['currency_id']) )
       return false;
 
-    if( !$passRecords = PassbookRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
-      $passRecords = [];
+    $records = [];
+    if( $passRecords = PassbookRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `passbook_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
+      array_map( function($passRecord) use (&$records){
+        return $records[$passRecord->bank_id] = $passRecord;
+      }, $passRecords);
 
-    if( !$cashRecords = CashRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `cash_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
-      $cashRecords = [];
+    if( $cashRecords = CashRecord::find('all', array( 'where' => array( "( bank_id, currency_id, created_at ) in ( select `bank_id`, `currency_id`, max(`created_at`) from `cash_records` where `currency_id` = ? group by `bank_id` ) ", $params['currency_id']) )) )
+      array_map( function($cashRecord) use (&$records) {
+        if( !isset($records[$cashRecord->bank_id]) )
+          return $records[$cashRecord->bank_id] = $cashRecord;
+      }, $cashRecords);
 
-    if( empty($passRecords) && empty($cashRecords) )
+    if( empty($records) )
       return false;
 
-    $records = array_unique(array_merge( array_orm_column($passRecords, 'bank_id'), array_orm_column($cashRecords, 'bank_id') ));
-
-    foreach( array_chunk( $records, 3 ) as $key => $record ) {
+    foreach( array_chunk( $records, 3 ) as $record ) {
       $actionArr = [];
       foreach( $record as $vrecord )
         $actionArr[] = MyLineBotActionMsg::create()->postback( $vrecord->bank->name, array('lib' => 'ForexProcess', 'method' => 'getRecords', 'param' => array('currency_id' => $params['currency_id'], 'bank_id' => $vrecord->bank->id) ), $vrecord->bank->name);
