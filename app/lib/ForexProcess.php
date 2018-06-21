@@ -163,14 +163,14 @@ class ForexProcess {
         case 'calcA': //台幣->xxx
           $msg .= "台幣兌換". $action['data']['name'] ."\r\n=================\r\n";
           if( $action['data']['passbook_sell'] != null )
-            $msg .= "牌照： " . $money . "元台幣可以換" . round($money / $action['data']['passbook_sell'], 4) . "元" . $action['data']['name'] . "\r\n";
+            $msg .= "牌吿： " . $money . "元台幣可以換" . round($money / $action['data']['passbook_sell'], 4) . "元" . $action['data']['name'] . "\r\n";
           if( $action['data']['cash_sell'] != null )
             $msg .= "現鈔： " . $money . "元台幣可以換" . round($money / $action['data']['cash_sell'], 4) . "元" . $action['data']['name'];
           break;
         case 'calcB': //xxx->台幣
           $msg .= $action['data']['name'] . "兌換台幣" ."\r\n=================\r\n";
           if( $action['data']['passbook_sell'] != null )
-            $msg .= "牌照： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['passbook_sell'] . "元台幣\r\n";
+            $msg .= "牌吿： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['passbook_sell'] . "元台幣\r\n";
           if( $action['data']['cash_sell'] != null )
             $msg .= "現鈔： " . $money . "元" . $action['data']['name'] . "需要花" . $money * $action['data']['cash_sell'] . "元台幣";
           break;

@@ -7,8 +7,8 @@
  * @link        https://www.ioa.tw/
  */
 
-class PassbookRecord extends Model {
-  static $table_name = 'passbook_records';
+class HistoryRecord extends Model {
+  static $table_name = 'history_records';
 
   static $has_one = array (
   );
@@ -17,7 +17,14 @@ class PassbookRecord extends Model {
   );
 
   static $belongs_to = array (
-    array('bank', 'class_name' => 'Bank'),
+  );
+
+  const TYPE_PASSBOOK = 'passbook';
+  const TYPE_CASH = 'cash';
+
+  static $typeTexts = array(
+    self::TYPE_PASSBOOK => '牌告',
+    self::TYPE_CASH => '現鈔',
   );
 
   public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {
@@ -27,7 +34,7 @@ class PassbookRecord extends Model {
   public function destroy () {
     if (!isset ($this->id))
       return false;
-    echo $this->id ."\r\n";
+
     return $this->delete ();
   }
 }
