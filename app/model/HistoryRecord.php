@@ -22,9 +22,17 @@ class HistoryRecord extends Model {
   const TYPE_PASSBOOK = 'passbook';
   const TYPE_CASH = 'cash';
 
+  const KIND_MAX = 'max';
+  const KIND_MIN = 'min';
+
   static $typeTexts = array(
     self::TYPE_PASSBOOK => '牌告',
     self::TYPE_CASH => '現鈔',
+  );
+
+  static $kindTexts = array(
+    self::KIND_MAX => '最大',
+    self::KIND_MIN => '最小',
   );
 
   public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {

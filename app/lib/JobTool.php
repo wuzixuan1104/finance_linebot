@@ -86,8 +86,10 @@ class JobTool extends Controller{
 
     $transactionPass = function ($passbookTimes, $passbookRecords) {
       foreach ( $passbookRecords as $key => $passbookRecord ) {
-        if ( !$time = CurrencyTime::create( array('datetime' => $passbookTimes[$key]) ) )
-          return false;
+        if ( !$time = CurrencyTime::find_by_datetime($passbookTimes[$key]) )
+          if( !$time = CurrencyTime::create( array('datetime' => $passbookTimes[$key]) ) )
+            return false;
+
         if ( !PassbookRecord::create( array_merge( $passbookRecord, array('currency_time_id' => $time->id) ) ) )
           return false;
         echo "牌告新增成功 -> 貨幣ID: " . $passbookRecord['currency_id'] . " |  銀行ID: " . $passbookRecord['bank_id'] . "\r\n";
@@ -97,8 +99,9 @@ class JobTool extends Controller{
 
     $transactionCash = function ($cashTimes, $cashRecords) {
       foreach ( $cashRecords as $key => $cashRecord ) {
-        if ( !$time = CurrencyTime::create( array('datetime' => $cashTimes[$key]) ) )
-          return false;
+        if ( !$time = CurrencyTime::find_by_datetime($cashTimes[$key]) )
+          if( !$time = CurrencyTime::create( array('datetime' => $cashTimes[$key]) ) )
+            return false;
         if ( !CashRecord::create( array_merge( $cashRecord, array('currency_time_id' => $time->id) ) ) )
           return false;
         echo "現鈔新增成功 -> 貨幣ID: " . $cashRecord['currency_id'] . " |  銀行ID: " . $cashRecord['bank_id'] . "\r\n";
@@ -165,34 +168,93 @@ class JobTool extends Controller{
    * 2. 其他刪除也要刪除對應的currency_time
    */
   public function forexRecordJob() {
-    /* passbook_records */
+    $passTransaction = function() {
+      if( $maxPasses = PassbookRecord::find('all', array( 'where' => array( "(`currency_id`, `bank_id`, `sell`) in ( select `currency_id`, `bank_id`, max(`sell`) as sell from `passbook_records` where date(created_at) = date(now()) group by `currency_id`, `bank_id`)"), 'group' => '`currency_id`, `bank_id`' )) ) {
+        foreach( $maxPasses as $maxPass ) {
+          $param = array(
+            'type' => HistoryRecord::TYPE_PASSBOOK,
+            'kind' => HistoryRecord::KIND_MAX,
+            'currency_id' => $maxPass->currency_id,
+            'currency_time_id' => $maxPass->currency_time_id,
+            'bank_id' => $maxPass->bank_id,
+            'buy' => $maxPass->buy,
+            'sell' => $maxPass->sell,
+          );
 
-    //取得全部的currency_time_id扣掉保存至歷史紀錄的id
-    if( !$currencyTimeIds = array_orm_column(PassbookRecord::find('all'), 'currency_time_id') )
+          if( !HistoryRecord::create($param) )
+            return false;
+        }
+      }
+      if( $minPasses = PassbookRecord::find('all', array( 'where' => array( "(`currency_id`, `bank_id`, `sell`) in ( select `currency_id`, `bank_id`, min(`sell`) as sell from `passbook_records` where date(created_at) = date(now()) group by `currency_id`, `bank_id`)"), 'group' => '`currency_id`, `bank_id`' )) ) {
+
+        foreach( $minPasses as $minPass ) {
+          $param = array(
+            'type' => HistoryRecord::TYPE_PASSBOOK,
+            'kind' => HistoryRecord::KIND_MIN,
+            'currency_id' => $minPass->currency_id,
+            'currency_time_id' => $minPass->currency_time_id,
+            'bank_id' => $minPass->bank_id,
+            'buy' => $minPass->buy,
+            'sell' => $minPass->sell,
+          );
+
+          if( !HistoryRecord::create($param) )
+            return false;
+        }
+      }
+
+      if( !PassbookRecord::delete_all( array('where' => '1') ) )
+        return false;
+
+      return true;
+    };
+
+    $cashTransaction = function() {
+      if( $maxPasses = CashRecord::find('all', array( 'where' => array( "(`currency_id`, `bank_id`, `sell`) in ( select `currency_id`, `bank_id`, max(`sell`) as sell from `cash_records` where date(created_at) = date(now()) group by `currency_id`, `bank_id`)"), 'group' => '`currency_id`, `bank_id`' )) ) {
+        foreach( $maxPasses as $maxPass ) {
+          $param = array(
+            'type' => HistoryRecord::TYPE_CASH,
+            'kind' => HistoryRecord::KIND_MAX,
+            'currency_id' => $maxPass->currency_id,
+            'currency_time_id' => $maxPass->currency_time_id,
+            'bank_id' => $maxPass->bank_id,
+            'buy' => $maxPass->buy,
+            'sell' => $maxPass->sell,
+          );
+
+          if( !HistoryRecord::create($param) )
+            return false;
+        }
+      }
+
+      if( $minPasses = CashRecord::find('all', array( 'where' => array( "(`currency_id`, `bank_id`, `sell`) in ( select `currency_id`, `bank_id`, min(`sell`) as sell from `cash_records` where date(created_at) = date(now()) group by `currency_id`, `bank_id`)"), 'group' => '`currency_id`, `bank_id`' )) ) {
+        foreach( $minPasses as $minPass ) {
+          $param = array(
+            'type' => HistoryRecord::TYPE_CASH,
+            'kind' => HistoryRecord::KIND_MIN,
+            'currency_id' => $minPass->currency_id,
+            'currency_time_id' => $minPass->currency_time_id,
+            'bank_id' => $minPass->bank_id,
+            'buy' => $minPass->buy,
+            'sell' => $minPass->sell,
+          );
+
+          if( !HistoryRecord::create($param) )
+            return false;
+        }
+      }
+
+      if( !CashRecord::delete_all( array('where' => '1') ) )
+        return false;
+
+      return true;
+    };
+
+    if( !PassbookRecord::transaction($passTransaction) )
       return false;
 
-    if( $maxPasses = PassbookRecord::find('all', array( 'where' => array( "(`currency_id`, `bank_id`, `sell`) in ( select `currency_id`, `bank_id`, max(`sell`) as sell from `passbook_records` group by `currency_id`, `bank_id`) ") )) ) {
-      foreach( $maxPasses as $maxPass ) {
-
-        $param = array(
-          'type' => HistoryRecord::TYPE_PASSBOOK,
-          'currency_id' => $maxPass->currency_id,
-          'currency_time_id' => $maxPass->currency_time_id,
-          'bank_id' => $maxPass->bank_id,
-          'buy' => $maxPass->buy,
-          'sell' => $maxPass->sell,
-        );
-
-        if( !HistoryRecord::create($param) )
-          return false;
-
-        if( !$maxPass->destroy() )
-          return false;
-      }
-      $deleteTimes = array_diff($currencyTimeIds, array_orm_column($maxPasses, 'currency_time_id'));
-      if( !empty($deleteTimes) && !CurrencyTime::delete_all( array('where' => array( 'id in (?)', $deleteTimes) )) )
-        return false;
-    }
+    if( !CashRecord::transaction($cashTransaction) )
+      return false;
 
     return true;
 
