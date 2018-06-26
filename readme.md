@@ -9,13 +9,13 @@
 
 ## 操作說明
 ### step1. 加入機器人帳號或是輸入"hello"，會跳出首頁選單
-    <img src='assets/img/line/IMG_5842.PNG' width='200'>
++ <img src='assets/img/line/IMG_5842.PNG' width='200'>
 ### step2. 選取貨幣後顯示相對應的銀行選單
-    <img src='assets/img/line/IMG_5843.PNG' width='200'>
++ <img src='assets/img/line/IMG_5843.PNG' width='200'>
 ### step3. 顯示該匯率最新查詢結果
-    <img src='assets/img/line/IMG_5844.PNG' width='200'>
++ <img src='assets/img/line/IMG_5844.PNG' width='200'>
 ### step4. 匯率試算 (ex: 100元美元 => 需要花3000台幣才可以兌換...)
-    <img src='assets/img/line/IMG_5845.PNG' width='200'>
++ <img src='assets/img/line/IMG_5845.PNG' width='200'>
 
 ## 相關資料參考
 + 即匯站：https://tw.rter.info
