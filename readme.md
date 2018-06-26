@@ -9,5 +9,5 @@
 
 ## 操作說明
 1. 加入機器人帳號或是輸入"hello"，會跳出首頁選單
-![image](assets/img/line/IMG_5842.PNG)
+<img src='assets/img/line/IMG_5842.PNG' width='200'>
 2.
