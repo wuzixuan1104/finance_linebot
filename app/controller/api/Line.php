@@ -18,16 +18,19 @@ class Line extends ApiController {
     Load::lib('MyLineBot.php');
     Load::lib('ForexProcess.php');
     Load::sysFunc('file.php');
-
+    Log::info('start index');
     $events = MyLineBot::events();
+    Log::info('event start');
     foreach( $events as $event ) {
+      Log::info('event inside');
+
       if( !$source = Source::checkSourceExist($event) )
         continue;
       $speaker = Source::checkSpeakerExist($event);
-
+      Log::info('speaker');
       if (!$log = MyLineBotLog::init($source, $speaker, $event)->create())
         return false;
-
+      Log::info('log end');
       switch( get_class($log) ) {
         case 'Join':
           if ( $msg = ForexProcess::begin() )
