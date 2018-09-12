@@ -116,9 +116,9 @@ class MyLineBotLog {
 
   public function setMessageParam() {
     $this->param = [
-      'source_id' => $this->source->id,
-      'reply_token' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '',
-      'message_id' => $this->event->getMessageId() ? $this->event->getMessageId() : '',
+      'sourceId' => $this->source->id,
+      'replyToken' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '',
+      'messageId' => $this->event->getMessageId() ? $this->event->getMessageId() : '',
       'timestamp' => $this->event->getTimestamp() ? $this->event->getTimestamp() : '',
     ];
     return $this;
@@ -131,31 +131,31 @@ class MyLineBotLog {
   }
 
   private function followEvent() {
-    $param = array( 'source_id' => $this->source->id, 'reply_token' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '', 'timestamp' => $this->event->getTimestamp() ? $this->event->getTimestamp() : '');
+    $param = array( 'sourceId' => $this->source->id, 'replyToken' => $this->event->getReplyToken() ? $this->event->getReplyToken() : '', 'timestamp' => $this->event->getTimestamp() ? $this->event->getTimestamp() : '');
     transaction( function() use ($param, &$obj) { return $obj = \M\Follow::create($param); });
     return $obj;
   }
 
   private function unfollowEvent() {
-    $param = array( 'source_id' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
+    $param = array( 'sourceId' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
     transaction( function() use ($param, &$obj) { return $obj = \M\Unfollow::create($param); });
     return $obj;
   }
 
   private function joinEvent() {
-    $param = array( 'source_id' => $this->source->id, 'reply_token' => $this->event->getReplyToken(), 'timestamp' => $this->event->getTimestamp() );
+    $param = array( 'sourceId' => $this->source->id, 'replyToken' => $this->event->getReplyToken(), 'timestamp' => $this->event->getTimestamp() );
     transaction( function() use ($param, &$obj) { return $obj = \M\Join::create($param); });
     return $obj;
   }
 
   private function leaveEvent() {
-    $param = array( 'source_id' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
+    $param = array( 'sourceId' => $this->source->id, 'timestamp' => $this->event->getTimestamp() );
     transaction( function() use ($param, &$obj) { return $obj = \M\Leave::create($param); });
     return $obj;
   }
 
   private function postbackEvent() {
-    $param = array( 'source_id' => $this->source->id, 'reply_token' => $this->event->getReplyToken(), 'data' => is_array($this->event->getPostbackData())? json_encode($this->event->getPostbackData()) : $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams() ? json_encode($this->event->getPostbackParams()):'', 'timestamp' => $this->event->getTimestamp());
+    $param = array( 'sourceId' => $this->source->id, 'replyToken' => $this->event->getReplyToken(), 'data' => is_array($this->event->getPostbackData())? json_encode($this->event->getPostbackData()) : $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams() ? json_encode($this->event->getPostbackParams()):'', 'timestamp' => $this->event->getTimestamp());
     transaction( function() use ($param, &$obj) { return $obj = \M\Postback::create($param); });
     return $obj;
   }
