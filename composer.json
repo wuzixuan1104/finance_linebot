@@ -1,6 +1,0 @@
-{
-    "require": {
-        "facebook/graph-sdk": "^5.6",
-        "linecorp/line-bot-sdk": "^2.3"
-    }
-}
