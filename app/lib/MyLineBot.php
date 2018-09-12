@@ -67,7 +67,7 @@ class MyLineBot extends LINEBot{
     parent::__construct ($client, $option);
   }
   public static function create() {
-    return new LINEBot( new CurlHTTPClient(config('line', 'channelToken')), ['channelSecret' => config('line', 'channelSecret')]);
+    return new LINEBot( new CurlHTTPClient(config('line', 'channel', 'token')), ['channelSecret' => config('line', 'channel', 'secret')]);
   }
   public static function bot() {
     if (self::$bot)
@@ -81,6 +81,7 @@ class MyLineBot extends LINEBot{
 
     try {
       // Log::info( file_get_contents ("php://input") );
+
       return MyLineBot::bot()->parseEventRequest (file_get_contents ("php://input"), $_SERVER["HTTP_" . HTTPHeader::LINE_SIGNATURE]);
     } catch (Exception $e) {
       return $e;
