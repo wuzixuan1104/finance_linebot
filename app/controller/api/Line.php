@@ -5,6 +5,11 @@ Load::lib('MyLineBot.php');
 class Line extends Controller {
   public function index() {
     $events = MyLineBot::events();
+     echo 123;
+
+          print_r(RichMenuGenerator::create());
+          echo 234;
+          die;
     foreach( $events as $event ) {
 
       if( !$source = \M\Source::checkExist($event) )
@@ -26,6 +31,7 @@ class Line extends Controller {
           $pattern = 'hello';
           $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           preg_match_all ($pattern, $log->text, $result);
+
 
           MyLineBotMsg::create()
             ->text($log->text)
