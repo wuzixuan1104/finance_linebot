@@ -19,6 +19,8 @@ class Source extends Model {
     \Load::lib ('MyLineBot.php');
 
     $response = \MyLineBot::bot()->getProfile($event->getUserId());
+    Log::info($response);
+    
     if ($response->isSucceeded() && $profile = $response->getJSONDecodedBody())
       return $profile['displayName'];
     return '無名人氏';

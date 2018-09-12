@@ -27,8 +27,12 @@ class Line extends Controller {
           $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           preg_match_all ($pattern, $log->text, $result);
 
-          if ($result['k'] && $msg = ForexProcess::begin() )
-            $msg->reply($event->getReplyToken());
+          MyLineBotMsg::create()
+            ->text($log->text)
+            ->reply($event->getReplyToken());
+
+          // if ($result['k'] && $msg = ForexProcess::begin() )
+          //   $msg->reply($event->getReplyToken());
 
           break;
         case 'Postback':
