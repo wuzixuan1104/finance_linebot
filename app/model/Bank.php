@@ -14,4 +14,11 @@ class Bank extends Model {
   // static $belongToMany = [];
 
   // static $uploaders = [];
+
+  const ENABLE_OFF  = 'off';
+  const ENABLE_ON = 'on';
+  const ENABLE = [
+    self::ENABLE_OFF  => '下架', 
+    self::ENABLE_ON => '上架',
+  ];
 }

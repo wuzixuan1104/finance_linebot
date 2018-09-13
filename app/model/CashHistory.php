@@ -14,4 +14,11 @@ class CashHistory extends Model {
   // static $belongToMany = [];
 
   // static $uploaders = [];
+
+  const KIND_MAX  = 'max';
+  const KIND_MIN = 'min';
+  const KIND = [
+    self::KIND_MAX  => '最大值', 
+    self::KIND_MIN => '最小值',
+  ];
 }
