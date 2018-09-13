@@ -14,7 +14,7 @@ class Line extends Controller {
 
       if (!$log = MyLineBotLog::init($source, $event)->create())
         return false;
-
+      Log::info('0');
       switch( trim(get_class($log), "M\\") ) {
         case 'Join':
           break;
