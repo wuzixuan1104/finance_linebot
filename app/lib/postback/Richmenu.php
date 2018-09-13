@@ -17,7 +17,7 @@ class Search {
         $flexes[] = FlexBox::create([
                       FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(7),
                       FlexSeparator::create(),
-                      FlexButton::create('primary')->setColor('#db6a69')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', null, json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'getCurrency', 'param' => ['currencyId' => $v->id]])))
+                      FlexButton::create('primary')->setColor('#dc9455')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', null, json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'getCurrency', 'param' => ['currencyId' => $v->id]])))
                     ])->setLayout('horizontal')->setSpacing('md');
 
         $flexes[] = FlexSeparator::create();
