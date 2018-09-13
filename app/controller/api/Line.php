@@ -44,9 +44,9 @@ class Line extends Controller {
           if( !( isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) )
             && method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) ) )
             {
-              Log::info('class:' . $class);
-              Log::info('method:' . $method);
-              Log::info('param:' . $data['param']);
+              Log::info('class:' . $data['class']);
+              Log::info('method:' . $data['method']);
+              Log::info('param:' . json_encode($data['param']));
             }
           // return false;
 
