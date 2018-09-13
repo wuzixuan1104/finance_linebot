@@ -42,7 +42,7 @@ class Crontab extends Controller{
           $bankContainer[$bankName] = $bank->id;
         }
 
-        $passbookTimes[] = date('Y') . '-' . str_replace('/', '-', $checkContent[3]);
+        $passbookTimes[] = date('Y') . '-' . str_replace('/', '-', $checkContent[3]) . ':00';
 
         $passbookRecords[] = [
           'currencyId' => $currency->id,
@@ -63,7 +63,7 @@ class Crontab extends Controller{
           $bankContainer[$bankName] = $bank->id;
         }
 
-        $cashTimes[] = date('Y') . '-' . str_replace('/', '-', $cashContent[3]);
+        $cashTimes[] = date('Y') . '-' . str_replace('/', '-', $cashContent[3]) . ':00';;
         $cashRecords[] = [
           'currencyId' => $currency->id,
           'bankId' => $bankContainer[$bankName],
