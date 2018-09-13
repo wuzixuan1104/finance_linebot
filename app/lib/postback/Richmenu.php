@@ -17,7 +17,7 @@ class Search {
         $flexes[] = FlexBox::create([
                       FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(7),
                       FlexSeparator::create(),
-                      FlexButton::create('primary')->setColor('#c15858')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', null, json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'getCurrency', 'param' => ['currencyId' => $v->id]])))
+                      FlexButton::create('primary')->setColor('#db6a69')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', null, json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'getCurrency', 'param' => ['currencyId' => $v->id]])))
                     ])->setLayout('horizontal')->setSpacing('md');
 
         $flexes[] = FlexSeparator::create();
@@ -26,7 +26,7 @@ class Search {
       $bubbles[] = FlexBubble::create([
                     'header' => FlexBox::create([FlexText::create('選擇貨幣')->setWeight('bold')->setSize('lg')->setColor('#E9ECEF')])->setSpacing('xs')->setLayout('horizontal'),
                     'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#4a5b5d'))
+                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#344a4c'))
                   ]);
       $flexes = [];
     }
