@@ -40,7 +40,20 @@ class Line extends Controller {
         case 'Postback':
           $data = json_decode( $log->data, true );
 
-          Log::info('data:' . $log->data);
+
+          if(isset( $data['lib'], $data['class'], $data['method'] ) ) {
+            Log::info(0);
+            if(( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) )) {
+              Log::info(1);
+              if(method_exists($class = $data['class'], $method = $data['method'])) {
+                Log::info(2);
+                if($msg = $class::$method( $data['param'], $source )) {
+                  Log::info(3);
+                }
+              }
+            }
+          }
+          die;
           if( !( isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) )
             && method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) ) )
             {
