@@ -9,7 +9,9 @@ class PassbookRecord extends Model {
 
   // static $hasMany = [];
 
-  // static $belongToOne = [];
+  static $belongToOne = [
+    'bank' => 'Bank',
+  ];
 
   // static $belongToMany = [];
 

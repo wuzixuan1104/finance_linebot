@@ -150,6 +150,8 @@ class Crontab extends Controller{
   public function forexRecordJob() {
 
     transaction(function() {
+      $maxDate = \M\PassbookRecord::one(['select' => 'max(`createAt`) as date']);
+      $date = $maxDate->date;
       if( $maxPasses = \M\PassbookRecord::all(['where' => ["(`currencyId`, `bankId`, `sell`) in ( select `currencyId`, `bankId`, max(`sell`) as sell from `PassbookRecord` where date(createAt) = date(now()) group by `currencyId`, `bankId`)"], 'group' => '`currencyId`, `bankId`' ]) ) {
         foreach( $maxPasses as $maxPass ) {
           $param = [
@@ -182,13 +184,16 @@ class Crontab extends Controller{
         }
       }
 
-      if( !\M\PassbookRecord::deleteAll( ['where' => '1'] ) )
+      if( !\M\PassbookRecord::deleteAll( ['where' => ['createAt != ?', $date]] ) )
         return false;
 
       return true;
     });
-
+    
     transaction(function() {
+      $maxDate = \M\CashRecord::one(['select' => 'max(`createAt`) as date']);
+      $date = $maxDate->date;
+
       if( $maxPasses = \M\CashRecord::all(['where' => ["(`currencyId`, `bankId`, `sell`) in ( select `currencyId`, `bankId`, max(`sell`) as sell from `CashRecord` where date(createAt) = date(now()) group by `currencyId`, `bankId`)"], 'group' => '`currencyId`, `bankId`']) ) {
         foreach( $maxPasses as $maxPass ) {
           $param = [
@@ -221,7 +226,7 @@ class Crontab extends Controller{
         }
       }
 
-      if( !\M\CashRecord::deleteAll(['where' => '1']) )
+      if( !\M\CashRecord::deleteAll(['where' => ['createAt != ?', $date]]) )
         return false;
 
       return true;

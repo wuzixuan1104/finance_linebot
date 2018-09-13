@@ -34,7 +34,41 @@ class Search {
     return MyLineBotMsg::create()->flex('貨幣類別', FlexCarousel::create($bubbles)); 
   }
 
-  public static function getCurrency() {
+  public static function getCurrency($params) {
+    if(!(isset($params['currencyId']) || $params['currencyId']))
+      return false;
+
+    $records = [];
+    if($passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $params['currencyId']] ]))
+      array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $passbooks);
+
+    if($cashes = \M\CashRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `CashRecord` where `currencyId` = ? group by `bankId` ) ", $params['currencyId']] ]))
+      array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $cashes);
+
+    if(!$records)
+      return false;
+
+    $flexes = [];
+    $bubbles = [];
+    $cnt = 0;
+    foreach($records as $k => $v) {
+      if(++$cnt % 5 == 0) {
+        $bubbles[] = FlexBubble::create([
+                    'header' => FlexBox::create([FlexText::create('選擇銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                    'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                  ]);
+        $flexes = [];
+      }
+      $flexes[] = FlexBox::create([
+                    FlexBox::create([FlexText::create($v)])->setLayout('vertical')->setFlex(7),
+                    FlexSeparator::create(),
+                    FlexButton::create('primary')->setColor('#db6a69')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'getBank', 'param' => ['currencyId' => $params['currencyId'], 'bankId' => $k]]), $v))
+                  ])->setLayout('horizontal')->setSpacing('md');
+
+      $flexes[] = FlexSeparator::create();
+    }
+    return MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles));
 
   }
 }

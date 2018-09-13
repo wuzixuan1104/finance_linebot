@@ -7,7 +7,7 @@ class Line extends Controller {
 
   public function index() {
     $events = MyLineBot::events();
-    
+
     foreach( $events as $event ) {
       if( !$source = \M\Source::checkExist($event) )
         continue;
@@ -39,6 +39,7 @@ class Line extends Controller {
           break;
         case 'Postback':
           $data = json_decode( $log->data, true );
+        
           if( !( isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) )
             && method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) ) )
           return false;
