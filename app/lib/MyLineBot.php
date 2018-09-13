@@ -279,7 +279,7 @@ class MyLineBotActionMsg {
     return is_string($label) ? new UriTemplateActionBuilder($label, $url) : null;
   }
   public function postback($label, $data, $text = null) {
-    return is_string($label) && ($data = is_array($data) ? json_encode($data) : $data ) ? new PostbackTemplateActionBuilder($label, $data, null) : null;
+    return is_string($label) && ($data = is_array($data) ? json_encode($data) : $data ) ? new PostbackTemplateActionBuilder($label, $data, $text) : null;
   }
 
   public function imagemapMsg($text, $x, $y, $width, $height) {
@@ -637,8 +637,8 @@ class FlexText extends FlexComponents {
 }
 
 class FlexAction {
-  public static function postBack($label, $text, $data) {
-    return is_string($label) && is_string($text) && is_array($data) ? json_encode($data) : $data ? [ 'type' => 'postback', 'label' => $label, 'data' => $data, 'text' => null ] : null;
+  public static function postBack($label, $data, $text = null) {
+    return is_string($label) && is_string($text) && is_array($data) ? json_encode($data) : $data ? [ 'type' => 'postback', 'label' => $label, 'data' => $data, 'text' => $text ] : null;
   }
   public static function message($label, $text) {
     return is_string($label) && is_string($text) ? [ 'type' => 'message', 'label' => $label, 'text' => $text ] : null;
@@ -662,9 +662,9 @@ class RichMenuGenerator {
     if(!$richMenuId = RichMenu::create(BuildRichMenu::create(
       BuildRichMenu::size(843), true, '匯率小達人', '更多',
       [ 
-        BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊正在進行中的問題', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), '您已點擊外匯查詢')),
-        BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊首頁', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), '您已點擊匯率試算')),
-        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊意見回饋', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'History', 'method' => 'create', 'param' => [] ]), '您已點擊歷史紀錄')),
+        BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊正在進行中的問題', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊首頁', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊意見回饋', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'History', 'method' => 'create', 'param' => [] ]), null)),
       ]
     )))
       return false;
