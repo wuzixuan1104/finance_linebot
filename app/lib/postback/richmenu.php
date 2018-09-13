@@ -9,7 +9,7 @@ class Search {
       return false;
 
     $currencies = array_chunk($currencies, 5);
-    
+
     $flexes = [];
     $bubbles = [];
     foreach($currencies as $currency) {
