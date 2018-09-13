@@ -14,7 +14,7 @@ class Line extends Controller {
 
       if (!$log = MyLineBotLog::init($source, $event)->create())
         return false;
-      Log::info('0');
+
       switch( trim(get_class($log), "M\\") ) {
         case 'Join':
           break;
@@ -39,10 +39,17 @@ class Line extends Controller {
           break;
         case 'Postback':
           $data = json_decode( $log->data, true );
-          Log::info('1:' . $log->data);
+
+
           if( !( isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) )
             && method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) ) )
-            return false;
+            {
+              Log::info('class:' . $class);
+              Log::info('method:' . $method);
+              Log::info('param:' . $data['param']);
+            }
+          // return false;
+
           Log::info('2');
           $msg->reply($event->getReplyToken());
           break;
