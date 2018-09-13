@@ -660,12 +660,12 @@ class RichMenuGenerator {
           return false;
 
     if(!$richMenuId = RichMenu::create(BuildRichMenu::create(
-                  BuildRichMenu::size(843), true, '理財小達人', '更多',
-                  [ 
-                    BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊正在進行中的問題', json_encode( ['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), '您已點擊外匯查詢')),
-                    BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊首頁', json_encode( ['lib' => 'postback/RichMenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), '您已點擊匯率試算')),
-                    BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊意見回饋', json_encode( ['lib' => 'postback/RichMenu', 'class' => 'History', 'method' => 'create', 'param' => [] ]), '您已點擊歷史紀錄')),
-                  ]
+      BuildRichMenu::size(843), true, '匯率小達人', '更多',
+      [ 
+        BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊正在進行中的問題', json_encode( ['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), '您已點擊外匯查詢')),
+        BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊首頁', json_encode( ['lib' => 'postback/RichMenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), '您已點擊匯率試算')),
+        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊意見回饋', json_encode( ['lib' => 'postback/RichMenu', 'class' => 'History', 'method' => 'create', 'param' => [] ]), '您已點擊歷史紀錄')),
+      ]
     )))
       return false;
 
