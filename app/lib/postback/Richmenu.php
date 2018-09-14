@@ -114,7 +114,7 @@ class Search {
                       FlexBox::create([FlexText::create('買入：' . $v->buy)])->setLayout('vertical')
                     ])->setLayout('vertical')->setFlex(5)
                   ])->setLayout('horizontal')->setSpacing('md');
-
+      $bubbles[] = FlexSeparator::create();
     }
    
     return MyLineBotMsg::create()->flex('問題類別', FlexBubble::create([
