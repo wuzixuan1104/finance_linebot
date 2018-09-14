@@ -29,6 +29,61 @@ class Line extends Controller {
           $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           preg_match_all ($pattern, $log->text, $result);
 
+          $a = MyLineBotMsg::create()->flex('問題類別', FlexBubble::create([
+                  'header' => FlexBox::create([FlexText::create('中國(離岸人民幣) / 第一銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                  'body' => FlexBox::create([
+                      FlexBox::create([
+                        FlexText::create('牌告匯率')->setColor('#906768'),
+                        FlexText::create('2018-08-08')->setSize('xxs')->setAlign('end')->setColor('#bbbbbb')
+                      ])->setLayout('horizontal'),
+
+                      FlexSeparator::create(),
+
+                      FlexBox::create([
+                        FlexBox::create([
+                          FlexBox::create([FlexText::create('賣出：30.512')])->setLayout('vertical')
+                        ])->setLayout('vertical')->setFlex(5),
+                        
+                        FlexSeparator::create(),
+
+                        FlexBox::create([
+                          FlexBox::create([FlexText::create('賣出：30.512')])->setLayout('vertical')
+                        ])->setLayout('vertical')->setFlex(5)
+                      ])->setLayout('horizontal')->setSpacing('md'),
+
+
+
+
+                      FlexSeparator::create(),
+
+
+
+
+                      FlexBox::create([
+                        FlexText::create('現鈔匯率')->setColor('#906768'),
+                        FlexText::create('2018-08-08')->setSize('xxs')->setAlign('end')->setColor('#bbbbbb')
+                      ])->setLayout('horizontal'),
+
+                      FlexSeparator::create(),
+
+                      FlexBox::create([
+                        FlexBox::create([
+                          FlexBox::create([FlexText::create('賣出：30.512')])->setLayout('vertical')
+                        ])->setLayout('vertical')->setFlex(5),
+                        
+                        FlexSeparator::create(),
+
+                        FlexBox::create([
+                          FlexBox::create([FlexText::create('賣出：30.512')])->setLayout('vertical')
+                        ])->setLayout('vertical')->setFlex(5)
+                      ])->setLayout('horizontal')->setSpacing('md'),
+
+                    ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                  'footer' => FlexBox::create([
+                    FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('匯率試算', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['currencyId' => '', 'bankId' => '']]), null))
+                  ])->setLayout('horizontal')->setSpacing('xs'),
+                  'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                ]))->reply($event->getReplyToken());
           // MyLineBotMsg::create()
           //   ->text($log->text)
           //   ->reply($event->getReplyToken());

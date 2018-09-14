@@ -54,7 +54,7 @@ class Search {
       $flexes[] = FlexBox::create([
                     FlexBox::create([FlexText::create($v)])->setLayout('vertical')->setFlex(7),
                     FlexSeparator::create(),
-                    FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'show', 'param' => ['currencyId' => $params['currencyId'], 'bankId' => $k]]), $v))
+                    FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => ['currencyId' => $params['currencyId'], 'bankId' => $k]]), $v))
                   ])->setLayout('horizontal')->setSpacing('md');
       $flexes[] = FlexSeparator::create();
 
@@ -79,7 +79,7 @@ class Search {
   }
 
   public static function show($params, $source) {
-    
+
   }
 }
 
