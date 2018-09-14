@@ -67,6 +67,14 @@ class Search {
         $flexes = [];
       }
     }
+    
+    if($flexes) {
+      $bubbles[] = FlexBubble::create([
+                    'header' => FlexBox::create([FlexText::create('選擇銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                    'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                  ]);
+    }
     return MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles));
   }
 
