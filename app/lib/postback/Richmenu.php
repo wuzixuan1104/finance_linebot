@@ -17,7 +17,7 @@ class Search {
         $flexes[] = FlexBox::create([
                       FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(7),
                       FlexSeparator::create(),
-                      FlexButton::create('primary')->setColor('#db6a69')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'bank', 'param' => ['currencyId' => $v->id]]), $v->name))
+                      FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'bank', 'param' => ['currencyId' => $v->id]]), $v->name))
                     ])->setLayout('horizontal')->setSpacing('md');
 
         $flexes[] = FlexSeparator::create();
@@ -54,7 +54,7 @@ class Search {
       $flexes[] = FlexBox::create([
                     FlexBox::create([FlexText::create($v)])->setLayout('vertical')->setFlex(7),
                     FlexSeparator::create(),
-                    FlexButton::create('primary')->setColor('#db6a69')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'getBank', 'param' => ['currencyId' => $params['currencyId'], 'bankId' => $k]]), $v))
+                    FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'show', 'param' => ['currencyId' => $params['currencyId'], 'bankId' => $k]]), $v))
                   ])->setLayout('horizontal')->setSpacing('md');
       $flexes[] = FlexSeparator::create();
 
@@ -67,7 +67,7 @@ class Search {
         $flexes = [];
       }
     }
-    
+
     if($flexes) {
       $bubbles[] = FlexBubble::create([
                     'header' => FlexBox::create([FlexText::create('選擇銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
@@ -78,8 +78,8 @@ class Search {
     return MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles));
   }
 
-  public static function show() {
-
+  public static function show($params, $source) {
+    
   }
 }
 
