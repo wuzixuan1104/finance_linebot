@@ -157,6 +157,7 @@ class MyLineBotLog {
   private function postbackEvent() {
     $param = array( 'sourceId' => $this->source->id, 'replyToken' => $this->event->getReplyToken(), 'data' => is_array($this->event->getPostbackData())? json_encode($this->event->getPostbackData()) : $this->event->getPostbackData(), 'params' => $this->event->getPostbackParams() ? json_encode($this->event->getPostbackParams()):'', 'timestamp' => $this->event->getTimestamp());
     transaction( function() use ($param, &$obj) { return $obj = \M\Postback::create($param); });
+    Log::info(4);
     return $obj;
   }
 }
