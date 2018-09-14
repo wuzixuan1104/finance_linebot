@@ -17,7 +17,7 @@ class Search {
         $flexes[] = FlexBox::create([
                       FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(7),
                       FlexSeparator::create(),
-                      FlexButton::create('primary')->setColor('#db6a69')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'getCurrency', 'param' => ['currencyId' => $v->id]]), $v->name))
+                      FlexButton::create('primary')->setColor('#db6a69')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode(['lib' => 'postback/RichMenu', 'class' => 'Search', 'method' => 'bank', 'param' => ['currencyId' => $v->id]]), $v->name))
                     ])->setLayout('horizontal')->setSpacing('md');
 
         $flexes[] = FlexSeparator::create();
@@ -34,7 +34,7 @@ class Search {
     return MyLineBotMsg::create()->flex('貨幣類別', FlexCarousel::create($bubbles)); 
   }
 
-  public static function getCurrency($params) {
+  public static function bank($params) {
     if(!(isset($params['currencyId']) || $params['currencyId']))
       return false;
 
@@ -70,6 +70,10 @@ class Search {
     }
     return MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles));
 
+  }
+
+  public static function show() {
+    
   }
 }
 
