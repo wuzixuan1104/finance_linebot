@@ -120,15 +120,38 @@ class Search {
     return MyLineBotMsg::create()->flex('問題類別', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create($currency->name . ' / ' . $bank->name)->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create($bubbles)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-            'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('匯率試算', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['currencyId' => $params['currencyId'], 'bankId' => $params['bankId']]]), null))])->setLayout('horizontal')->setSpacing('xs'),
+            'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('匯率試算', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['curName' => $currency->name, 'passbookSell' => $passbook ? $passbook->sell : 0, 'cashSell' => $cash ? $cash->sell : 0]]), null))])->setLayout('horizontal')->setSpacing('xs'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           ]));
   }
 }
-
+/*
+  Source
+  {
+    "type": "calculate",
+    "from": "tw",
+    "to": "",
+  }
+*/
 class Calculate {
   public static function create() {
 
+  }
+
+  public static function type($params, $source) {
+    if(!(isset($params['curName'], $params['passbookSell'], $params['cashSell']) && $params['curName'] && $params['passbookSell'] && $params['cashSell']))
+      return false; 
+
+
+    return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create('選擇試算模式')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'body' => FlexBox::create([
+                FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('墨西哥(墨西哥披索) -> 台幣', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'show', 'param' => ['calc' => 'A', 'curName' => $params['curName'], 'passbookSell' => $params['passbookSell'], 'cashSell' => $params['cashSell']]]), $params['curName'] . ' -> 台幣')),
+                FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('台幣 -> 墨西哥(墨西哥披索)', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'show', 'param' => ['calc' => 'B', 'curName' => $params['curName'], 'passbookSell' => $params['passbookSell'], 'cashSell' => $params['cashSell']]]), '台幣 -> ' . $params['curName'])),
+
+            ])->setLayout('vertical'),
+            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          ]));
   }
 }
 

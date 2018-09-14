@@ -29,8 +29,15 @@ class Line extends Controller {
           $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           preg_match_all ($pattern, $log->text, $result);
 
-         
+          $a = MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
+                  'header' => FlexBox::create([FlexText::create('選擇試算模式')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                  'body' => FlexBox::create([
+                      FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('墨西哥(墨西哥披索) -> 台幣', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['currencyId' => '', 'bankId' => '']]), '墨西哥(墨西哥披索) -> 台幣')),
+                      FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('台幣 -> 墨西哥(墨西哥披索)', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['currencyId' => '', 'bankId' => '']]), '墨西哥(墨西哥披索) -> 台幣')),
 
+                  ])->setLayout('vertical'),
+                  'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                ]))->reply($event->getReplyToken());
           // MyLineBotMsg::create()
           //   ->text($log->text)
           //   ->reply($event->getReplyToken());
