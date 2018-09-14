@@ -125,14 +125,7 @@ class Search {
           ]));
   }
 }
-/*
-  Source
-  {
-    "type": "calculate",
-    "from": "tw",
-    "to": "",
-  }
-*/
+
 class Calculate {
   public static function create() {
 
@@ -142,16 +135,27 @@ class Calculate {
     if(!(isset($params['curName'], $params['passbookSell'], $params['cashSell']) && $params['curName'] && $params['passbookSell'] && $params['cashSell']))
       return false; 
 
-
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('選擇試算模式')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
-                FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( $params['curName']. ' -> 台幣', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'show', 'param' => ['calc' => 'A', 'curName' => $params['curName'], 'passbookSell' => $params['passbookSell'], 'cashSell' => $params['cashSell']]]), $params['curName'] . ' -> 台幣')),
-                FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('台幣 -> ' . $params['curName'], json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'show', 'param' => ['calc' => 'B', 'curName' => $params['curName'], 'passbookSell' => $params['passbookSell'], 'cashSell' => $params['cashSell']]]), '台幣 -> ' . $params['curName'])),
+                FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( $params['curName']. ' -> 台幣', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => ['calc' => 'A', 'curName' => $params['curName'], 'passbookSell' => $params['passbookSell'], 'cashSell' => $params['cashSell']]]), $params['curName'] . ' -> 台幣')),
+                FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('台幣 -> ' . $params['curName'], json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => ['calc' => 'B', 'curName' => $params['curName'], 'passbookSell' => $params['passbookSell'], 'cashSell' => $params['cashSell']]]), '台幣 -> ' . $params['curName'])),
 
             ])->setLayout('vertical'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           ]));
+  }
+
+  public static function input($params, $source) {
+    if(!(isset($params['calc'], $params['curName'], $params['passbookSell'], $params['cashSell']) && $source && $params['calc'] && $params['curName'] && $params['passbookSell'] && $params['cashSell']))
+      return false; 
+    $source->action = json_encode($params);
+
+    return MyLineBotMsg::create()->text('請輸入試算金額');
+  }
+
+  public static function show() {
+
   }
 }
 
