@@ -29,9 +29,9 @@ class Line extends Controller {
           $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           preg_match_all ($pattern, $log->text, $result);
 
-          MyLineBotMsg::create()
-            ->text($log->text)
-            ->reply($event->getReplyToken());
+          // MyLineBotMsg::create()
+          //   ->text($log->text)
+          //   ->reply($event->getReplyToken());
 
           // if ($result['k'] && $msg = ForexProcess::begin() )
           //   $msg->reply($event->getReplyToken());
@@ -39,11 +39,11 @@ class Line extends Controller {
           break;
         case 'Postback':
           $data = json_decode( $log->data, true );
-        
+          Log::info(0);
           if( !( isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) )
             && method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) ) )
           return false;
-
+          Log::info(1);
           $msg->reply($event->getReplyToken());
           break;
       }
