@@ -11,6 +11,7 @@ class CashRecord extends Model {
 
   static $belongToOne = [
     'bank' => 'Bank',
+    'currency' => 'Currency',
   ];
 
   // static $belongToMany = [];
