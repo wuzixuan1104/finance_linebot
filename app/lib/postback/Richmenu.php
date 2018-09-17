@@ -149,7 +149,7 @@ class Calculate {
   public static function input($params, $source) {
     if(!(isset($params['calc'], $params['curName'], $params['passbookSell'], $params['cashSell']) && $source && $params['calc'] && $params['curName'] && $params['passbookSell'] && $params['cashSell']))
       return false; 
-    $source->action = json_encode($params);
+    ($source->action = json_encode($params)) && $source->save();
 
     return MyLineBotMsg::create()->text('請輸入試算金額');
   }
@@ -157,8 +157,8 @@ class Calculate {
   public static function show($param, $source) {
     if(!($param && $source))
       return false;
-    
-    
+
+
   }
 }
 
