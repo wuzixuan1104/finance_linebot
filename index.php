@@ -1,59 +1,92 @@
 <?php
 
-/**
- * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2013 - 2018, OACI
- * @license     http://opensource.org/licenses/MIT  MIT License
- * @link        https://www.ioa.tw/
- */
+// 定義時區
+date_default_timezone_set('Asia/Taipei');
 
-date_default_timezone_set ('Asia/Taipei');
+// 定義版號
+define('MAPLE', '4.0.12');
 
-define ('OACI', '1');
-define ('CLI_LEN', 80);
 
-define ('EXT', '.php');
-defined ('STDIN') && chdir (dirname (__FILE__));
-define ('SELF', pathinfo (__FILE__, PATHINFO_BASENAME));
-define ('FCPATH', dirname (__FILE__) . DIRECTORY_SEPARATOR);
 
-$sys_dir  = 'sys';
-$app_dir  = 'app';
-$view_dir = 'app' . DIRECTORY_SEPARATOR . 'view';
+/* ------------------------------------------------------
+ *  定義路徑常數
+ * ------------------------------------------------------ */
 
-(@include_once $sys_dir . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . 'Init.php') || exit ('初始化失敗！');
+define('PATH', dirname(__FILE__)                   . DIRECTORY_SEPARATOR); // 此專案資料夾絕對位置
+define('PATH_SYS',        PATH .     'sys'         . DIRECTORY_SEPARATOR); // sys 絕對位置
+define('PATH_LOG',        PATH .     'log'         . DIRECTORY_SEPARATOR); // log 絕對位置
+define('PATH_TMP',        PATH .     'tmp'         . DIRECTORY_SEPARATOR); // tmp 絕對位置
+define('PATH_CACHE',      PATH .     'cache'       . DIRECTORY_SEPARATOR); // cache 絕對位置
+define('PATH_SESSION',    PATH .     'session'     . DIRECTORY_SEPARATOR); // session 絕對位置
+define('PATH_APP',        PATH .     'app'         . DIRECTORY_SEPARATOR); // app 絕對位置
+define('PATH_LIB',        PATH_APP . 'lib'         . DIRECTORY_SEPARATOR); // lib 絕對位置
+define('PATH_FUNC',       PATH_APP . 'func'        . DIRECTORY_SEPARATOR); // func 絕對位置
+define('PATH_CORE',       PATH_APP . 'core'        . DIRECTORY_SEPARATOR); // core 絕對位置
+define('PATH_ROUTER',     PATH_APP . 'router'      . DIRECTORY_SEPARATOR); // router 絕對位置
+define('PATH_CONTROLLER', PATH_APP . 'controller'  . DIRECTORY_SEPARATOR); // controller 絕對位置
+define('PATH_MIGRATION',  PATH_APP . 'migration'   . DIRECTORY_SEPARATOR); // migration 絕對位置
+define('PATH_VIEW',       PATH_APP . 'view'        . DIRECTORY_SEPARATOR); // view 絕對位置
+define('PATH_MODEL',      PATH_APP . 'model'       . DIRECTORY_SEPARATOR); // model 絕對位置
+define('PATH_SYS_CORE',   PATH_SYS . 'core'        . DIRECTORY_SEPARATOR); // sys core 絕對位置
+define('PATH_SYS_LIB',    PATH_SYS . 'lib'         . DIRECTORY_SEPARATOR); // sys lib 絕對位置
+define('PATH_SYS_FUNC',   PATH_SYS . 'func'        . DIRECTORY_SEPARATOR); // sys func 絕對位置
+define('PATH_SYS_MODEL',  PATH_SYS . 'model'       . DIRECTORY_SEPARATOR); // sys model 絕對位置
+define('PATH_SYS_CMD',    PATH_SYS . 'cmd'         . DIRECTORY_SEPARATOR); // sys cmd 絕對位置
 
-is_dir ($sys_dir  = realpath ($sys_dir))  || gg ('您的 sys 資料夾路徑似乎沒有正確設置！',  503, array ('detail' => array ('檔案' => SELF, '變數' => '$sys_dir',  '內容' => $sys_dir)));
-is_dir ($app_dir  = realpath ($app_dir))  || gg ('您的 app 資料夾路徑似乎沒有正確設置！',  503, array ('detail' => array ('檔案' => SELF, '變數' => '$app_dir',  '內容' => $app_dir)));
-is_dir ($view_dir = realpath ($view_dir)) || gg ('您的 view 資料夾路徑似乎沒有正確設置！', 503, array ('detail' => array ('檔案' => SELF, '變數' => '$view_dir', '內容' => $view_dir)));
 
-define ('BASEPATH', $sys_dir . DIRECTORY_SEPARATOR);
-define ('APPPATH', $app_dir . DIRECTORY_SEPARATOR);
-define ('VIEWPATH', $view_dir . DIRECTORY_SEPARATOR);
+/* ------------------------------------------------------
+ *  載入初始函式
+ * ------------------------------------------------------ */
 
-(@include_once BASEPATH . 'core' . DIRECTORY_SEPARATOR . 'Load.php') || gg ('初始化失敗！', 503);
-Load::file ('_env.php', true);
+if (!@include_once PATH_SYS_CORE . 'Common.php')
+  exit('載入 Common 失敗！');
 
-switch (ENVIRONMENT) {
-  case 'development':
-    ini_set ('display_errors', 1);
-    error_reporting (-1);
-    break;
 
-  case 'production':
-    ini_set ('display_errors', 1);
-    error_reporting (-1);
-    // ini_set ('display_errors', 0);
-    // error_reporting (is_php ('5.3') ? E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT & ~E_USER_NOTICE & ~E_USER_DEPRECATED : E_ALL & ~E_NOTICE & ~E_STRICT & ~E_USER_NOTICE);
-    break;
 
-  default:
-    gg ('您的 環境變數 設定不在選項內或設定錯誤！', 503, array ('detail' => array ('檔案' => SELF, '變數' => 'ENVIRONMENT', '內容' => ENVIRONMENT)));
-   break;
-}
+/* ------------------------------------------------------
+ *  載入環境常數 ENVIRONMENT
+ * ------------------------------------------------------ */
 
-require_once BASEPATH . 'core' . DIRECTORY_SEPARATOR . 'CodeIgniter.php';
+defined('ENVIRONMENT') || Load::path('env.php') || gg('載入環境常數失敗！');
 
-// echo '<meta http-equiv="Content-type" content="text/html; charset=utf-8" /><pre>';
-// var_dump (Benchmark::elapsedTime (), Benchmark::elapsedMemory (), Benchmark::memoryUsage ());
-// exit ();
+
+
+/* ------------------------------------------------------
+ *  載入相關物件
+ * ------------------------------------------------------ */
+
+Load::sysCore('Benchmark.php')  || gg('載入 Benchmark 失敗！');
+Benchmark::markStar('整體');
+
+Load::sysCore('View.php')       || gg('載入 View 失敗！');
+Load::sysCore('Charset.php')    || gg('載入 Charset 失敗！');
+Load::sysCore('Log.php')        || gg('載入 Log 失敗！');
+Load::sysCore('Url.php')        || gg('載入 Url 失敗！');
+Load::sysCore('Controller.php') || gg('載入 Controller 失敗！');
+Load::sysCore('Router.php')     || gg('載入 Router 失敗！');
+Load::sysCore('Output.php')     || gg('載入 Output 失敗！');
+Load::sysCore('Model.php')      || gg('載入 Model 失敗！');
+Load::sysCore('Security.php')   || gg('載入 Security 失敗！');
+Load::sysCore('Input.php')      || gg('載入 Input 失敗！');
+
+if (config('other', 'autoLoadComposer'))
+  Load::path('vendor' . DIRECTORY_SEPARATOR . 'autoload.php') || gg('載入 Composer 失敗！');
+
+
+
+/* ------------------------------------------------------
+ *  輸出結果
+ * ------------------------------------------------------ */
+
+Output::router(Router::current());
+
+
+
+/* ------------------------------------------------------
+ *  結束
+ * ------------------------------------------------------ */
+
+// defined('MODEL_LOADED') && \_M\Connection::instance()->close();
+Benchmark::markEnd('整體');
+Log::benchmark("耗時：" . Benchmark::elapsedTime('整體'), "記憶體：" . Benchmark::elapsedMemory('整體'));
+Log::closeAll();

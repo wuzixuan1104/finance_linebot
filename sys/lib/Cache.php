@@ -1,50 +1,44 @@
-<?php defined ('OACI') || exit ('此檔案不允許讀取。');
+<?php defined('MAPLE') || exit('此檔案不允許讀取！');
 
-/**
- * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2013 - 2018, OACI
- * @license     http://opensource.org/licenses/MIT  MIT License
- * @link        https://www.ioa.tw/
- */
+abstract class Cache {
+  protected $prefix = '';
 
-class Cache {
-  private static $drivers = array (
-      'file' => null,
-      'redis' => null,
-      'memcached' => null,
-    );
+  abstract public function get($id);
+  abstract public function save($id, $data, $ttl);
 
-  public static function initialize ($driver, $config = array ()) {
-    if (isset (self::$drivers[$driver]))
-      return self::$drivers[$driver];
-
-    if (!in_array ($driver, array_keys (self::$drivers)))
-      return null;
-
-    if (!Load::sysLib ('CacheDrivers' . DIRECTORY_SEPARATOR . ucfirst ($driver) . '.php'))
-      return null;
-
-    if (!class_exists ($class = 'Cache' . ucfirst ($driver) . 'Driver'))
-      return null;
-
-    return self::$drivers[$driver] = new $class ($config);
+  protected function __construct($options) {
+    $this->prefix = isset($options['prefix']) ? $options['prefix'] : '';
   }
 
-  public static function __callStatic ($method, $args = array ()) {
+  private static $drivers = [];
+
+  public static function create($driver, $options = []) {
+    if (!empty(self::$drivers[$driver]))
+      return self::$drivers[$driver];
+
+    in_array($driver, ['CacheFile', 'CacheRadis']) || gg('Cache Driver 錯誤！');
+    Load::sysLib('Cache' . DIRECTORY_SEPARATOR . $driver . '.php') || gg('載入 Cache Driver 失敗！');
+
+    return self::$drivers[$driver] = new $driver($options);
+  }
+
+  public static function __callStatic($method, $args = []) {
     if (!$args)
       return null;
 
-    $key = array_shift ($args);
-    if (($closure = array_shift ($args)) === null) return null;
-    is_numeric ($expire = array_shift ($args)) || $expire = 60;
+    $key = array_shift($args);
+    if (($closure = array_shift($args)) === null)
+      return null;
 
-    if (!(($class = self::initialize ($method)) && (is_callable (array ($class, 'get')) && is_callable (array ($class, 'save')))))
-      return is_callable ($closure) ? $closure () : $closure;
+    is_numeric($expire = array_shift($args)) || $expire = 60;
 
-    if (($data = $class->get ($key)) !== null)
+    if (!$class = self::create(ucfirst($method)))
+      return is_callable($closure) ? $closure() : $closure;
+
+    if (($data = $class->get($key)) !== null)
       return $data;
 
-    $class->save ($key, $data = is_callable ($closure) ? $closure () : $closure, $expire);
+    $class->save($key, $data = is_callable($closure) ? $closure () : $closure, $expire);
 
     return $data;
   }

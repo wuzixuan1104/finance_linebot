@@ -1,83 +1,101 @@
-<?php defined ('OACI') || exit ('此檔案不允許讀取。');
-
-/**
- * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2013 - 2018, OACI
- * @license     http://opensource.org/licenses/MIT  MIT License
- * @link        https://www.ioa.tw/
- */
+<?php defined('MAPLE') || exit('此檔案不允許讀取！');
 
 class Log {
+  const EXT = '.log';
+  const DATE_FORMAT = 'H:i:s';
+  const PERMISSIONS = 0777;
+
   private static $type = null;
-  private static $fps = array ();
-  private static $lock = false;
+  private static $fopens = [];
 
-  private static $config = array (
-    'path' => FCPATH . 'log' . DIRECTORY_SEPARATOR,
-    'extension' => '.log',
-    'permissions' => 0777,
-    'dateFormat' => 'Y-m-d H:i:s'
-  );
-
-  public static function info ($msg) {
-    @self::message (self::formatLine (date (self::$config['dateFormat']), cc ('紀錄', 'g'), $msg), 'log-info-');
-    return true;
-  }
-  public static function warning ($msg) {
-    @self::message (self::formatLine (date (self::$config['dateFormat']), cc ('警告', 'y'), $msg), 'log-warning-');
-    return true;
-  }
-  public static function error ($msg) {
-    @self::message (self::formatLine (date (self::$config['dateFormat']), cc ('錯誤', 'r'), $msg), 'log-error-');
-    return true;
-  }
-  public static function queryLine () {
-    self::$type || self::$type = ENVIRONMENT !== 'cmd' ? request_is_cli () ? cc ('cli', 'c') . cc (' ➜ ', 'N') . cc (URL::uriString (), 'C') : cc ('web', 'p') . cc (' ➜ ', 'N') . cc (URL::uriString (), 'P') : cc ('cmd', 'y') . cc (' ➜ ', 'N') . cc (CMD_FILE, 'Y');
-    @self::message ("\n" . self::$type . cc (' ╞' . str_repeat ('═', CLI_LEN - (strlen (self::$type) - 31)) . "\n", 'N'), 'query-');
-    return true;
-  }
-  public static function query ($valid, $time, $sql, $values) {
-    @self::message (self::formatQuery (date (self::$config['dateFormat']), $valid, $time, $sql, $values), 'query-');
-    return true;
-  }
-
-  public static function closeAll () {
-    foreach (self::$fps as $fp)
-      fclose ($fp);
-    return true;
-  }
-
-  private static function message ($msg, $prefix = 'log-') {
-    if (!(is_dir (self::$config['path']) && is_really_writable (self::$config['path'])))
+  public static function msg($text, $prefix) {
+    if (!is_dir(PATH_LOG) || !isReallyWritable(PATH_LOG))
       return false;
 
-    $newfile = !file_exists ($path = self::$config['path'] . $prefix . date ('Y-m-d') . self::$config['extension']);
+    $path = PATH_LOG . $prefix . DIRECTORY_SEPARATOR;
+    is_dir($path) || umaskMkdir($path, 0777);
 
-    if (!isset (self::$fps[$path]))
-      if (!$fp = @fopen ($path, FOPEN_WRITE_CREATE))
+    if (!is_dir($path) || !isReallyWritable($path))
+      return false;
+
+    $path .= date('Y-m-d') . Log::EXT;
+    $newfile = !file_exists($path);
+
+    if (!isset(self::$fopens[$path]))
+      if (!$fopen = @fopen($path, 'ab'))
         return false;
       else
-        self::$fps[$path] = $fp;
+        self::$fopens[$path] = $fopen;
 
-    Log::$lock && flock (self::$fps[$path], LOCK_EX);
-
-
-    for ($written = 0, $length = Charset::strlen ($msg); $written < $length; $written += $result)
-      if (($result = fwrite (self::$fps[$path], Charset::substr ($msg, $written))) === false)
+    for($written = 0, $length = charsetStrlen($text); $written < $length; $written += $result)
+      if (($result = fwrite(self::$fopens[$path], charsetSubstr($text, $written))) === false)
         break;
 
-    Log::$lock && flock (self::$fps[$path], LOCK_UN);
+    $newfile && @chmod($path, Log::PERMISSIONS);
 
-    $newfile && @chmod ($path, self::$config['permissions']);
-
-    return is_int ($result);
+    return is_int($result);
   }
 
-  private static function formatLine ($date, $title, $msg) {
-    return cc ($date, 'w') . cc ('：', 'N') . $title . cc ('：', 'N') . $msg . "\n";
+  private static function logFormat($args) {
+    $args = implode("\n" . cc('', 'N'), array_map(function($arg) { return cc('➜ ', 'G') . dump($arg); }, $args));
+    return cc('※ ', 'R') . date(Log::DATE_FORMAT) . "\n" . cc(str_repeat('─', 40), 'N') . "\n" . $args . "\n\n\n";
   }
-  private static function formatQuery ($date, $valid, $time, $sql, $values) {
-    self::$type || self::$type = ENVIRONMENT !== 'cmd' ? request_is_cli () ? cc ('cli', 'c') . cc (' ➜ ', 'N') . cc (URL::uriString (), 'C') : cc ('web', 'p') . cc (' ➜ ', 'N') . cc (URL::uriString (), 'P') : cc ('cmd', 'y') . cc (' ➜ ', 'N') . cc (CMD_FILE, 'Y');
-    return self::$type . cc (' │ ', 'N') . cc ($date, 'w') . cc (' ➜ ', 'N') . cc ($time, $time < 999 ? $time < 99 ? $time < 9 ? 'w' : 'W' : 'Y' : 'R') . '' . cc ('ms', $time < 999 ? $time < 99 ? $time < 9 ? 'N' : 'w' : 'y' : 'r') . cc (' │ ', 'N') . ($valid ? cc ('OK', 'g') : cc ('GG', 'r')) . cc (' ➜ ', 'N') . call_user_func_array ('sprintf', array_merge (array (preg_replace_callback ('/\?/', function ($matches) { return cc ('%s', 'W'); }, $sql)), $values)) . "\n";
+
+  public static function info($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'info');
   }
+
+  public static function error($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'error');
+  }
+
+  public static function warning($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'warning');
+  }
+
+  public static function model($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'model');
+  }
+
+  public static function uploader($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'uploader');
+  }
+
+  public static function saveTool($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'saveTool');
+  }
+
+  public static function thumbnail($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'thumbnail');
+  }
+
+  public static function benchmark($msg) {
+    return self::msg(self::logFormat(func_get_args()), 'benchmark');
+  }
+
+  public static function closeAll() {
+    foreach(self::$fopens as $fopen)
+      fclose($fopen);
+    return true;
+  }
+
+  private static function queryFormat($args) {
+    $valid = $args[0];
+    $time = $args[1];
+    $sql = $args[2];
+    $vals = $args[3];
+
+    $new = '';
+
+    if (!self::$type) {
+      $new = "\n" . cc(str_repeat('─', 80), 'N') . "\n";
+      self::$type = ENVIRONMENT !== 'cmd' ? isCli() ? cc('cli', 'c') . cc(' ➜ ', 'N') . cc(implode('/', Url::segments()), 'C') : cc('web', 'p') . cc(' ➜ ', 'N') . cc(implode('/', Url::segments()), 'P') : cc('cmd', 'y') . cc(' ➜ ', 'N') . cc(CMD, 'Y');
+    }
+    return $new . self::$type . cc('│', 'N') . cc(date(Log::DATE_FORMAT), 'w') . cc(' ➜ ', 'N') . cc($time, $time < 999 ? $time < 99 ? $time < 9 ? 'w' : 'W' : 'Y' : 'R') . '' . cc('ms', $time < 999 ? $time < 99 ? $time < 9 ? 'N' : 'w' : 'y' : 'r') . cc('│', 'N') . ($valid ? cc('OK', 'g') : cc('GG', 'r')) . cc(' ➜ ', 'N') . call_user_func_array('sprintf', array_merge(array(preg_replace_callback('/\?/', function($matches) { return cc('%s', 'W'); }, $sql)), $vals)) . "\n";
+  }
+  public static function query($valid, $time, $sql, $vals) {
+    @self::msg(self::queryFormat(func_get_args()), 'query');
+    return true;
+  }
+
 }

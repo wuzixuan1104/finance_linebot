@@ -1,28 +1,60 @@
-<?php defined ('OACI') || exit ('此檔案不允許讀取。');
+<?php defined('MAPLE') || exit('此檔案不允許讀取！');
 
-/**
- * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2013 - 2018, OACI
- * @license     http://opensource.org/licenses/MIT  MIT License
- * @link        https://www.ioa.tw/
- */
-
-class Controller {
-  public $constructError = null;
-
-  protected function constructError ($error) {
-    return $this->constructError = $error;
-  }
-
-  public function __construct () {
-    foreach (config ('autoload') as $key => $files)
-      foreach ($files as $file)
-        call_user_func_array (array ('Load', $key), array ($file, true));
+abstract class Controller {
+  public function __construct() {
   }
 }
 
-spl_autoload_register (function ($class) {
-  if (!class_exists ($class, false) && preg_match ("/Controller$/", $class) && !Load::file (APPPATH . DIRECTORY_SEPARATOR . 'core' . DIRECTORY_SEPARATOR . $class . EXT))
-    gg ('找不到 Controller：' . $class);
+class ControllerException extends Exception {
+  private $messages = [];
+
+  public function __construct($messages) {
+    parent::__construct('');
+    Router::setStatus(400);
+    $this->messages = $messages;
+  }
+
+  public function getMessages() {
+    return $this->messages;
+  }
+}
+
+if (!function_exists('error')) {
+  function error() {
+    $args = func_get_args();
+
+    if (!GG::$isApi)
+      foreach (debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT) as $obj) {
+        if (isset($obj['function'], $obj['args']) && $obj['args'] && $obj['function'] == 'validator' && $obj['args'][0] instanceof Closure) {
+          $func = new ReflectionFunction($obj['args'][0]);
+          $vars = $func->getStaticVariables();
+          if (array_key_exists('params', $vars)) {
+            $args = array_merge($args, [$vars['params']]);
+            break;
+          }
+          
+          break;
+        }
+        // 姿萱 sup up up
+        if (isset($obj['function'], $obj['args']) && $obj['args'] && $obj['function'] == 'transaction' && $obj['args'][0] instanceof Closure) {
+          $func = new ReflectionFunction($obj['args'][0]);
+          $vars = $func->getStaticVariables();
+          if (array_key_exists('params', $vars)) {
+            $args = array_merge($args, [$vars['params']]);
+            break;
+          }
+        }
+      }
+
+    throw new ControllerException($args);
+  }
+}
+
+spl_autoload_register(function($className) {
+  if (!preg_match("/Controller$/", $className))
+    return false;
+
+  Load::core($className . '.php') && class_exists($className) || gg('找不到名稱為「' . $className . '」的 Controller 物件！');
+  return true;
 });
 

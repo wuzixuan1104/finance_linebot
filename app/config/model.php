@@ -1,18 +1,24 @@
-<?php defined ('OACI') || exit ('此檔案不允許讀取。');
+<?php defined('MAPLE') || exit('此檔案不允許讀取！');
 
-/**
- * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2013 - 2018, OACI
- * @license     http://opensource.org/licenses/MIT  MIT License
- * @link        https://www.ioa.tw/
- */
+return [
+  'autoLoad' => true,
 
-return array (
-  'auto_load' => true,
-  'cache' => array (
-      'enable' => false,
-      'driver' => 'file', //  | file   | redis   | memcached
-      'prefix' => 'query-', // | query- | query:  | query:
-      'expire' => 30 //sec
-    ),
-);
+  'uploader' => [
+    'dir' => 'storage',
+    'tmpDir' => PATH_TMP,
+    'baseUrl' => '/',
+    'thumbnail' => 'ThumbnailImagick', // Imagick 、 Gd
+
+    'saveTool' => 'SaveToolLocal',
+    'params' => [
+      PATH,
+    ],
+
+    // 'saveTool' => 'SaveToolS3',
+    // 'params' => [
+    //   'bucket',
+    //   'accessKey',
+    //   'secretKey',
+    // ],
+  ]
+];

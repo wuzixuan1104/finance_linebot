@@ -1,40 +1,24 @@
-<?php defined ('OACI') || exit ('此檔案不允許讀取。');
+<?php
 
-/**
- * @author      OA Wu <comdan66@gmail.com>
- * @copyright   Copyright (c) 2013 - 2018, OACI
- * @license     http://opensource.org/licenses/MIT  MIT License
- * @link        https://www.ioa.tw/
- */
+namespace M;
+
+defined('MAPLE') || exit('此檔案不允許讀取！');
 
 class Currency extends Model {
-  static $table_name = 'currencies';
+  // static $hasOne = [];
 
-  static $has_one = array (
-  );
+  // static $hasMany = [];
 
-  static $has_many = array (
-  );
+  // static $belongToOne = [];
 
-  static $belongs_to = array (
-  );
+  // static $belongToMany = [];
 
+  // static $uploaders = [];
+
+  const ENABLE_OFF  = 'off';
   const ENABLE_ON = 'on';
-  const ENABLE_OFF = 'off';
-
-  static $enableTexts = array(
-    self::ENABLE_ON => '啟用',
-    self::ENABLE_OFF => '停用',
-  );
-  
-  public function __construct ($attrs = array (), $guardAttrs = true, $instantiatingViafind = false, $newRecord = true) {
-    parent::__construct ($attrs, $guardAttrs, $instantiatingViafind, $newRecord);
-  }
-
-  public function destroy () {
-    if (!isset ($this->id))
-      return false;
-
-    return $this->delete ();
-  }
+  const ENABLE = [
+    self::ENABLE_OFF  => '下架', 
+    self::ENABLE_ON => '上架',
+  ];
 }

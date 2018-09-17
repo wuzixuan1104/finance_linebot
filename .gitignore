@@ -3,18 +3,16 @@ sftp-config*
 
 !app/*/.htaccess
 
-composer.lock
-/_env.php
-/cmd
+/env.php
 
+composer.lock
+
+/.release/*
 /doc/*
 /vendor/*
 /log/*
-/cache/*
-/session/*
-/upload/*
 /tmp/*
-/assets/index.html
-
-app/config/database.php
-
+/storage/*
+/session/*
+/cache/*
+/asset/*
