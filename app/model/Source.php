@@ -33,7 +33,7 @@ class Source extends Model {
     if(!$obj = Source::one(['where' => ['sid = ?', $sid]])) {
       $params = ['sid' => $sid, 'title' => Source::getTitle($event)];
 
-      transaction(function() use (&$obj, $params){
+      transaction(function() use (&$obj, $params, $sid){
         if(!\RichMenuGenerator::create4user($sid))
           \Log::error('建立richmenu失敗:' . $sid);
 
