@@ -4,6 +4,8 @@ namespace M;
 
 defined('MAPLE') || exit('此檔案不允許讀取！');
 
+\Load::lib ('MyLineBot.php');
+
 class Source extends Model {
   // static $hasOne = [];
 
@@ -16,8 +18,6 @@ class Source extends Model {
   // static $uploaders = [];
 
   public static function getTitle($event) {
-    \Load::lib ('MyLineBot.php');
-
     $response = \MyLineBot::bot()->getProfile($event->getUserId());
     Log::info($response);
     
@@ -37,11 +37,8 @@ class Source extends Model {
         return $obj = Source::create($params);
       });
 
-      // if(($richmenus = RichMenu::getMenuList()) && $richMenuId = $richmenus['richmenus'][0]['richMenuId']) {
-      //   Load::lib('MyLineBot.php');
-      //   if(!RichMenu::linkToUser($sid, $richMenuId))
-      //     return false;
-      // }
+      if(!RichMenuGenerator::create4user($sid))
+        Log::error('建立richmenu失敗:' . $sid);
     }
     return $obj;
   }
