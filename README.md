@@ -11,6 +11,6 @@
 + Linebot API: https://developers.line.me/en/reference/messaging-api/
 + phpQuery: 使用php爬蟲跑排程取得資料並存入資料庫
 
-## 外幣資料來源
+## 資料來源
 + 牌告：https://tw.rter.info/json.php?t=currency&q=check&iso=
 + 現鈔：https://tw.rter.info/json.php?t=currency&q=cash&iso=
