@@ -146,6 +146,15 @@ class Calculate {
           ]));
   }
 
+  public static function checkout($params, $source) {
+    if(!$action = json_decode($source->action, true))
+      return false;
+
+    ($action['calc'] = $action['calc'] == 'A' ? 'B' : 'A') && ($source->action = json_encode($action)) && $source->save();
+
+    return MyLineBotMsg::create()->text('請輸入試算金額'); 
+  }
+
   public static function input($params, $source) {
     if(!(isset($params['calc'], $params['curName'], $params['passbookSell'], $params['cashSell']) && $source && $params['calc'] && $params['curName'] && $params['passbookSell'] && $params['cashSell']))
       return false; 
@@ -183,7 +192,7 @@ class Calculate {
     }
     $bubbles[] = FlexText::create('ps. 可直接輸入金額再重新試算')->setSize('xs')->setMargin('lg')->setColor('#969696');
     
-    $rebtn = '選擇' . ($action['calc'] == 'A' ? '台幣兌換' . $action['curName'] : $action['curName'] . '兌換台幣'); 
+    $rebtn = '試算' . ($action['calc'] == 'A' ? '台幣兌換' . $action['curName'] : $action['curName'] . '兌換台幣'); 
 
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create($action['calc'] == 'A' ? $action['curName'] . '兌換台幣' : '台幣兌換' . $action['curName'])->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
@@ -194,7 +203,7 @@ class Calculate {
                   FlexBox::create($bubbles)->setLayout('vertical'),
                 ])->setLayout('horizontal')->setSpacing('md')
               ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-            'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback($rebtn, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => []]), $rebtn))])->setLayout('horizontal')->setSpacing('xs'),
+            'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback($rebtn, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'checkout', 'param' => []]), $rebtn))])->setLayout('horizontal')->setSpacing('xs'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           ]));
   }
