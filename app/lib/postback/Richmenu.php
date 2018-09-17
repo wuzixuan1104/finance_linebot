@@ -157,13 +157,15 @@ class Calculate {
   public static function show($input, $source) {
     if(!($input && ($action = json_decode($source->action, true) )))
       return false;
+    if(!isset($action['calc']))
+      return false;
 
     $bubbles = [];
     if($action['passbookSell']) {
       $bubbles[] = FlexBox::create([
                       FlexText::create('牌告')->setFlex(3),
                       FlexSeparator::create(),
-                      FlexText::create('31.035')->setMargin('lg')->setFlex(7)
+                      FlexText::create($action['calc'] == 'A' ? round($input * $action['passbookSell'], 3) : round($input / $action['passbookSell'], 3))->setMargin('lg')->setFlex(7)
                     ])->setLayout('horizontal')->setSpacing('md');
       $bubbles[] = FlexSeparator::create()->setMargin('md');
     }
@@ -172,15 +174,14 @@ class Calculate {
       $bubbles[] = FlexBox::create([
                       FlexText::create('現鈔')->setFlex(3),
                       FlexSeparator::create(),
-                      FlexText::create('31.035')->setMargin('lg')->setFlex(7)
+                      FlexText::create($action['calc'] == 'A' ? round($input * $action['cashSell'], 3) : round($input / $action['cashSell'], 3))->setMargin('lg')->setFlex(7)
                     ])->setLayout('horizontal')->setSpacing('md')->setMargin("md");
       $bubbles[] = FlexSeparator::create()->setMargin('md');
-
     }
     $bubbles[] = FlexText::create('ps. 可直接輸入金額再重新試算')->setSize('xs')->setMargin('lg')->setColor('#969696');
                   
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('選擇試算模式')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'header' => FlexBox::create([FlexText::create($action['calc'] == 'A' ? $action['curName'] . '兌換台幣' : '台幣兌換' . $action['curName'])->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
               FlexText::create('輸入金額：' . $input)->setColor('#906768'),
                FlexSeparator::create(),
