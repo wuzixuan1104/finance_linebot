@@ -157,7 +157,44 @@ class Calculate {
   public static function show($param, $source) {
     if(!($param && $source))
       return false;
+    
+    return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create('選擇試算模式')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'body' => FlexBox::create([
+              FlexText::create('輸入金額：1500')->setColor('#906768'),
+               FlexSeparator::create(),
 
+               FlexBox::create([
+
+                  FlexBox::create([
+
+                    FlexBox::create([
+                      FlexText::create('牌告')->setFlex(3),
+                      FlexSeparator::create(),
+                      FlexText::create('31.035')->setMargin('lg')->setFlex(7)
+                    ])->setLayout('horizontal')->setSpacing('md'),
+
+                    FlexSeparator::create()->setMargin('md'),
+
+                    FlexBox::create([
+                      FlexText::create('現鈔')->setFlex(3),
+                      FlexSeparator::create(),
+                      FlexText::create('31.035')->setMargin('lg')->setFlex(7)
+                    ])->setLayout('horizontal')->setSpacing('md')->setMargin("md"),
+
+                    FlexSeparator::create()->setMargin('md'),
+                    FlexText::create('ps. 可直接輸入金額再重新試算')->setSize('xs')->setMargin('lg')->setColor('#969696')
+                  
+                    
+
+                  ])->setLayout('vertical'),
+                  
+
+                ])->setLayout('horizontal')->setSpacing('md')
+              ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+            'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('重新選擇試算方式', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => []]), null))])->setLayout('horizontal')->setSpacing('xs'),
+            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          ]));
 
   }
 }
