@@ -183,7 +183,7 @@ class Calculate {
     }
     $bubbles[] = FlexText::create('ps. 可直接輸入金額再重新試算')->setSize('xs')->setMargin('lg')->setColor('#969696');
     
-    $rebtn = '選擇' . $action['calc'] == 'A' ? '台幣兌換' . $action['curName'] : $action['curName'] . '兌換台幣'; 
+    $rebtn = '選擇' . ($action['calc'] == 'A' ? '台幣兌換' . $action['curName'] : $action['curName'] . '兌換台幣'); 
 
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create($action['calc'] == 'A' ? $action['curName'] . '兌換台幣' : '台幣兌換' . $action['curName'])->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
