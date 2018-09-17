@@ -196,13 +196,7 @@ class Calculate {
 
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create($action['calc'] == 'A' ? $action['curName'] . '兌換台幣' : '台幣兌換' . $action['curName'])->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-            'body' => FlexBox::create([
-              FlexText::create('輸入金額：' . $input)->setColor('#906768'),
-               FlexSeparator::create(),
-               FlexBox::create([
-                  FlexBox::create($bubbles)->setLayout('vertical'),
-                ])->setLayout('horizontal')->setSpacing('md')
-              ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+            'body' => FlexBox::create([FlexText::create('輸入金額：' . $input)->setColor('#906768'), FlexSeparator::create(), FlexBox::create([FlexBox::create($bubbles)->setLayout('vertical')])->setLayout('horizontal')->setSpacing('md')])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
             'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback($rebtn, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'checkout', 'param' => []]), $rebtn))])->setLayout('horizontal')->setSpacing('xs'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           ]));
