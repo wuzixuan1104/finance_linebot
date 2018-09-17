@@ -1,4 +1,4 @@
-# 匯率摳摳
+# 理財摳摳
 ## 簡介
 這是一個匯率機器人讓時常購買外幣的人可以更方便，很多人在買外幣的時候，總是要上網查資料比對哪間銀行最便宜最好，
 常常要開啟很多個網頁視窗，而機器人可以提供你大部分常見貨幣及有提供購買資源的銀行資料，更棒的是，他還能紀錄您
@@ -6,10 +6,25 @@
 讓機器人提醒你已達到欲購買的匯率金額，讓你不用時時關注匯率的浮動。
 
 ## 步驟說明
+### 以下為機器人功能選單
++ 外匯查詢：
++ 選擇貨幣
++ <img src="assets/img/currency.jpg">
++ 選擇銀行
++ <img src="assets/img/bank.jpg">
++ 顯示牌告與現鈔最新匯率
++ <img src="assets/img/show.jpg">
++ 點選匯率試算，需選擇試算類型（ex: 由aaa兌換bbb現金）
++ <img src="assets/img/type.jpg">
++ 選擇後輸入金額，立即試算
++ <img src="assets/img/input.jpg">
++ 匯率試算
+
++ 外匯提醒（趕工中）
 
 ## 工具
-+ Linebot API: https://developers.line.me/en/reference/messaging-api/
-+ phpQuery: 使用php爬蟲跑排程取得資料並存入資料庫
++ Linebot API：https://developers.line.me/en/reference/messaging-api/
++ phpQuery：使用php爬蟲跑排程取得資料並存入資料庫
 
 ## 資料來源
 + 牌告：https://tw.rter.info/json.php?t=currency&q=check&iso=
