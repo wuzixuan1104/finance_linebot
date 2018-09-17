@@ -90,7 +90,7 @@ class Search {
 
     if($calcRecord = \M\CalcRecord::one('sourceId = ? and currencyId = ? and bankId = ?', $source->id, $currency->id, $bank->id))
       ($calcRecord->updateAt = date('Y-m-d H:i:s')) && $calcRecord->save();
-    else
+    elseif(\M\CalcRecord::count('sourceId = ?', $source->id) < 10)
       if(!\M\CalcRecord::create(['sourceId' => $source->id, 'currencyId' => $currency->id, 'bankId' => $bank->id]))
         return false;
 
@@ -133,17 +133,52 @@ class Search {
 }
 
 class Calculate {
-  public static function create() {
+  public static function create($params, $source) {
+    if(!$source)
+      return false;
 
-    $bubbles = [];
-    
-    return MyLineBotMsg::create()->flex('匯率試算', FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('匯率試算')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-            'body' => FlexBox::create([
-              
-             ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-              'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-          ]));
+    if(!$calcs = \M\CalcRecord::all(['where' => ['sourceId', $source->id], 'order' => 'updateAt DESC']))
+      return MyLineBotMsg::create()->text('尚無匯率試算資料，請點選下方"匯率查詢"查詢您要試算的匯率！'); 
+
+    $flexes = $bubbles = [];
+    $cnt = 0;
+    foreach($calcs as $calc) {
+      $condition = ['where' => ['bankId = ? and currencyId = ?', $calc['bankId'], $calc['currencyId']], 'order' => 'createAt desc', 'limit' => 1 ];
+      $passbook = \M\PassbookRecord::one($condition);
+      $cash = \M\CashRecord::one($condition); 
+
+      $flexes[] = FlexBox::create([
+                    FlexBox::create([
+                      FlexText::create($calc->currency->name)->setColor('#906768')->setSize('md'),
+                      FlexText::create('/ '. $calc->bank->name)->setSize('md'),
+                    ])->setLayout('vertical')->setFlex(4),
+
+                    FlexSeparator::create(),
+
+                    FlexButton::create('primary')->setFlex(3)->setColor('#d4d4d4')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '試算', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['curName' => $calc->currency->name, 'passbookSell' => $passbook ? $passbook->sell : 0, 'cashSell' => $cash ? $cash->sell : 0]]), '試算')),
+                    FlexButton::create('primary')->setFlex(3)->setColor('#f37370')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'delete', 'param' => ['calcRecordId' => $calc->id]]), '移除')),
+
+                ])->setLayout('horizontal')->setSpacing('md')->setMargin('lg');
+      $flexes[] = FlexSeparator::create();
+
+      if(++$cnt % 5 == 0) {
+        $bubbles[] = FlexBubble::create([
+                      'header' => FlexBox::create([FlexText::create('匯率試算')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                      'body' => FlexBox::create($bubbles)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                      'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                    ]);
+        $flexes = [];
+      }
+    }
+
+    if($flexes) {
+      $bubbles[] = FlexBubble::create([
+                    'header' => FlexBox::create([FlexText::create('匯率試算')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                    'body' => FlexBox::create($bubbles)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                  ]);
+    }
+    return MyLineBotMsg::create()->flex('匯率試算', FlexCarousel::create($bubbles));
   }
 
   public static function type($params, $source) {

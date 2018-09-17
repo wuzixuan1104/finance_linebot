@@ -9,7 +9,10 @@ class CalcRecord extends Model {
 
   // static $hasMany = [];
 
-  // static $belongToOne = [];
+  static $belongToOne = [
+    'currency' => 'Currency',
+    'bank' => 'Bank'
+  ];
 
   // static $belongToMany = [];
 

@@ -653,8 +653,17 @@ class FlexAction {
 }
 
 class RichMenuGenerator {
-  public static function create() {
+  public static function create4user($sourceId) {
+    if(!$lists = RichMenu::getMenuList() && isset($lists['richmenus'])) 
+      return false;
 
+    $listId = $lists['richmenus'][0]['richMenuId'];
+    if(!RichMenu::linkToUser($sourceId, $listId))
+      return false;
+    return true;
+  }
+  
+  public static function create() {
     if($lists = RichMenu::getMenuList() && isset($lists['richmenus'])) 
       foreach($lists['richmenus'] as $list) 
         if(!RichMenu::delete($list['richMenuId']))
