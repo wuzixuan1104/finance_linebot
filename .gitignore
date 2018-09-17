@@ -15,4 +15,4 @@ composer.lock
 /storage/*
 /session/*
 /cache/*
-/asset/*
+
