@@ -19,7 +19,8 @@
 + 選擇後輸入金額，立即試算
 + <img src="asset/img/input.jpg" width="300">
 2. 匯率試算
-
++ 將您查詢過的歷史紀錄至試算中，讓你更快速便捷，點擊3次即能取得您要的結果
++ <img src="asset/img/calcRecord.jpg" width="300">
 3. 外匯提醒（趕工中）
 
 ## 工具
