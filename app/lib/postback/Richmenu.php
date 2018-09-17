@@ -134,16 +134,18 @@ class Search {
 
 class Calculate {
   public static function create($params, $source) {
-    if(!$source)
+    if(!$source )
       return false;
 
-    if(!$calcs = \M\CalcRecord::all(['where' => ['sourceId', $source->id], 'order' => 'updateAt DESC']))
+    ($source->action = '') && $source->save();
+
+    if(!$calcs = \M\CalcRecord::all(['where' => ['sourceId = ?', $source->id], 'order' => 'updateAt DESC']))
       return MyLineBotMsg::create()->text('尚無匯率試算資料，請點選下方"匯率查詢"查詢您要試算的匯率！'); 
 
     $flexes = $bubbles = [];
     $cnt = 0;
     foreach($calcs as $calc) {
-      $condition = ['where' => ['bankId = ? and currencyId = ?', $calc['bankId'], $calc['currencyId']], 'order' => 'createAt desc', 'limit' => 1 ];
+      $condition = ['where' => ['bankId = ? and currencyId = ?', $calc->bankId, $calc->currencyId], 'order' => 'createAt desc', 'limit' => 1 ];
       $passbook = \M\PassbookRecord::one($condition);
       $cash = \M\CashRecord::one($condition); 
 
@@ -174,11 +176,19 @@ class Calculate {
     if($flexes) {
       $bubbles[] = FlexBubble::create([
                     'header' => FlexBox::create([FlexText::create('匯率試算')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-                    'body' => FlexBox::create($bubbles)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                    'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
                     'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
                   ]);
     }
     return MyLineBotMsg::create()->flex('匯率試算', FlexCarousel::create($bubbles));
+  }
+
+  public static function delete($params, $source) {
+    if(isset($params['calcRecordId']) && $obj = \M\CalcRecord::one('id = ?', $params['calcRecordId']))
+      if(!$obj->delete())
+        return false;
+
+    return self::create($params, $source);
   }
 
   public static function type($params, $source) {
