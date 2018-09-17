@@ -194,7 +194,7 @@ class Calculate {
   }
 
   public static function type($params, $source) {
-    if(!(isset($params['curName'], $params['passbookSell'], $params['cashSell']) && $params['curName'] && $params['passbookSell'] && $params['cashSell']))
+    if(!(isset($params['curName'], $params['passbookSell'], $params['cashSell']) && $params['curName']))
       return false; 
 
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
