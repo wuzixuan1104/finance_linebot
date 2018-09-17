@@ -9,15 +9,15 @@
 ### 以下為機器人功能選單
 + 外匯查詢：
 + 選擇貨幣
-+ <img src="asset/img/currency.jpg">
++ <img src="asset/img/currency.jpg" width="300">
 + 選擇銀行
-+ <img src="asset/img/bank.jpg">
++ <img src="asset/img/bank.jpg" width="300">
 + 顯示牌告與現鈔最新匯率
-+ <img src="asset/img/show.jpg">
++ <img src="asset/img/show.jpg" width="300">
 + 點選匯率試算，需選擇試算類型（ex: 由aaa兌換bbb現金）
-+ <img src="asset/img/type.jpg">
++ <img src="asset/img/type.jpg" width="300">
 + 選擇後輸入金額，立即試算
-+ <img src="asset/img/input.jpg">
++ <img src="asset/img/input.jpg" width="300">
 + 匯率試算
 
 + 外匯提醒（趕工中）
