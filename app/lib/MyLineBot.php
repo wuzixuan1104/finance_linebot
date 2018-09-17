@@ -654,15 +654,7 @@ class FlexAction {
 
 class RichMenuGenerator {
   public static function create4user($sid) {
-    Log::info('enter');
-    if(!$lists = RichMenu::getMenuList() && isset($lists['richmenus'])) 
-      return false;
-    Log::info('lists:');
-    Log::info(json_encode($lists));
-
-    $listId = $lists['richmenus'][0]['richMenuId'];
-    Log::info('richMenuId:' . $listId);
-    if(!RichMenu::linkToUser($sid, $listId))
+    if(!RichMenu::linkToUser($sid, 'richmenu-7b7a682133185c81f625cd2ff7540309'))
       return false;
     return true;
   }
@@ -673,12 +665,13 @@ class RichMenuGenerator {
         if(!RichMenu::delete($list['richMenuId']))
           return false;
 
+   
     if(!$richMenuId = RichMenu::create(BuildRichMenu::create(
       BuildRichMenu::size(843), true, '匯率小達人', '更多',
       [ 
-        BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊正在進行中的問題', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), null)),
-        BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊首頁', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), null)),
-        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('您已點擊意見回饋', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'History', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率查詢', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率試算', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('歷史紀錄', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'History', 'method' => 'create', 'param' => [] ]), null)),
       ]
     )))
       return false;
