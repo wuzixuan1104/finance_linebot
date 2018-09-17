@@ -29,50 +29,45 @@ class Line extends Controller {
           // $pattern = !preg_match ('/\(\?P<k>.+\)/', $pattern) ? '/(?P<k>(' . $pattern . '))/i' : ('/(' . $pattern . ')/i');
           // preg_match_all ($pattern, $log->text, $result);
 
-          if(is_numeric($log->text) && $source->action) {
-            if( isset( self::$cache['lib']['postback/Richmenu'] ) ? true : ( Load::lib('postback/Richmenu.php') ? self::$cache['lib']['postback/Richmenu'] = true : false ) ) 
-              $msg = Calculate::show($log->text, $source);
-              $msg->reply($event->getReplyToken());
-          }
+          // if(is_numeric($log->text) && $source->action) {
+          //   if( isset( self::$cache['lib']['postback/Richmenu'] ) ? true : ( Load::lib('postback/Richmenu.php') ? self::$cache['lib']['postback/Richmenu'] = true : false ) ) 
+          //     $msg = Calculate::show($log->text, $source);
+          //     $msg->reply($event->getReplyToken());
+          // }
 
-          die;
-          $a = MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
-                  'header' => FlexBox::create([FlexText::create('選擇試算模式')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+          $a = MyLineBotMsg::create()->flex('匯率試算', FlexBubble::create([
+                  'header' => FlexBox::create([FlexText::create('匯率試算')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
                   'body' => FlexBox::create([
-                     FlexText::create('輸入金額：1500')->setColor('#906768'),
-                     FlexSeparator::create(),
-
                      FlexBox::create([
-
                         FlexBox::create([
+                          FlexText::create('墨西哥披索')->setColor('#906768')->setSize('md'),
+                          FlexText::create('/ 國泰銀行')->setSize('md'),
+                        ])->setLayout('vertical')->setFlex(4),
 
-                          FlexBox::create([
-                            FlexText::create('牌告')->setFlex(3),
-                            FlexSeparator::create(),
-                            FlexText::create('31.035')->setMargin('lg')->setFlex(7)
-                          ])->setLayout('horizontal')->setSpacing('md'),
+                        FlexSeparator::create(),
 
-                          FlexSeparator::create()->setMargin('md'),
+                        FlexButton::create('primary')->setFlex(3)->setColor('#d4d4d4')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => ['calc' => 'A']]), '移除')),
+                        FlexButton::create('primary')->setFlex(3)->setColor('#f37370')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => ['calc' => 'A']]), '移除')),
 
-                          FlexBox::create([
-                            FlexText::create('現鈔')->setFlex(3),
-                            FlexSeparator::create(),
-                            FlexText::create('31.035')->setMargin('lg')->setFlex(7)
-                          ])->setLayout('horizontal')->setSpacing('md')->setMargin("md"),
+                    ])->setLayout('horizontal')->setSpacing('md')->setMargin('lg'),
+                    FlexSeparator::create(),
 
-                          FlexSeparator::create()->setMargin('md'),
-                          FlexText::create('ps. 可直接輸入金額再重新試算')->setSize('xs')->setMargin('lg')->setColor('#969696')
-                        
-                          
+                    FlexBox::create([
+                        FlexBox::create([
+                          FlexText::create('墨西哥披索')->setColor('#906768')->setSize('md'),
+                          FlexText::create('/ 國泰銀行')->setSize('md'),
+                        ])->setLayout('vertical')->setFlex(4),
 
-                        ])->setLayout('vertical'),
-                        
+                        FlexSeparator::create(),
 
-                      ])->setLayout('horizontal')->setSpacing('md')
+                        FlexButton::create('primary')->setFlex(3)->setColor('#d4d4d4')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => ['calc' => 'A']]), '移除')),
+                        FlexButton::create('primary')->setFlex(3)->setColor('#f37370')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => ['calc' => 'A']]), '移除')),
+
+                    ])->setLayout('horizontal')->setSpacing('md')->setMargin('lg'),
+                    FlexSeparator::create()
 
                   ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-                  'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('重新選擇試算方式', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => []]), null))])->setLayout('horizontal')->setSpacing('xs'),
-                  'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
                 ]))->reply($event->getReplyToken());
 
           // MyLineBotMsg::create()

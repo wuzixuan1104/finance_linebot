@@ -82,11 +82,17 @@ class Search {
     if(!(isset($params['currencyId'], $params['bankId']) && $params['currencyId'] && $params['bankId']))
       return false;
 
-    if( !$currency = \M\Currency::one('id = ?', $params['currencyId']) )
+    if(!$currency = \M\Currency::one('id = ?', $params['currencyId']))
       return false;
 
-    if( !$bank = \M\Bank::one('id = ?', $params['bankId']) )
+    if(!$bank = \M\Bank::one('id = ?', $params['bankId']))
       return false;
+
+    if($calcRecord = \M\CalcRecord::one('sourceId = ? and currencyId = ? and bankId = ?', $source->id, $currency->id, $bank->id))
+      ($calcRecord->updateAt = date('Y-m-d H:i:s')) && $calcRecord->save();
+    else
+      if(!\M\CalcRecord::create(['sourceId' => $source->id, 'currencyId' => $currency->id, 'bankId' => $bank->id]))
+        return false;
 
     $condition = ['where' => ['bankId = ? and currencyId = ?', $params['bankId'], $params['currencyId']], 'order' => 'createAt desc', 'limit' => 1 ];
     
@@ -129,6 +135,15 @@ class Search {
 class Calculate {
   public static function create() {
 
+    $bubbles = [];
+    
+    return MyLineBotMsg::create()->flex('匯率試算', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create('匯率試算')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'body' => FlexBox::create([
+              
+             ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+              'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          ]));
   }
 
   public static function type($params, $source) {
