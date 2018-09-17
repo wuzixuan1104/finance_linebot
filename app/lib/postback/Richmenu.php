@@ -90,9 +90,15 @@ class Search {
 
     if($calcRecord = \M\CalcRecord::one('sourceId = ? and currencyId = ? and bankId = ?', $source->id, $currency->id, $bank->id))
       ($calcRecord->updateAt = date('Y-m-d H:i:s')) && $calcRecord->save();
-    elseif(\M\CalcRecord::count('sourceId = ?', $source->id) < 10)
+    else {
+      if(\M\CalcRecord::count('sourceId = ?', $source->id) >= 10)
+        if($calc = \M\CalcRecord::one(['where' => ['sourceId = ?', $source->id]]))
+          $calc->delete();
+
       if(!\M\CalcRecord::create(['sourceId' => $source->id, 'currencyId' => $currency->id, 'bankId' => $bank->id]))
         return false;
+    }
+    
 
     $condition = ['where' => ['bankId = ? and currencyId = ?', $params['bankId'], $params['currencyId']], 'order' => 'createAt desc', 'limit' => 1 ];
     
