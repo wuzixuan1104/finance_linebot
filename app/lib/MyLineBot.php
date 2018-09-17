@@ -654,10 +654,14 @@ class FlexAction {
 
 class RichMenuGenerator {
   public static function create4user($sid) {
+    Log::info('enter');
     if(!$lists = RichMenu::getMenuList() && isset($lists['richmenus'])) 
       return false;
+    Log::info('lists:');
+    Log::info(json_encode($lists));
 
     $listId = $lists['richmenus'][0]['richMenuId'];
+    Log::info('richMenuId:' . $listId);
     if(!RichMenu::linkToUser($sid, $listId))
       return false;
     return true;
