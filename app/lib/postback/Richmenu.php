@@ -182,7 +182,9 @@ class Calculate {
       $bubbles[] = FlexSeparator::create()->setMargin('md');
     }
     $bubbles[] = FlexText::create('ps. 可直接輸入金額再重新試算')->setSize('xs')->setMargin('lg')->setColor('#969696');
-                  
+    
+    $rebtn = '選擇' . $action['calc'] == 'A' ? '台幣兌換' . $action['curName'] : $action['curName'] . '兌換台幣'; 
+
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create($action['calc'] == 'A' ? $action['curName'] . '兌換台幣' : '台幣兌換' . $action['curName'])->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
@@ -192,10 +194,9 @@ class Calculate {
                   FlexBox::create($bubbles)->setLayout('vertical'),
                 ])->setLayout('horizontal')->setSpacing('md')
               ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-            'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('重新選擇試算方式', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => []]), null))])->setLayout('horizontal')->setSpacing('xs'),
+            'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback($rebtn, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => []]), $rebtn))])->setLayout('horizontal')->setSpacing('xs'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           ]));
-
   }
 }
 
