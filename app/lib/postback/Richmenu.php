@@ -167,7 +167,7 @@ class Calculate {
       if(++$cnt % 5 == 0) {
         $bubbles[] = FlexBubble::create([
                       'header' => FlexBox::create([FlexText::create('匯率試算')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-                      'body' => FlexBox::create($bubbles)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                      'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
                       'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
                     ]);
         $flexes = [];
@@ -181,6 +181,7 @@ class Calculate {
                     'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
                   ]);
     }
+ 
     return MyLineBotMsg::create()->flex('匯率試算', FlexCarousel::create($bubbles));
   }
 
