@@ -159,22 +159,25 @@ class Calculate {
       return false;
     if(!isset($action['calc']))
       return false;
-
+    
     $bubbles = [];
     if($action['passbookSell']) {
+      $money = $action['calc'] == 'A' ? round($input * $action['passbookSell'], 3) : round($input / $action['passbookSell'], 3);
+
       $bubbles[] = FlexBox::create([
                       FlexText::create('牌告')->setFlex(3),
                       FlexSeparator::create(),
-                      FlexText::create($action['calc'] == 'A' ? round($input * $action['passbookSell'], 3) : round($input / $action['passbookSell'], 3))->setMargin('lg')->setFlex(7)
+                      FlexText::create((string)$money)->setMargin('lg')->setFlex(7)
                     ])->setLayout('horizontal')->setSpacing('md');
       $bubbles[] = FlexSeparator::create()->setMargin('md');
     }
 
     if($action['cashSell']) {
+      $money = $action['calc'] == 'A' ? round($input * $action['cashSell'], 3) : round($input / $action['cashSell'], 3);
       $bubbles[] = FlexBox::create([
                       FlexText::create('現鈔')->setFlex(3),
                       FlexSeparator::create(),
-                      FlexText::create($action['calc'] == 'A' ? round($input * $action['cashSell'], 3) : round($input / $action['cashSell'], 3))->setMargin('lg')->setFlex(7)
+                      FlexText::create((string)$money)->setMargin('lg')->setFlex(7)
                     ])->setLayout('horizontal')->setSpacing('md')->setMargin("md");
       $bubbles[] = FlexSeparator::create()->setMargin('md');
     }
