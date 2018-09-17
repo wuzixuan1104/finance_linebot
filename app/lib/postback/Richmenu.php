@@ -218,7 +218,7 @@ class Calculate {
   }
 
   public static function input($params, $source) {
-    if(!(isset($params['calc'], $params['curName'], $params['passbookSell'], $params['cashSell']) && $source && $params['calc'] && $params['curName'] && $params['passbookSell'] && $params['cashSell']))
+    if(!(isset($params['calc'], $params['curName'], $params['passbookSell'], $params['cashSell']) && $source && $params['calc'] && $params['curName']))
       return false; 
     ($source->action = json_encode($params)) && $source->save();
 
