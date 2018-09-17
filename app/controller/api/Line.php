@@ -57,7 +57,7 @@ class Line extends Controller {
                             FlexText::create('現鈔')->setFlex(3),
                             FlexSeparator::create(),
                             FlexText::create('31.035')->setMargin('lg')->setFlex(7)
-                          ])->setLayout('horizontal')->setSpacing('md'),
+                          ])->setLayout('horizontal')->setSpacing('md')->setMargin("md"),
 
                           FlexSeparator::create()->setMargin('md'),
                           FlexText::create('ps. 可直接輸入金額再重新試算')->setSize('xs')->setMargin('lg')->setColor('#969696')

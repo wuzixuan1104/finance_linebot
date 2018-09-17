@@ -154,8 +154,11 @@ class Calculate {
     return MyLineBotMsg::create()->text('請輸入試算金額');
   }
 
-  public static function show() {
-
+  public static function show($param, $source) {
+    if(!($param && $source))
+      return false;
+    
+    
   }
 }
 
