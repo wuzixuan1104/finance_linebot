@@ -276,7 +276,7 @@ class Remind {
     return MyLineBotMsg::create()->flex('匯率提醒', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('匯率提醒')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
-              FlexText::create('設定提醒')->setColor('#906768'),
+              FlexText::create('設定新的提醒')->setColor('#906768'),
               FlexBox::create([
                 FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'range', 'param' => []]), '區間')),
                 FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'float', 'param' => []]), '浮動')),
@@ -285,7 +285,7 @@ class Remind {
               FlexText::create('已設定的提醒')->setColor('#906768'),
               FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('前往查看', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'show', 'param' => []]), '前往查看')),
               FlexSeparator::create(),
-              FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('使用說明', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'explain', 'param' => []]), '使用說明')),
+              FlexButton::create('link')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('使用說明', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'explain', 'param' => []]), '使用說明')),
             ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           ]));
