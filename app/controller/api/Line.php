@@ -25,27 +25,46 @@ class Line extends Controller {
         case 'Unfollow':
           break;
         case 'Text':
-          // $a = MyLineBotMsg::create()->flex('匯率提醒', FlexBubble::create([
-          //   'header' => FlexBox::create([FlexText::create('匯率提醒')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+          //選擇範圍
+          // $a = MyLineBotMsg::create()->flex('選擇範圍區間', FlexBubble::create([
+          //   'header' => FlexBox::create([FlexText::create('選擇範圍區間')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
           //   'body' => FlexBox::create([
-          //     FlexText::create('設定提醒')->setColor('#906768'),
+          //     FlexText::create('當匯率符合所選範圍時會發出通知')->setColor('#906768'),
           //     FlexSeparator::create(),
-          //     FlexBox::create([
-          //       FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '區間')),
-          //       FlexSeparator::create()->setMargin('lg'),
-          //       FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '浮動')),
-          //     ])->setLayout('horizontal'),
-          //     FlexSeparator::create(),
-          //     FlexText::create('已設定的提醒')->setColor('#906768'),
-          //     FlexSeparator::create(),
-          //     FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('前往查看', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '前往查看')),
-          //     FlexSeparator::create(),
-          //     FlexButton::create('primary')->setColor('#bbbec3')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('使用說明', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '使用說明')),
+          //     FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('> = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '大於等於')),
+          //     FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('< = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '小於等於')),
+          //     FlexText::create('ps. 一天至多提醒一次')->setColor('#a5a3a3')->setSize('sm'),
           //   ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
           //   'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           // ]))->reply($event->getReplyToken());
 
+          //區間設定成功
+          // $a = MyLineBotMsg::create()->flex('區間已設定', FlexBubble::create([
+          //   'header' => FlexBox::create([FlexText::create('區間已設定')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+          //   'body' => FlexBox::create([
+          //     FlexText::create('美國(美金) / 國泰世華')->setColor('#906768'),
+          //     FlexSeparator::create(),
 
+          //     FlexBox::create([
+          //       FlexBox::create([
+          //         FlexText::create('內容')->setFlex(2),
+          //         FlexSeparator::create()->setMargin('md'),
+          //         FlexText::create('牌告 > = 30.123')->setFlex(8)->setMargin('lg'),
+          //       ])->setLayout('horizontal'),
+
+          //       FlexSeparator::create()->setMargin('md'),
+
+          //       FlexBox::create([
+          //         FlexText::create('日期')->setFlex(2),
+          //         FlexSeparator::create()->setMargin('md'),
+          //         FlexText::create('2018-10-10 11:12:12')->setFlex(8)->setMargin('lg'),
+          //       ])->setLayout('horizontal')->setMargin('md'),
+
+          //     ])->setLayout('vertical')
+              
+          //   ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+          //   'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          // ]))->reply($event->getReplyToken());
           // die;
 
 
