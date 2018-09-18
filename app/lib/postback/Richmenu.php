@@ -111,7 +111,7 @@ class Search {
         $tmp['現金匯率'] = $cash;
 
     foreach($tmp as $k => $v) {
-      $time = (string)(($time = \M\CurrencyTime::one(['id = ?', $v->currencyTimeId])) ? $time->datetime : $v->createAt);
+      $time = (string)(($time = \M\CurrencyTime::one('id = ?', $v->currencyTimeId)) ? $time->datetime : $v->createAt);
       
       $bubbles[] = FlexBox::create([FlexText::create($k)->setColor('#906768'), FlexText::create($time)->setSize('xxs')->setAlign('end')->setColor('#bbbbbb')])->setLayout('horizontal');
       $bubbles[] = FlexSeparator::create();
