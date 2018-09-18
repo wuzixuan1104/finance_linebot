@@ -291,7 +291,7 @@ class Remind {
               FlexButton::create('primary')->setColor('#bbbec3')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('使用說明', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'explain', 'param' => []]), '使用說明')),
             ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-          ]))
+          ]));
   }
 
   public static function range() {
