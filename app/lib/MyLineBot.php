@@ -671,7 +671,7 @@ class RichMenuGenerator {
       [ 
         BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率查詢', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), null)),
         BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率試算', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), null)),
-        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('歷史紀錄', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'History', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('歷史紀錄', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'create', 'param' => [] ]), null)),
       ]
     )))
       return false;

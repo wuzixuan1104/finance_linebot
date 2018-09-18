@@ -129,7 +129,7 @@ class Search {
       $bubbles[] = FlexSeparator::create();
     }
    
-    return MyLineBotMsg::create()->flex('問題類別', FlexBubble::create([
+    return MyLineBotMsg::create()->flex('匯率試算', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create($currency->name . ' / ' . $bank->name)->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create($bubbles)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
             'footer' => FlexBox::create([FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('匯率試算', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['curName' => $currency->name, 'passbookSell' => $passbook ? $passbook->sell : 0, 'cashSell' => $cash ? $cash->sell : 0]]), null))])->setLayout('horizontal')->setSpacing('xs'),
@@ -271,6 +271,9 @@ class Calculate {
   }
 }
 
-class History {
-
+class Remind {
+  public static function create() {
+    
+  }
 }
+
