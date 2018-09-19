@@ -52,7 +52,7 @@ class Line extends Controller {
               FlexText::create('設定提醒')->setColor('#906768'),
               FlexSeparator::create(),
               FlexBox::create([
-                FlexText::create('牌告')->setFlex(3),
+                FlexText::create('牌告')->setFlex(3)->setMargin('md'),
                 FlexSeparator::create(),
                 FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '區間')),
                 FlexSeparator::create(),
@@ -62,16 +62,16 @@ class Line extends Controller {
               FlexSeparator::create(),
 
               FlexBox::create([
-                FlexText::create('現鈔')->setFlex(3),
+                FlexText::create('現鈔')->setFlex(3)->setMargin('md'),
                 FlexSeparator::create(),
                 FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '區間')),
                 FlexSeparator::create(),
-                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '浮動')),
+                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '浮動')),
               ])->setLayout('horizontal')->setSpacing('md'),
 
               FlexSeparator::create(),
 
-              FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('查看已設定的提醒', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '查看已設定的提醒')),
+              FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('查看已設定的提醒', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '查看已設定的提醒')),
               FlexButton::create('link')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('使用說明', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '使用說明')),
             ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
