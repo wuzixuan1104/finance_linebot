@@ -306,7 +306,48 @@ class Remind {
   }
 
   public static function range() {
+    //選擇範圍
+      $a = MyLineBotMsg::create()->flex('選擇範圍區間', FlexBubble::create([
+        'header' => FlexBox::create([FlexText::create('選擇範圍區間')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+        'body' => FlexBox::create([
+          FlexText::create('當匯率符合所選範圍時會發出通知')->setColor('#906768'),
+          FlexSeparator::create(),
+          FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('> = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '大於等於')),
+          FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('< = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '小於等於')),
+          FlexText::create('ps. 一天至多提醒一次')->setColor('#a5a3a3')->setSize('sm'),
+        ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+        'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+      ]))
+  }
 
+  public static function success() {
+    //已設定成功
+    return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'body' => FlexBox::create([
+              FlexText::create('美國(美金) / 國泰世華')->setColor('#906768'),
+              FlexSeparator::create(),
+
+              FlexBox::create([
+                FlexBox::create([
+                  FlexText::create('內容')->setFlex(2),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create('牌告 > = 30.123')->setFlex(8)->setMargin('lg'),
+                ])->setLayout('horizontal'),
+
+                FlexSeparator::create()->setMargin('md'),
+
+                FlexBox::create([
+                  FlexText::create('日期')->setFlex(2),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create('2018-10-10 11:12:12')->setFlex(8)->setMargin('lg'),
+                ])->setLayout('horizontal')->setMargin('md'),
+
+              ])->setLayout('vertical')
+              
+            ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          ]));
   }
 
   public static function float() {
