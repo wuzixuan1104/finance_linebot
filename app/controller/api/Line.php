@@ -31,7 +31,7 @@ class Line extends Controller {
           $bubbles = [];
           for($i = 0; $i < 2; $i++ ) {
           $bubbles[] =  FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('區間提醒(牌告)')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'header' => FlexBox::create([FlexText::create('匯率提醒列表')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
                 FlexText::create('-- 區間設定 --')->setColor('#e46767')->setSize('md'),
                 FlexSeparator::create(),
@@ -40,7 +40,7 @@ class Line extends Controller {
                     FlexText::create('美國(美金) / 國泰銀行')->setColor('#906768')->setFlex(7),
                     FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
                   ])->setLayout('horizontal'),
-                  FlexText::create('牌告 >= 30.15')->setFlex(7)
+                  FlexText::create('+- 0.05')->setFlex(7)
                 ])->setLayout('vertical'),
 
                 FlexSeparator::create(),
@@ -49,7 +49,7 @@ class Line extends Controller {
 
                 FlexBox::create([
                   FlexBox::create([
-                    FlexText::create('美國(美金) / 國泰銀行')->setColor('#906768')->setFlex(7),
+                    FlexText::create('美國(美金)')->setColor('#906768')->setFlex(7),
                     FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
                   ])->setLayout('horizontal'),
                   FlexText::create('牌告 >= 30.15')->setFlex(7)
