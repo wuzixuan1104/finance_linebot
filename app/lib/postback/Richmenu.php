@@ -409,7 +409,7 @@ class RemindRange{
     return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
-              FlexText::create($currency->name . isset($bank) ? ' / ' . $bank->name)->setColor('#906768'),
+              FlexText::create($currency->name . isset($bank) ? ' / ' . $bank->name : '')->setColor('#906768'),
               FlexSeparator::create(),
 
               FlexBox::create([
