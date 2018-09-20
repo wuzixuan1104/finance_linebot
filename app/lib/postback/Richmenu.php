@@ -218,9 +218,9 @@ class Remind {
               FlexBox::create([
                 FlexText::create('牌告')->setFlex(3)->setMargin('md'),
                 FlexSeparator::create(),
-                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'create', 'param' => ['type' => 'pass']]), '區間')),
+                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'create', 'param' => ['kind' => 'passbook']]), '區間')),
                 FlexSeparator::create(),
-                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'create', 'param' => ['type' => 'pass']]), '浮動')),
+                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'create', 'param' => ['kind' => 'passbook']]), '浮動')),
               ])->setLayout('horizontal')->setSpacing('md'),
 
               FlexSeparator::create(),
@@ -228,9 +228,9 @@ class Remind {
               FlexBox::create([
                 FlexText::create('現鈔')->setFlex(3)->setMargin('md'),
                 FlexSeparator::create(),
-                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'create', 'param' => ['type' => 'cash']]), '區間')),
+                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'create', 'param' => ['kind' => 'cash']]), '區間')),
                 FlexSeparator::create(),
-                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'create', 'param' => ['type' => 'cash']]), '浮動')),
+                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'create', 'param' => ['kind' => 'cash']]), '浮動')),
               ])->setLayout('horizontal')->setSpacing('md'),
 
               FlexSeparator::create(),
@@ -345,14 +345,14 @@ class Remind {
 
 class RemindRange{
   public static function create($params) {
-    if(!(isset($params['type']) && $params['type']))
+    if(!(isset($params['kind']) && $params['kind']))
       return false;
 
     return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('是否指定銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
-                FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '是', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['type' => $params['type'], 'bank' => true]]), '是')),
-                FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('否', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['type' => $params['type'], 'bank' => false]]), '否')),
+                FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '是', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['kind' => $params['kind'], 'bank' => true]]), '是')),
+                FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('否', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['kind' => $params['kind'], 'bank' => false]]), '否')),
 
             ])->setLayout('horizontal'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
@@ -360,24 +360,19 @@ class RemindRange{
   }
 
   public static function currency($params, $source) {
-    if(!(isset($params['type'], $params['bank']) && $params['type'] && $source))
+    if(!(isset($params['kind'], $params['bank']) && $params['kind'] && $source))
       return false;
-
-    if($params['bank'])
-      return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'bank', 'param' => ['type' => $params['type']]]);
-
-    ($source->action = json_encode(['class' => 'RemindRange', 'method' => 'choose', 'remind' => $params['type']])) && $source->save();
-    return MyLineBotMsg::create()->text('請輸入區間值'); 
+    return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => $params['bank'] ? 'bank' : 'input', 'param' => ['kind' => $params['kind']]]);
   }
 
   public static function bank($params) {
     if(!(isset($params['currencyId'])))
       return false;
-    return Common::bank($params['currencyId'], ['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'input', 'param' => ['currencyId' => $params['currencyId'], 'type' => $params['type']]], $params['type']);
+    return Common::bank($params['currencyId'], ['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'input', 'param' => ['currencyId' => $params['currencyId'], 'kind' => $params['kind']]], $params['kind']);
   }
 
   public static function input($params, $source) {
-    ($source->action = json_encode(['class' => 'RemindRange', 'method' => 'choose', 'remind' => $params['type']])) && $source->save();
+    ($source->action = json_encode(['class' => 'RemindRange', 'method' => 'choose', 'kind' => $params['kind'], 'currencyId' => $params['currencyId'], 'bankId' => isset($params['bankId']) ? $params['bankId'] : 0])) && $source->save();
     return MyLineBotMsg::create()->text('請輸入區間值'); 
   }
 
@@ -387,14 +382,58 @@ class RemindRange{
         'body' => FlexBox::create([
           FlexText::create('當匯率符合所選範圍時會發出通知')->setColor('#906768'),
           FlexSeparator::create(),
-          FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('> = ' . $text, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '大於等於')),
-          FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('< = ' . $text, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '小於等於')),
+          FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('> = ' . $text, json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'success', 'param' => ['text' => $text, 'type' => 'more']]), '大於等於')),
+          FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('< = ' . $text, json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'success', 'param' => ['text' => $text, 'type' => 'less']]), '小於等於')),
           FlexText::create('ps. 一天至多提醒一次')->setColor('#a5a3a3')->setSize('sm'),
         ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
         'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
       ]));
   }
 
+  public static function success($params, $source) {
+    if(!(isset($params['text'], $params['type']) && $params['text'] && $params['type'] && $source))
+      return false;
+
+    $action = json_decode($source->action, true);
+    if(!(isset($action['kind'], $action['currencyId'], $action['bankId'])))
+      return false;
+
+    if(!$currency = \M\Currency::one('id = ?', $action['currencyId']))
+      return false;
+    if($action['bankId'] != 0 && !$bank = \M\Bank::one('id = ?', $action['bankId']))
+      return false;
+
+    if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $params['text'], 'type' => $params['type'], 'sourceId' => $source->id])))
+      return false;
+
+    return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'body' => FlexBox::create([
+              FlexText::create($currency->name . isset($bank) ? ' / ' . $bank->name)->setColor('#906768'),
+              FlexSeparator::create(),
+
+              FlexBox::create([
+                FlexBox::create([
+                  FlexText::create('內容')->setFlex(2),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create(\M\RemindRange::KIND[$action['kind']] . ' > = ' . $params['text'])->setFlex(8)->setMargin('lg'),
+                ])->setLayout('horizontal'),
+
+                FlexSeparator::create()->setMargin('md'),
+
+                FlexBox::create([
+                  FlexText::create('日期')->setFlex(2),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create((string)$obj->createAt)->setFlex(8)->setMargin('lg'),
+                ])->setLayout('horizontal')->setMargin('md'),
+
+              ])->setLayout('vertical')
+              
+            ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          ]));
+
+  }
 }
 
 class RemindFloat{

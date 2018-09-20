@@ -35,7 +35,7 @@ class Common {
 
   public static function currencyType($currencyId, $assign) {
     $records = [];
-    if($assign == 'all' || $assign == 'pass') 
+    if($assign == 'all' || $assign == 'passbook') 
       if($passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
         array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $passbooks);
     
