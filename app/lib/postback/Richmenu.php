@@ -227,9 +227,9 @@ class Remind {
               FlexBox::create([
                 FlexText::create('現鈔')->setFlex(3)->setMargin('md'),
                 FlexSeparator::create(),
-                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'create', 'param' => ['kind' => \M\RemindFloat::KIND_PASSBOOK]]), '區間')),
+                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('區間', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'create', 'param' => ['kind' => \M\RemindFloat::KIND_CASH]]), '區間')),
                 FlexSeparator::create(),
-                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'create', 'param' => ['kind' => \M\RemindFloat::KIND_PASSBOOK]]), '浮動')),
+                FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('浮動', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'create', 'param' => ['kind' => \M\RemindFloat::KIND_CASH]]), '浮動')),
               ])->setLayout('horizontal')->setSpacing('md'),
 
               FlexSeparator::create(),
