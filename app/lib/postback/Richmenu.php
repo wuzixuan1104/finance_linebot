@@ -444,7 +444,7 @@ class RemindFloat{
     if(!(isset($action['kind'], $action['currencyId'], $action['bankId'])))
       return false;
 
-    if(\M\RemindRange::one('sourceId = ? and bankId = ? and value = ?', $source->id, $action['bankId'] ? $action['bankId'] : 0, $text))
+    if(\M\RemindFloat::one('sourceId = ? and bankId = ? and value = ?', $source->id, $action['bankId'] ? $action['bankId'] : 0, $text))
       return MyLineBotMsg::create()->text('此區間範圍已設定過，請重新設定'); 
 
     if(!$currency = \M\Currency::one('id = ?', $action['currencyId']))
