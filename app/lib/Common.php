@@ -33,19 +33,38 @@ class Common {
     return MyLineBotMsg::create()->flex('貨幣類別', FlexCarousel::create($bubbles)); 
   }
 
-  public static function bank($currencyId, $params) {
+  public function currencyType($currencyId, $assign) {
+    $records = [];
+    if($assign == 'all' || $assign == 'pass') {
+      if($passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
+        array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $passbooks);
+    }
+    if($assign == 'all' || $assign == 'cash') {
+      if($cashes = \M\CashRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `CashRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
+        array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $cashes);
+    }
+   
+    if(!$records)
+      return false;
+
+    return $records
+  }
+
+  public static function bank($currencyId, $params, $assign = 'all') {
     if(!(isset($currencyId) && $params))
       return false;
 
-    $records = [];
-    if($passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
-      array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $passbooks);
-
-    if($cashes = \M\CashRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `CashRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
-      array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $cashes);
-
-    if(!$records)
+    if(!$records = $this->currencyType($currencyId, $assign))
       return false;
+    // $records = [];
+    // if($passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
+    //   array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $passbooks);
+
+    // if($cashes = \M\CashRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `CashRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
+    //   array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $cashes);
+
+    // if(!$records)
+    //   return false;
 
     $flexes = $bubbles = [];
     $cnt = 0;
