@@ -54,7 +54,7 @@ class Common {
       return false;
 
     if(!$records = self::currencyType($currencyId, $assign))
-      return false;
+      return MyLineBotMsg::create()->text('此貨幣查無對應的銀行');
 
     $flexes = $bubbles = [];
     $cnt = 0;

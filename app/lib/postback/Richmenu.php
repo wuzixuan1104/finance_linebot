@@ -406,6 +406,8 @@ class RemindRange{
     if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $params['text'], 'type' => $params['type'], 'sourceId' => $source->id])))
       return false;
 
+    ($source->action = []) && $source->save();
+
     return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
@@ -416,7 +418,7 @@ class RemindRange{
                 FlexBox::create([
                   FlexText::create('內容')->setFlex(2),
                   FlexSeparator::create()->setMargin('md'),
-                  FlexText::create(\M\RemindRange::KIND[$action['kind']] . ' > = ' . $params['text'])->setFlex(8)->setMargin('lg'),
+                  FlexText::create(\M\RemindRange::KIND[$action['kind']] . ($params['type'] == \M\RemindRange::TYPE_LESS ? ' < = ' : ' > = ') . $params['text'])->setFlex(8)->setMargin('lg'),
                 ])->setLayout('horizontal'),
 
                 FlexSeparator::create()->setMargin('md'),
@@ -437,10 +439,69 @@ class RemindRange{
 }
 
 class RemindFloat{
-  public static function create() {
-
+  public static function create($params, $source) {
+    if(!(isset($params['kind'], $params['bank']) && $params['kind'] && $source))
+      return false;
+    return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'bank', 'param' => ['kind' => $params['kind']]]);
   }
 
+  public static function bank($params) {
+    if(!(isset($params['currencyId'])))
+      return false;
+    return Common::bank($params['currencyId'], ['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'input', 'param' => ['currencyId' => $params['currencyId'], 'kind' => $params['kind']]], $params['kind']);
+  }
+
+  public static function input($params, $source) {
+    ($source->action = json_encode(['class' => 'RemindFloat', 'method' => 'choose', 'kind' => $params['kind'], 'currencyId' => $params['currencyId'], 'bankId' => isset($params['bankId']) ? $params['bankId'] : 0])) && $source->save();
+    return MyLineBotMsg::create()->text('請輸入浮動值'); 
+  }
+
+  public static function success($params, $source) {
+    if(!(isset($params['text'], $params['type']) && $params['text'] && $params['type'] && $source))
+      return false;
+
+    $action = json_decode($source->action, true);
+    if(!(isset($action['kind'], $action['currencyId'], $action['bankId'])))
+      return false;
+
+    if(!$currency = \M\Currency::one('id = ?', $action['currencyId']))
+      return false;
+    if(!$bank = \M\Bank::one('id = ?', $action['bankId']))
+      return false;
+
+    if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $params['text'], 'type' => $params['type'], 'sourceId' => $source->id])))
+      return false;
+
+    ($source->action = []) && $source->save();
+
+    return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'body' => FlexBox::create([
+              FlexText::create($currency->name . ' / ' . $bank->name)->setColor('#906768'),
+              FlexSeparator::create(),
+
+              FlexBox::create([
+                FlexBox::create([
+                  FlexText::create('內容')->setFlex(2),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create(\M\RemindRange::KIND[$action['kind']] . ' +- ' . $params['text'])->setFlex(8)->setMargin('lg'),
+                ])->setLayout('horizontal'),
+
+                FlexSeparator::create()->setMargin('md'),
+
+                FlexBox::create([
+                  FlexText::create('日期')->setFlex(2),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create((string)$obj->createAt)->setFlex(8)->setMargin('lg'),
+                ])->setLayout('horizontal')->setMargin('md'),
+
+              ])->setLayout('vertical')
+              
+            ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          ]));
+
+  }
 
 }
 
