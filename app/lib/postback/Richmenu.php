@@ -406,7 +406,7 @@ class RemindRange{
     if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $params['text'], 'type' => $params['type'], 'sourceId' => $source->id])))
       return false;
 
-    ($source->action = []) && $source->save();
+    ($source->action = '') && $source->save();
 
     return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
@@ -469,10 +469,10 @@ class RemindFloat{
     if(!$bank = \M\Bank::one('id = ?', $action['bankId']))
       return false;
 
-    if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $text, 'type' => $params['type'], 'sourceId' => $source->id])))
+    if(!$obj = \M\RemindFloat::create(array_merge($action, ['value' => $text, 'sourceId' => $source->id, 'now' => 0])))
       return false;
 
-    ($source->action = []) && $source->save();
+    ($source->action = '') && $source->save();
 
     return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
