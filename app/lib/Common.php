@@ -11,7 +11,7 @@ class Common {
     $bubbles = [];
     foreach($currencies as $currency) {
       foreach($currency as $v) {
-        $params['param'] && $params['param'] = array_merge($params['param'], ['currencyId' => $v->id]);
+        isset($params['param']) && $params['param'] && $params['param'] = array_merge($params['param'], ['currencyId' => $v->id]);
         
         $flexes[] = FlexBox::create([
                       FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(7),

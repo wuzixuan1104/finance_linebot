@@ -5,7 +5,7 @@ Load::lib('Common.php');
 
 class Search {
   public static function create() {
-    return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'bank', 'param' => ['test' => 123]]);
+    return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'bank', 'param' => []]);
   }
 
   public static function bank($params) {
