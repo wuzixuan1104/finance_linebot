@@ -332,6 +332,10 @@ class RemindRange{
   }
 
   public static function choose($text, $source) {
+    $action = $source->action ? json_decode($source->action, true) : '';
+    if($action && \M\RemindRange::one('sourceId = ? and bankId = ? and value = ?', $source->id, $action['bankId'] ? $action['bankId'] : 0, $text))
+      return MyLineBotMsg::create()->text('此區間範圍已設定過，請重新設定'); 
+
     return MyLineBotMsg::create()->flex('選擇範圍區間', FlexBubble::create([
         'header' => FlexBox::create([FlexText::create('選擇範圍區間')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
         'body' => FlexBox::create([
@@ -439,6 +443,9 @@ class RemindFloat{
     $action = json_decode($source->action, true);
     if(!(isset($action['kind'], $action['currencyId'], $action['bankId'])))
       return false;
+
+    if(\M\RemindRange::one('sourceId = ? and bankId = ? and value = ?', $source->id, $action['bankId'] ? $action['bankId'] : 0, $text))
+      return MyLineBotMsg::create()->text('此區間範圍已設定過，請重新設定'); 
 
     if(!$currency = \M\Currency::one('id = ?', $action['currencyId']))
       return false;
