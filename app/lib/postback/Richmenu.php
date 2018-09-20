@@ -452,12 +452,12 @@ class RemindFloat{
   }
 
   public static function input($params, $source) {
-    ($source->action = json_encode(['class' => 'RemindFloat', 'method' => 'choose', 'kind' => $params['kind'], 'currencyId' => $params['currencyId'], 'bankId' => isset($params['bankId']) ? $params['bankId'] : 0])) && $source->save();
+    ($source->action = json_encode(['class' => 'RemindFloat', 'method' => 'success', 'kind' => $params['kind'], 'currencyId' => $params['currencyId'], 'bankId' => $params['bankId']])) && $source->save();
     return MyLineBotMsg::create()->text('請輸入浮動值'); 
   }
 
-  public static function success($params, $source) {
-    if(!(isset($params['text'], $params['type']) && $params['text'] && $params['type'] && $source))
+  public static function success($text, $source) {
+    if(!($text && $source))
       return false;
 
     $action = json_decode($source->action, true);
@@ -469,7 +469,7 @@ class RemindFloat{
     if(!$bank = \M\Bank::one('id = ?', $action['bankId']))
       return false;
 
-    if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $params['text'], 'type' => $params['type'], 'sourceId' => $source->id])))
+    if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $text, 'type' => $params['type'], 'sourceId' => $source->id])))
       return false;
 
     ($source->action = []) && $source->save();
@@ -484,7 +484,7 @@ class RemindFloat{
                 FlexBox::create([
                   FlexText::create('內容')->setFlex(2),
                   FlexSeparator::create()->setMargin('md'),
-                  FlexText::create(\M\RemindRange::KIND[$action['kind']] . ' +- ' . $params['text'])->setFlex(8)->setMargin('lg'),
+                  FlexText::create(\M\RemindRange::KIND[$action['kind']] . ' +- ' . $text)->setFlex(8)->setMargin('lg'),
                 ])->setLayout('horizontal'),
 
                 FlexSeparator::create()->setMargin('md'),
