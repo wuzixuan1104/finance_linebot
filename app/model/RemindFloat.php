@@ -18,8 +18,8 @@ class RemindFloat extends Model {
 
   // static $uploaders = [];
 
-  const KIND_CASH  = '現鈔';
-  const KIND_PASSBOOK = '牌告';
+  const KIND_CASH  = 'cash';
+  const KIND_PASSBOOK = 'passbook';
   const KIND = [
     self::KIND_CASH  => '現鈔', 
     self::KIND_PASSBOOK => '牌告',

@@ -18,15 +18,15 @@ class RemindRange extends Model {
 
   // static $uploaders = [];
 
-  const KIND_CASH  = '現鈔';
-  const KIND_PASSBOOK = '牌告';
+  const KIND_CASH  = 'cash';
+  const KIND_PASSBOOK = 'passbook';
   const KIND = [
     self::KIND_CASH  => '現鈔', 
     self::KIND_PASSBOOK => '牌告',
   ];
 
-  const TYPE_MORE  = '大於等於';
-  const TYPE_LESS = '小於等於';
+  const TYPE_MORE  = 'more';
+  const TYPE_LESS = 'less';
   const TYPE = [
     self::TYPE_MORE  => '大於等於', 
     self::TYPE_LESS => '小於等於',
