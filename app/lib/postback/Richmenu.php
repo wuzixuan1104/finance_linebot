@@ -342,6 +342,15 @@ class RemindRange{
       ]));
   }
 
+  public static function delete($params, $source) {
+    if(!(isset($params['id']) && $params['id'] && $source))
+      return false;
+
+    if($obj = \M\RemindRange::one('id = ?', $params['id']))
+      if($obj->delete())
+        return Remind::show($params, $source);
+  }
+
   public static function success($params, $source) {
     if(!(isset($params['text'], $params['type']) && $params['text'] && $params['type'] && $source))
       return false;
@@ -406,6 +415,15 @@ class RemindFloat{
   public static function input($params, $source) {
     ($source->action = json_encode(['class' => 'RemindFloat', 'method' => 'success', 'kind' => $params['kind'], 'currencyId' => $params['currencyId'], 'bankId' => $params['bankId']])) && $source->save();
     return MyLineBotMsg::create()->text('請輸入浮動值'); 
+  }
+
+  public static function delete($params, $source) {
+    if(!(isset($params['id']) && $params['id'] && $source))
+      return false;
+
+    if($obj = \M\RemindFloat::one('id = ?', $params['id']))
+      if($obj->delete())
+        return Remind::show($params, $source);
   }
 
   public static function success($text, $source) {
