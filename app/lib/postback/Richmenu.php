@@ -154,7 +154,7 @@ class Calculate {
     if(!$action = json_decode($source->action, true))
       return false;
 
-    ($action['calc'] = $action['calc'] == 'A' ? 'B' : 'A') && ($source->action = json_encode($action)) && $source->save();
+    ($action['calc'] = $action['calc'] == 'A' ? 'B' : 'A') && ($source->action = json_encode(array_merge($action, ['class' => 'Calculate', 'method' => 'show']))) && $source->save();
 
     return MyLineBotMsg::create()->text('請輸入試算金額'); 
   }
@@ -206,7 +206,8 @@ class Calculate {
           ]));
   }
 }
- class Remind {
+
+class Remind {
 
   public static function create() {
     return MyLineBotMsg::create()->flex('匯率提醒', FlexBubble::create([
@@ -358,10 +359,20 @@ class RemindRange{
           ]));
   }
 
-  public static function currency() {
+  public static function currency($params, $source) {
+    if(!(isset($params['type'], $params['bank']) && $params['type'] && $source))
+      return false;
 
+    if($params['bank'])
+      return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'bank', 'param' => ['type' => $params['type']]]);
+
+    ($source->action = json_encode(['class' => 'RemindRange', 'method' => 'choose', 'remind' => $params['type']])) && $source->save();
+    return MyLineBotMsg::create()->text('請輸入區間值'); 
   }
 
+  public static function choose() {
+
+  }
 
 }
 

@@ -26,9 +26,10 @@ class Line extends Controller {
           break;
         case 'Text':
           if(is_numeric($log->text) && $source->action) {
-            if( isset( self::$cache['lib']['postback/Richmenu'] ) ? true : ( Load::lib('postback/Richmenu.php') ? self::$cache['lib']['postback/Richmenu'] = true : false ) ) 
-              $msg = Calculate::show($log->text, $source);
-              $msg->reply($event->getReplyToken());
+            if( isset( self::$cache['lib']['postback/Richmenu'] ) ? true : ( Load::lib('postback/Richmenu.php') ? self::$cache['lib']['postback/Richmenu'] = true : false ) ) {
+              if(($action = json_decode($action, true)) && ($class = $action['class']) && ($method = $action['method']) && $msg = $class::$method($log->text, $source) )
+                $msg->reply($event->getReplyToken());
+            }
           }
           break;
         case 'Postback':
