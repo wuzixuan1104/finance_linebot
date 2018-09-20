@@ -11,7 +11,7 @@ class Common {
     $bubbles = [];
     foreach($currencies as $currency) {
       foreach($currency as $v) {
-        (isset($params['param']) && $params['param'] && $params['param'] = array_merge($params['param'], ['currencyId' => $v->id])) || $params['param']['currencyId'] = $v->id;
+        $params['param']['currencyId'] = $v->id;
         
         $flexes[] = FlexBox::create([
                       FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(7),
@@ -31,5 +31,51 @@ class Common {
     }
 
     return MyLineBotMsg::create()->flex('貨幣類別', FlexCarousel::create($bubbles)); 
+  }
+
+  public static function bank($currencyId, $params) {
+    if(!(isset($currencyId) && $params))
+      return false;
+
+    $records = [];
+    if($passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
+      array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $passbooks);
+
+    if($cashes = \M\CashRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `CashRecord` where `currencyId` = ? group by `bankId` ) ", $currencyId] ]))
+      array_map( function($v) use(&$records) { return $records[$v->bankId] = $v->bank->name; }, $cashes);
+
+    if(!$records)
+      return false;
+
+    $flexes = $bubbles = [];
+    $cnt = 0;
+    foreach($records as $k => $v) {
+      $params['param']['bankId'] = $k;
+      
+      $flexes[] = FlexBox::create([
+                    FlexBox::create([FlexText::create($v)])->setLayout('vertical')->setFlex(7),
+                    FlexSeparator::create(),
+                    FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode($params), $v))
+                  ])->setLayout('horizontal')->setSpacing('md');
+      $flexes[] = FlexSeparator::create();
+
+      if(++$cnt % 5 == 0) {
+        $bubbles[] = FlexBubble::create([
+                    'header' => FlexBox::create([FlexText::create('選擇銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                    'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                  ]);
+        $flexes = [];
+      }
+    }
+
+    if($flexes) {
+      $bubbles[] = FlexBubble::create([
+                    'header' => FlexBox::create([FlexText::create('選擇銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+                    'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+                    'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+                  ]);
+    }
+    return MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles));
   }
 }
