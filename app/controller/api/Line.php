@@ -25,52 +25,6 @@ class Line extends Controller {
         case 'Unfollow':
           break;
         case 'Text':
-
-
-          // 提醒
-          $bubbles = [];
-          for($i = 0; $i < 2; $i++ ) {
-          $bubbles[] =  FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('匯率提醒列表')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-            'body' => FlexBox::create([
-                FlexText::create('-- 區間設定 --')->setColor('#e46767')->setSize('md'),
-                FlexSeparator::create(),
-                FlexBox::create([
-                  FlexBox::create([
-                    FlexText::create('美國(美金) / 國泰銀行')->setColor('#906768')->setFlex(7),
-                    FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
-                  ])->setLayout('horizontal'),
-                  FlexText::create('+- 0.05')->setFlex(7)
-                ])->setLayout('vertical'),
-
-                FlexSeparator::create(),
-                FlexText::create('2018-09-19 11:12:23')->setSize('xs')->setAlign('end')->setColor('#bdbdbd'),
-                FlexSeparator::create(),
-
-                FlexBox::create([
-                  FlexBox::create([
-                    FlexText::create('美國(美金)')->setColor('#906768')->setFlex(7),
-                    FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
-                  ])->setLayout('horizontal'),
-                  FlexText::create('牌告 >= 30.15')->setFlex(7)
-                ])->setLayout('vertical'),
-
-                FlexSeparator::create(),
-                FlexText::create('2018-09-19 11:12:23')->setSize('xs')->setAlign('end')->setColor('#bdbdbd'),
-                FlexSeparator::create(),
-
-            ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-          ]);
-          }
-
-          MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles))->reply($event->getReplyToken());
-
-  
-          die;
-
-
-
           if(is_numeric($log->text) && $source->action) {
             if( isset( self::$cache['lib']['postback/Richmenu'] ) ? true : ( Load::lib('postback/Richmenu.php') ? self::$cache['lib']['postback/Richmenu'] = true : false ) ) 
               $msg = Calculate::show($log->text, $source);
