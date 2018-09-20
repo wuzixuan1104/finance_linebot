@@ -364,14 +364,35 @@ class RemindRange{
       return false;
 
     if($params['bank'])
-      return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'bank', 'param' => ['type' => $params['type']]]);
+      return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'bank', 'param' => ['type' => $params['type']]]);
 
     ($source->action = json_encode(['class' => 'RemindRange', 'method' => 'choose', 'remind' => $params['type']])) && $source->save();
     return MyLineBotMsg::create()->text('請輸入區間值'); 
   }
 
-  public static function choose() {
+  public static function bank($params) {
+    if(!(isset($params['currencyId'])))
+      return false;
+    return Common::bank($params['currencyId'], ['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'input', 'param' => ['currencyId' => $params['currencyId'], 'type' => $params['type']]], $params['type']);
+  }
 
+  public static function input($params, $source) {
+    ($source->action = json_encode(['class' => 'RemindRange', 'method' => 'choose', 'remind' => $params['type']])) && $source->save();
+    return MyLineBotMsg::create()->text('請輸入區間值'); 
+  }
+
+  public static function choose($text, $source) {
+    return MyLineBotMsg::create()->flex('選擇範圍區間', FlexBubble::create([
+        'header' => FlexBox::create([FlexText::create('選擇範圍區間')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+        'body' => FlexBox::create([
+          FlexText::create('當匯率符合所選範圍時會發出通知')->setColor('#906768'),
+          FlexSeparator::create(),
+          FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('> = ' . $text, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '大於等於')),
+          FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('< = ' . $text, json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '小於等於')),
+          FlexText::create('ps. 一天至多提醒一次')->setColor('#a5a3a3')->setSize('sm'),
+        ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+        'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+      ]));
   }
 
 }
