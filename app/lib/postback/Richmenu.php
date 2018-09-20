@@ -207,6 +207,18 @@ class Calculate {
   }
 }
 
+class Best {
+  public static function create() {
+    return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'Best', 'method' => 'show', 'param' => []]);
+  }
+
+  public static function show($params) {
+    if(!(isset($params['currencyId']) && $params['currencyId']))
+      return false;
+    
+  } 
+}
+
 class Remind {
   public static function create() {
     return MyLineBotMsg::create()->flex('匯率提醒', FlexBubble::create([
@@ -485,7 +497,6 @@ class RemindFloat{
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
           ]));
   }
-
 }
 
 
