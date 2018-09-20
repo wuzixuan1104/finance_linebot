@@ -3,7 +3,6 @@
 Load::lib('MyLineBot.php');
 
 class Search {
-
   public static function create() {
     if(!$currencies = \M\Currency::all(['where' => ['enable = ?', \M\Currency::ENABLE_ON]]) )
       return false;
@@ -270,8 +269,7 @@ class Calculate {
           ]));
   }
 }
-
-class Remind {
+ class Remind {
   public static function create() {
     return MyLineBotMsg::create()->flex('匯率提醒', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('匯率提醒')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
@@ -307,99 +305,99 @@ class Remind {
 
   public static function range() {
     //選擇範圍
-      $a = MyLineBotMsg::create()->flex('選擇範圍區間', FlexBubble::create([
-        'header' => FlexBox::create([FlexText::create('選擇範圍區間')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-        'body' => FlexBox::create([
-          FlexText::create('當匯率符合所選範圍時會發出通知')->setColor('#906768'),
-          FlexSeparator::create(),
-          FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('> = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '大於等於')),
-          FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('< = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '小於等於')),
-          FlexText::create('ps. 一天至多提醒一次')->setColor('#a5a3a3')->setSize('sm'),
-        ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-        'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-      ]))
+      // $a = MyLineBotMsg::create()->flex('選擇範圍區間', FlexBubble::create([
+      //   'header' => FlexBox::create([FlexText::create('選擇範圍區間')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+      //   'body' => FlexBox::create([
+      //     FlexText::create('當匯率符合所選範圍時會發出通知')->setColor('#906768'),
+      //     FlexSeparator::create(),
+      //     FlexButton::create('primary')->setColor('#f9b071')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('> = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '大於等於')),
+      //     FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('< = 30.123', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'show', 'param' => []]), '小於等於')),
+      //     FlexText::create('ps. 一天至多提醒一次')->setColor('#a5a3a3')->setSize('sm'),
+      //   ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+      //   'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+      // ]));
   }
 
   public static function success() {
     //已設定成功
-    return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-            'body' => FlexBox::create([
-              FlexText::create('美國(美金) / 國泰世華')->setColor('#906768'),
-              FlexSeparator::create(),
+    // return MyLineBotMsg::create()->flex('已設定成功', FlexBubble::create([
+    //         'header' => FlexBox::create([FlexText::create('已設定成功')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+    //         'body' => FlexBox::create([
+    //           FlexText::create('美國(美金) / 國泰世華')->setColor('#906768'),
+    //           FlexSeparator::create(),
 
-              FlexBox::create([
-                FlexBox::create([
-                  FlexText::create('內容')->setFlex(2),
-                  FlexSeparator::create()->setMargin('md'),
-                  FlexText::create('牌告 > = 30.123')->setFlex(8)->setMargin('lg'),
-                ])->setLayout('horizontal'),
+    //           FlexBox::create([
+    //             FlexBox::create([
+    //               FlexText::create('內容')->setFlex(2),
+    //               FlexSeparator::create()->setMargin('md'),
+    //               FlexText::create('牌告 > = 30.123')->setFlex(8)->setMargin('lg'),
+    //             ])->setLayout('horizontal'),
 
-                FlexSeparator::create()->setMargin('md'),
+    //             FlexSeparator::create()->setMargin('md'),
 
-                FlexBox::create([
-                  FlexText::create('日期')->setFlex(2),
-                  FlexSeparator::create()->setMargin('md'),
-                  FlexText::create('2018-10-10 11:12:12')->setFlex(8)->setMargin('lg'),
-                ])->setLayout('horizontal')->setMargin('md'),
+    //             FlexBox::create([
+    //               FlexText::create('日期')->setFlex(2),
+    //               FlexSeparator::create()->setMargin('md'),
+    //               FlexText::create('2018-10-10 11:12:12')->setFlex(8)->setMargin('lg'),
+    //             ])->setLayout('horizontal')->setMargin('md'),
 
-              ])->setLayout('vertical')
+    //           ])->setLayout('vertical')
               
-            ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-          ]));
+    //         ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+    //         'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+    //       ]));
   }
 
   public static function bank() {
-    return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('是否指定銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-            'body' => FlexBox::create([
-                FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '是', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '是')),
-                FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('否', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '否')),
+    // return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
+    //         'header' => FlexBox::create([FlexText::create('是否指定銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+    //         'body' => FlexBox::create([
+    //             FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '是', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '是')),
+    //             FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('否', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '否')),
 
-            ])->setLayout('horizontal'),
-            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-          ]));
+    //         ])->setLayout('horizontal'),
+    //         'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+    //       ]));
   }
   public static function float() {
 
   }
 
   public static function show() {
-    $bubbles = [];
-    $bubbles[] =  FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('匯率提醒列表')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-            'body' => FlexBox::create([
-                FlexText::create('-- 區間設定 --')->setColor('#e46767')->setSize('md'),
-                FlexSeparator::create(),
-                FlexBox::create([
-                  FlexBox::create([
-                    FlexText::create('美國(美金) / 國泰銀行')->setColor('#906768')->setFlex(7),
-                    FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
-                  ])->setLayout('horizontal'),
-                  FlexText::create('+- 0.05')->setFlex(7)
-                ])->setLayout('vertical'),
+    // $bubbles = [];
+    // $bubbles[] =  FlexBubble::create([
+    //         'header' => FlexBox::create([FlexText::create('匯率提醒列表')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+    //         'body' => FlexBox::create([
+    //             FlexText::create('-- 區間設定 --')->setColor('#e46767')->setSize('md'),
+    //             FlexSeparator::create(),
+    //             FlexBox::create([
+    //               FlexBox::create([
+    //                 FlexText::create('美國(美金) / 國泰銀行')->setColor('#906768')->setFlex(7),
+    //                 FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
+    //               ])->setLayout('horizontal'),
+    //               FlexText::create('+- 0.05')->setFlex(7)
+    //             ])->setLayout('vertical'),
 
-                FlexSeparator::create(),
-                FlexText::create('2018-09-19 11:12:23')->setSize('xs')->setAlign('end')->setColor('#bdbdbd'),
-                FlexSeparator::create(),
+    //             FlexSeparator::create(),
+    //             FlexText::create('2018-09-19 11:12:23')->setSize('xs')->setAlign('end')->setColor('#bdbdbd'),
+    //             FlexSeparator::create(),
 
-                FlexBox::create([
-                  FlexBox::create([
-                    FlexText::create('美國(美金)')->setColor('#906768')->setFlex(7),
-                    FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
-                  ])->setLayout('horizontal'),
-                  FlexText::create('牌告 >= 30.15')->setFlex(7)
-                ])->setLayout('vertical'),
+    //             FlexBox::create([
+    //               FlexBox::create([
+    //                 FlexText::create('美國(美金)')->setColor('#906768')->setFlex(7),
+    //                 FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'input', 'param' => []]), '移除')),
+    //               ])->setLayout('horizontal'),
+    //               FlexText::create('牌告 >= 30.15')->setFlex(7)
+    //             ])->setLayout('vertical'),
 
-                FlexSeparator::create(),
-                FlexText::create('2018-09-19 11:12:23')->setSize('xs')->setAlign('end')->setColor('#bdbdbd'),
-                FlexSeparator::create(),
+    //             FlexSeparator::create(),
+    //             FlexText::create('2018-09-19 11:12:23')->setSize('xs')->setAlign('end')->setColor('#bdbdbd'),
+    //             FlexSeparator::create(),
 
-            ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
-            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-          ]);
-    return MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles));
+    //         ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+    //         'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+    //       ]);
+    // return MyLineBotMsg::create()->flex('選擇銀行', FlexCarousel::create($bubbles));
 
   }
 
@@ -408,15 +406,15 @@ class Remind {
   }
 }
 
-class Float {
+class RemindFloat {
   public static function create() {
 
   }
 }
 
-class Range {
+class RemindRange {
   public static function create() {
-    
+
   }
 }
 

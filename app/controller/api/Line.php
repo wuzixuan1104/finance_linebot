@@ -33,11 +33,17 @@ class Line extends Controller {
           break;
         case 'Postback':
           $data = json_decode( $log->data, true );
-          if( !( isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) )
-            && method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) ) )
-            return false;
+          if((isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) ))) {
+            if(method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) ) {
+              $msg->reply($event->getReplyToken());
+            }
+          }
+           
+          // if(!(isset( $data['lib'], $data['class'], $data['method'] ) && ( isset( self::$cache['lib'][$data['lib']] ) ? true : ( Load::lib($data['lib'] . '.php') ? self::$cache['lib'][$data['lib']] = true : false ) ))
+          //   && method_exists($class = $data['class'], $method = $data['method']) && $msg = $class::$method( $data['param'], $source ) )
+          //   return false;
 
-          $msg->reply($event->getReplyToken());
+          // $msg->reply($event->getReplyToken());
           break;
       }
     }
