@@ -440,7 +440,7 @@ class RemindRange{
 
 class RemindFloat{
   public static function create($params, $source) {
-    if(!(isset($params['kind'], $params['bank']) && $params['kind'] && $source))
+    if(!(isset($params['kind']) && $params['kind'] && $source))
       return false;
     return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'bank', 'param' => ['kind' => $params['kind']]]);
   }
