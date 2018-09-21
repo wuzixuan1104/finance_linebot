@@ -654,7 +654,7 @@ class FlexAction {
 
 class RichMenuGenerator {
   public static function create4user($sid) {
-    if(!RichMenu::linkToUser($sid, 'richmenu-7b7a682133185c81f625cd2ff7540309'))
+    if(!RichMenu::linkToUser($sid, 'richmenu-a48a224c7558d0fe37e15a3e9caf1696'))
       return false;
     return true;
   }
@@ -667,16 +667,17 @@ class RichMenuGenerator {
 
    
     if(!$richMenuId = RichMenu::create(BuildRichMenu::create(
-      BuildRichMenu::size(843), true, '匯率小達人', '更多',
+      BuildRichMenu::size(843), true, '摳摳', '更多',
       [ 
         BuildRichMenu::area(BuildRichMenu::areaBound(0, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率查詢', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Search', 'method' => 'create', 'param' => [] ]), null)),
-        BuildRichMenu::area(BuildRichMenu::areaBound(834, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率試算', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), null)),
-        BuildRichMenu::area(BuildRichMenu::areaBound(1668, 0, 833, 843), MyLineBotActionMsg::create()->postback('歷史紀錄', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(625, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率試算', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(1250, 0, 833, 843), MyLineBotActionMsg::create()->postback('最佳匯率', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Best', 'method' => 'create', 'param' => [] ]), null)),
+        BuildRichMenu::area(BuildRichMenu::areaBound(1874, 0, 833, 843), MyLineBotActionMsg::create()->postback('匯率提醒', json_encode( ['lib' => 'postback/Richmenu', 'class' => 'Remind', 'method' => 'create', 'param' => [] ]), null)),
       ]
     )))
       return false;
 
-    if(!$img = RichMenu::uploadImage($richMenuId, '/Users/wu-tzu-hsuan/www/linebot/finance_linebot_v2/asset/img/menu_v3.png', 'image/png'))
+    if(!$img = RichMenu::uploadImage($richMenuId, '/Users/wu-tzu-hsuan/www/linebot/finance_linebot_v2/asset/img/menu_v4.png', 'image/png'))
       return false;
 
     if($unlink = RichMenu::unlinkToUser('Uef2e17250863e4724e74578bd34ed333') && !RichMenu::linkToUser('Uef2e17250863e4724e74578bd34ed333', $richMenuId))
