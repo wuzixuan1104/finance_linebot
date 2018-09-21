@@ -216,6 +216,50 @@ class Best {
     if(!(isset($params['currencyId']) && $params['currencyId']))
       return false;
     
+    //以牌告為依據進行排行前五個
+    if(!$passbooks = \M\PassbookRecord::all(['where' => ['currencyId = ?', $params['currencyId']], 'order' => 'sell ASC, createAt DESC']))
+      return MyLineBotMsg::create()->text('此貨幣目前查無排行');
+
+    $currencyName = '';
+    $cnt = 0;
+    $tmp = [];
+    foreach($passbooks as $passbook) {
+      !$currencyName && $currencyName = $passbook->currency->name;
+      if(!isset($tmp[$passbook->bankId])) {
+        if(++$cnt > 5)
+          break;
+
+        $cash = \M\CashRecord::one(['where' => ['currencyId = ? and bankId = ?', $params['currencyId'], $passbook->bankId], 'order' => 'sell ASC, createAt DESC']);
+        $tmp[$passbook->bankId] = FlexBox::create([
+                  FlexText::create($passbook->bank->name)->setFlex(3),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create((string)$passbook->sell)->setFlex(3)->setMargin('lg'),
+                  FlexSeparator::create()->setMargin('md'),
+                  FlexText::create((string)($cash ? $cash->sell : ' - '))->setFlex(3)->setMargin('lg'),
+                ])->setLayout('horizontal');
+      }
+    }
+
+    return MyLineBotMsg::create()->flex('最佳匯率排行', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create('最佳匯率排行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+            'body' => FlexBox::create(array_merge([
+              FlexText::create('美國(美金)')->setColor('#906768'),
+              FlexSeparator::create(),
+              
+              FlexBox::create([
+                FlexText::create('銀行')->setFlex(3)->setColor('#969595'),
+                FlexSeparator::create()->setMargin('md'),
+                FlexText::create('牌告')->setFlex(3)->setMargin('lg')->setColor('#969595'),
+                FlexSeparator::create()->setMargin('md'),
+                FlexText::create('現鈔')->setFlex(3)->setMargin('lg')->setColor('#969595'),
+              ])->setLayout('horizontal'),
+
+              FlexSeparator::create()->setMargin('md'),
+
+            ], $tmp))->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
+
+            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+          ]));
   } 
 }
 
