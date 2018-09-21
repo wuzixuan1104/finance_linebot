@@ -99,7 +99,33 @@ class Crontab extends Controller{
       return true;
     });
 
+
+    //匯率提醒設定
+    // if($ranges = \M\RemindRange::all('daily < ?', date('Y-m-d'))) {
+    //   $condition = false;
+    //   foreach($ranges as $range) {
+    //     if($range->kind == \M\RemindRange::KIND_PASSBOOK) {
+    //       foreach($passbookRecords as $record) {
+    //         if($record->currencyId == $range->currencyId && $record->bankId == $range->bankId) {
+    //           $condition = $range->type == \M\RemindRange::TYPE_LESS ? ($record->sell <= $range->value) : ($record->sell >= $range->value);
+    //         }
+    //       }
+    //     } else {
+
+    //     }
+        
+    //     if($condition) {
+          
+    //     }
+        
+    //   }
+    // }
+
     echo "執行" . __METHOD__ . " success";
+  }
+
+  public function range() {
+
   }
 
   public function currency() {

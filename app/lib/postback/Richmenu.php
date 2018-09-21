@@ -355,15 +355,17 @@ class RemindRange{
     if(\M\RemindRange::count(['sourceId = ?', $source->id]) >= 2)
       return MyLineBotMsg::create()->text('已超過上限，最多只能設定2個區間提醒！'); 
 
-    return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('是否指定銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
-            'body' => FlexBox::create([
-                FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '是', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['kind' => $params['kind'], 'bank' => true]]), '是')),
-                FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('否', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['kind' => $params['kind'], 'bank' => false]]), '否')),
+    return self::currency(['kind' => $params['kind'], 'bank' => true], $source);
+    
+    // return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
+    //         'header' => FlexBox::create([FlexText::create('是否指定銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+    //         'body' => FlexBox::create([
+    //             FlexButton::create('primary')->setColor('#f1c87f')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '是', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['kind' => $params['kind'], 'bank' => true]]), '是')),
+    //             FlexButton::create('primary')->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('否', json_encode(['lib' => 'postback/Richmenu', 'class' => 'RemindRange', 'method' => 'currency', 'param' => ['kind' => $params['kind'], 'bank' => false]]), '否')),
 
-            ])->setLayout('horizontal'),
-            'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
-          ]));
+    //         ])->setLayout('horizontal'),
+    //         'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))
+    //       ]));
   }
 
   public static function currency($params, $source) {
