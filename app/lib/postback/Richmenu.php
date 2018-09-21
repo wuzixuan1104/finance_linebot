@@ -356,7 +356,8 @@ class RemindRange{
       return MyLineBotMsg::create()->text('已超過上限，最多只能設定2個區間提醒！'); 
 
     return self::currency(['kind' => $params['kind'], 'bank' => true], $source);
-    
+
+    //目前都必須指定銀行
     // return MyLineBotMsg::create()->flex('試算模式', FlexBubble::create([
     //         'header' => FlexBox::create([FlexText::create('是否指定銀行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
     //         'body' => FlexBox::create([
