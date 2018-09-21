@@ -217,27 +217,22 @@ class Best {
       return false;
     
     //以牌告為依據進行排行前五個
-    if(!$passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $params['currencyId']], 'order' => 'sell ASC' ]))
+    if(!$passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $params['currencyId']], 'order' => 'sell ASC', 'limit' => 5 ]))
       return MyLineBotMsg::create()->text('此貨幣目前查無排行');
-  
+
     $currencyName = '';
-    $cnt = 0;
     $tmp = [];
     foreach($passbooks as $passbook) {
       !$currencyName && $currencyName = $passbook->currency->name;
-      // if(!isset($tmp[$passbook->bankId])) {
-        if(++$cnt > 5)
-          break;
 
-        $cash = \M\CashRecord::one(['where' => ['currencyId = ? and bankId = ?', $params['currencyId'], $passbook->bankId], 'order' => 'sell ASC, createAt DESC']);
-        $tmp[$passbook->bankId] = FlexBox::create([
-                  FlexText::create($passbook->bank->name)->setFlex(3),
-                  FlexSeparator::create()->setMargin('md'),
-                  FlexText::create((string)$passbook->sell)->setFlex(3)->setMargin('lg'),
-                  FlexSeparator::create()->setMargin('md'),
-                  FlexText::create((string)($cash ? $cash->sell : ' - '))->setFlex(3)->setMargin('lg'),
-                ])->setLayout('horizontal');
-      // }
+      $cash = \M\CashRecord::one(['where' => ['currencyId = ? and bankId = ?', $params['currencyId'], $passbook->bankId], 'order' => 'sell ASC, createAt DESC']);
+      $tmp[] = FlexBox::create([
+                FlexText::create($passbook->bank->name)->setFlex(3),
+                FlexSeparator::create()->setMargin('md'),
+                FlexText::create((string)$passbook->sell)->setFlex(3)->setMargin('lg'),
+                FlexSeparator::create()->setMargin('md'),
+                FlexText::create((string)($cash ? $cash->sell : ' - '))->setFlex(3)->setMargin('lg'),
+              ])->setLayout('horizontal');
     }
 
     return MyLineBotMsg::create()->flex('最佳匯率排行', FlexBubble::create([
