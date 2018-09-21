@@ -216,13 +216,10 @@ class Best {
     if(!(isset($params['currencyId']) && $params['currencyId']))
       return false;
     
+    //以牌告為依據進行排行前五個
     if(!$passbooks = \M\PassbookRecord::all(['where' => ["( bankId, currencyId, createAt ) in ( select `bankId`, `currencyId`, max(`createAt`) from `PassbookRecord` where `currencyId` = ? group by `bankId` ) ", $params['currencyId']], 'order' => 'sell ASC' ]))
       return MyLineBotMsg::create()->text('此貨幣目前查無排行');
-
-    //以牌告為依據進行排行前五個
-    // if(!$passbooks = \M\PassbookRecord::all(['where' => ['currencyId = ?', $params['currencyId']], 'order' => 'sell ASC, createAt DESC']))
-    //   return MyLineBotMsg::create()->text('此貨幣目前查無排行');
-
+  
     $currencyName = '';
     $cnt = 0;
     $tmp = [];
