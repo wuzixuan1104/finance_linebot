@@ -243,7 +243,7 @@ class Best {
     return MyLineBotMsg::create()->flex('最佳匯率排行', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('最佳匯率排行')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create(array_merge([
-              FlexText::create('美國(美金)')->setColor('#906768'),
+              FlexText::create($currencyName)->setColor('#906768'),
               FlexSeparator::create(),
               
               FlexBox::create([
@@ -348,6 +348,7 @@ class Remind {
   }
 
   public static function explain() {
+    
   }
 }
 
