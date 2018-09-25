@@ -179,17 +179,21 @@ class Crontab extends Controller{
       case 'range':
         $compare = $res['sell'] - $remind->value;
         ($remind->dailyAt = date('Y-m-d H:i:s')) && $remind->save();
+        $title = '區間提醒(';
+        $tag = ($remind->type == \M\RemindRange::TYPE_LESS) ? '<=' : '>=';
         break;
       case 'float':
         $compare = $res['sell'] - $remind->now;
         ($remind->now = $res['sell']) && $remind->save();
+        $title = '浮動提醒(';
+        $tag = '+-';
         break;
     }
 
-    return MyLineBotMsg::create()->flex('區間提醒(' . \M\RemindRange::KIND[$remind->kind] . ')', FlexBubble::create([
-            'header' => FlexBox::create([FlexText::create('區間提醒(' . \M\RemindRange::KIND[$remind->kind] . ')')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
+    return MyLineBotMsg::create()->flex($title . \M\RemindRange::KIND[$remind->kind] . ')', FlexBubble::create([
+            'header' => FlexBox::create([FlexText::create($title . \M\RemindRange::KIND[$remind->kind] . ')')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
-                FlexText::create($remind->currency->name . ' >= ' . $remind->value)->setColor('#906768'),
+                FlexText::create($remind->currency->name . $tag . $remind->value)->setColor('#906768'),
                 FlexSeparator::create(),
                 FlexBox::create([
                   FlexText::create($remind->bank->name)->setFlex(3),
