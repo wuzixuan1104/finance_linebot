@@ -180,13 +180,13 @@ class Crontab extends Controller{
         $compare = $res['sell'] - $remind->value;
         ($remind->dailyAt = date('Y-m-d H:i:s')) && $remind->save();
         $title = '區間提醒(';
-        $tag = ($remind->type == \M\RemindRange::TYPE_LESS) ? '<=' : '>=';
+        $tag = ($remind->type == \M\RemindRange::TYPE_LESS) ? ' <= ' : ' >= ';
         break;
       case 'float':
         $compare = $res['sell'] - $remind->now;
         ($remind->now = $res['sell']) && $remind->save();
         $title = '浮動提醒(';
-        $tag = '+-';
+        $tag = ' +- ';
         break;
     }
 
