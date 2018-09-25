@@ -7,16 +7,16 @@
 
 ## 步驟說明
 ### 以下為機器人功能選單
-1. 外匯查詢：
-+ <img src="asset/img/readme/匯率查詢1.png" width="800">
-+ <img src="asset/img/readme/匯率查詢2.png" width="800">
-2. 匯率試算
-+ <img src="asset/img/readme/匯率試算.png" width="800">
-3. 最佳匯率
-+ <img src="asset/img/readme/最佳匯率.png" width="800">
-4. 外匯提醒
-+ <img src="asset/img/readme/匯率提醒1.png" width="800">
-+ <img src="asset/img/readme/匯率提醒2.png" width="800">
++ 外匯查詢：
+<img src="asset/img/readme/匯率查詢1.png">
+<img src="asset/img/readme/匯率查詢2.png">
++ 匯率試算
+<img src="asset/img/readme/匯率試算.png">
++ 最佳匯率
+<img src="asset/img/readme/最佳匯率.png">
++ 外匯提醒
+<img src="asset/img/readme/匯率提醒1.png">
+<img src="asset/img/readme/匯率提醒2.png">
 ## 工具
 + Linebot API：https://developers.line.me/en/reference/messaging-api/
 + phpQuery：使用php爬蟲跑排程取得資料並存入資料庫
