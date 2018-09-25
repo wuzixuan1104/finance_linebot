@@ -15,13 +15,13 @@
 + 顯示牌告與現鈔最新匯率
 + <img src="asset/img/search.png" width="300">
 + 點選匯率試算，需選擇試算類型（ex: 由aaa兌換bbb現金）
-+ <img src="asset/img/choose_type.jpg" width="300">
++ <img src="asset/img/choose_type.png" width="300">
 + 選擇後輸入金額，立即試算
 + <img src="asset/img/input.jpg" width="300">
 2. 匯率試算
 + 將您查詢過的歷史紀錄至試算中，讓你更快速便捷，點擊3次即能取得您要的結果，
   每人紀錄最多只保留10個，若超過會自動刪除舊資料，或是使用者自行移除該紀錄
-+ <img src="asset/img/calculate.jpg" width="300">
++ <img src="asset/img/calculate.png" width="300">
 + 選擇後輸入金額，立即試算
 + <img src="asset/img/calc.png" width="300">
 3. 最佳匯率
@@ -36,7 +36,8 @@
 + <img src="asset/img/setRemind.png" width="300">
 + 瀏覽設定的提醒
 + <img src="asset/img/remindList.png" width="300">
-
++ 當達到您設定的提醒範圍會主動推播提醒
++ <img src="asset/img/reminds.png" width="300">
 ## 工具
 + Linebot API：https://developers.line.me/en/reference/messaging-api/
 + phpQuery：使用php爬蟲跑排程取得資料並存入資料庫
