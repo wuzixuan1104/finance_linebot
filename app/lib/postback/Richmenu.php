@@ -352,7 +352,7 @@ class RemindRange{
     if(!(isset($params['kind']) && $params['kind']))
       return false;
 
-    if(\M\RemindRange::count(['sourceId = ?', $source->id]) >= 2)
+    if(\M\RemindRange::count('sourceId = ?', $source->id) >= 2)
       return MyLineBotMsg::create()->text('已超過上限，最多只能設定2個區間提醒！'); 
 
     return self::currency(['kind' => $params['kind'], 'bank' => true], $source);
@@ -466,7 +466,7 @@ class RemindFloat{
   public static function create($params, $source) {
     if(!(isset($params['kind']) && $params['kind'] && $source))
       return false;
-    if(\M\RemindFloat::count(['sourceId = ?', $source->id]) >= 2)
+    if(\M\RemindFloat::count('sourceId = ?', $source->id) >= 2)
       return MyLineBotMsg::create()->text('已超過上限，最多只能設定2個浮動提醒！'); 
 
     return Common::currency(['lib' => 'postback/Richmenu', 'class' => 'RemindFloat', 'method' => 'bank', 'param' => ['kind' => $params['kind']]]);
