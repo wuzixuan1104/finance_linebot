@@ -101,27 +101,72 @@ class Crontab extends Controller{
 
 
     //匯率提醒設定
-    if($ranges = \M\RemindRange::all('daily < ?', date('Y-m-d'))) {
+    Load::lib('MyLineBot.php');
+
+    if($ranges = \M\RemindRange::all('dailyAt < ?', date('Y-m-d'))) {
       $condition = false;
       foreach($ranges as $range) {
         if($range->kind == \M\RemindRange::KIND_PASSBOOK) {
           foreach($passbookRecords as $record) {
-            if($record->currencyId == $range->currencyId && $record->bankId == $range->bankId) {
-              $condition = $range->type == \M\RemindRange::TYPE_LESS ? ($record->sell <= $range->value) : ($record->sell >= $range->value);
+            if($record['currencyId'] == $range->currencyId && $record['bankId'] == $range->bankId) {
+              $condition = $range->type == \M\RemindRange::TYPE_LESS ? ($record['sell'] <= $range->value) : ($record['sell'] >= $range->value);
               $res = $record;
             }
           }
         } else {
+          foreach($cashRecords as $record) {
+            if($record['currencyId'] == $range->currencyId && $record['bankId'] == $range->bankId) {
+              $condition = $range->type == \M\RemindRange::TYPE_LESS ? ($record['sell'] <= $range->value) : ($record['sell'] >= $range->value);
+              $res = $record;
+            }
+          }
+        }
 
+        if($condition) {
+          ($range->dailyAt = date('Y-m-d H:i:s')) && $range->save();
+
+          $bot = MyLineBot::create();
+          $msg = $this->remindContent('range', $range, $res);
+          $response = $bot->pushMessage($range->source->sid, $msg->builder);
+
+          $condition = false;
+        }
+      }
+    }
+    
+    if($floats = \M\RemindFloat::all()) {
+      $condition = false;
+      foreach ($floats as $float) {
+        if($float->kind == \M\RemindFloat::KIND_PASSBOOK) {
+          foreach ($passbookRecords as $record) {
+            if($record['currencyId'] == $float->currencyId && $record['bankId'] == $float->bankId) {
+              if($float->now == 0 ) {
+                ($float->now = $record['sell']) && $float->save();
+                break;
+              }
+              $condition = (abs($record['sell'] - $float->now) >= $float->value);
+              $res = $record;
+            }
+          }
+        } else {
+          foreach ($cashRecords as $record) {
+            if($record['currencyId'] == $float->currencyId && $record['bankId'] == $float->bankId) {
+              if($float->now == 0 ) {
+                ($float->now = $record['sell']) && $float->save();
+                break;
+              }
+              $condition = (abs($record['sell'] - $float->now) >= $float->value);
+              $res = $record;
+            }
+          }
         }
 
         if($condition) {
           $bot = MyLineBot::create();
-          $msg = $this->remindContent('range', $range, $res);
-
-          $response = $bot->pushMessage($sid, $msg->builder);
+          $msg = $this->remindContent('float', $float, $res);
+          $response = $bot->pushMessage($float->source->sid, $msg->builder);
+          $condition = false;
         }
-        
       }
     }
 
@@ -129,21 +174,33 @@ class Crontab extends Controller{
   }
 
   public function remindContent($type, $remind, $res) {
+    $compare = 0;
+    switch($type) {
+      case 'range':
+        $compare = $res['sell'] - $remind->value;
+        ($remind->dailyAt = date('Y-m-d H:i:s')) && $remind->save();
+        break;
+      case 'float':
+        $compare = $res['sell'] - $remind->now;
+        ($remind->now = $res['sell']) && $remind->save();
+        break;
+    }
+
     return MyLineBotMsg::create()->flex('區間提醒(' . \M\RemindRange::KIND[$remind->kind] . ')', FlexBubble::create([
             'header' => FlexBox::create([FlexText::create('區間提醒(' . \M\RemindRange::KIND[$remind->kind] . ')')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
             'body' => FlexBox::create([
                 FlexText::create($remind->currency->name . ' >= ' . $remind->value)->setColor('#906768'),
                 FlexSeparator::create(),
                 FlexBox::create([
-                  FlexText::create($res->bank->name)->setFlex(3),
+                  FlexText::create($remind->bank->name)->setFlex(3),
                   FlexSeparator::create()->setMargin('md'),
-                  FlexText::create($res->sell)->setFlex(3)->setMargin('lg'),
+                  FlexText::create($res['sell'])->setFlex(3)->setMargin('lg'),
                   FlexSeparator::create()->setMargin('md'),
-                  FlexText::create('+0.01')->setFlex(3)->setMargin('lg'),
+                  FlexText::create((string)($compare > 0 ? '+' . $compare : $compare))->setFlex(3)->setMargin('lg'),
                 ])->setLayout('horizontal'),
 
                 FlexSeparator::create(),
-                FlexText::create((string)$res->createAt)->setSize('xs')->setAlign('end')->setColor('#bdbdbd')
+                FlexText::create(date('Y-m-d H:i:s'))->setSize('xs')->setAlign('end')->setColor('#bdbdbd')
 
             ])->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
             'styles' => FlexStyles::create()->setHeader(FlexBlock::create()->setBackgroundColor('#f7d8d9'))

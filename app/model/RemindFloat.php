@@ -12,6 +12,7 @@ class RemindFloat extends Model {
   static $belongToOne = [
     'currency' => 'Currency',
     'bank' => 'Bank',
+    'source' => 'Source',
   ];
 
   // static $belongToMany = [];
