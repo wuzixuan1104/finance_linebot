@@ -8,36 +8,15 @@
 ## 步驟說明
 ### 以下為機器人功能選單
 1. 外匯查詢：
-+ 選擇貨幣
-+ <img src="asset/img/choose_currency.png" width="300">
-+ 選擇銀行
-+ <img src="asset/img/choose_bank.png" width="300">
-+ 顯示牌告與現鈔最新匯率
-+ <img src="asset/img/search.png" width="300">
-+ 點選匯率試算，需選擇試算類型（ex: 由aaa兌換bbb現金）
-+ <img src="asset/img/choose_type.png" width="300">
-+ 選擇後輸入金額，立即試算
-+ <img src="asset/img/input.jpg" width="300">
++ <img src="asset/img/readme/匯率查詢1.png" width="800">
++ <img src="asset/img/readme/匯率查詢2.png" width="800">
 2. 匯率試算
-+ 將您查詢過的歷史紀錄至試算中，讓你更快速便捷，點擊3次即能取得您要的結果，
-  每人紀錄最多只保留10個，若超過會自動刪除舊資料，或是使用者自行移除該紀錄
-+ <img src="asset/img/calculate.png" width="300">
-+ 選擇後輸入金額，立即試算
-+ <img src="asset/img/calc.png" width="300">
++ <img src="asset/img/readme/匯率試算.png" width="800">
 3. 最佳匯率
-+ 選擇貨幣
-+ <img src="asset/img/choose_currency.png" width="300">
-+ 顯示排行榜前五名的銀行匯率
-+ <img src="asset/img/best.png" width="300"> 
++ <img src="asset/img/readme/最佳匯率.png" width="800">
 4. 外匯提醒
-+ 可以設定浮動、區間的提醒模式（每種最多設置兩個提醒），且可以瀏覽之前設定的提醒
-+ <img src="asset/img/reminds.png" width="300">
-+ 設定提醒
-+ <img src="asset/img/setRemind.png" width="300">
-+ 瀏覽設定的提醒
-+ <img src="asset/img/remindList.png" width="300">
-+ 當達到您設定的提醒範圍會主動推播提醒
-+ <img src="asset/img/remind.png" width="300">
++ <img src="asset/img/readme/匯率提醒1.png" width="800">
++ <img src="asset/img/readme/匯率提醒2.png" width="800">
 ## 工具
 + Linebot API：https://developers.line.me/en/reference/messaging-api/
 + phpQuery：使用php爬蟲跑排程取得資料並存入資料庫
