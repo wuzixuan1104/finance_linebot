@@ -427,7 +427,7 @@ class RemindRange{
     if($action['bankId'] != 0 && !$bank = \M\Bank::one('id = ?', $action['bankId']))
       return false;
 
-    if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $params['text'], 'type' => $params['type'], 'sourceId' => $source->id])))
+    if(!$obj = \M\RemindRange::create(array_merge($action, ['value' => $params['text'], 'type' => $params['type'], 'sourceId' => $source->id, 'dailyAt' => date('Y-m-d H:i:s')])))
       return false;
 
     ($source->action = '') && $source->save();
