@@ -9,20 +9,33 @@
 ### 以下為機器人功能選單
 1. 外匯查詢：
 + 選擇貨幣
-+ <img src="asset/img/currency.jpg" width="300">
++ <img src="asset/img/choose_currency.png" width="300">
 + 選擇銀行
-+ <img src="asset/img/bank.jpg" width="300">
++ <img src="asset/img/choose_bank.png" width="300">
 + 顯示牌告與現鈔最新匯率
-+ <img src="asset/img/show.jpg" width="300">
++ <img src="asset/img/search.png" width="300">
 + 點選匯率試算，需選擇試算類型（ex: 由aaa兌換bbb現金）
-+ <img src="asset/img/type.jpg" width="300">
++ <img src="asset/img/choose_type.jpg" width="300">
 + 選擇後輸入金額，立即試算
 + <img src="asset/img/input.jpg" width="300">
 2. 匯率試算
 + 將您查詢過的歷史紀錄至試算中，讓你更快速便捷，點擊3次即能取得您要的結果，
   每人紀錄最多只保留10個，若超過會自動刪除舊資料，或是使用者自行移除該紀錄
-+ <img src="asset/img/calcRecord.jpg" width="300">
-3. 外匯提醒（趕工中）
++ <img src="asset/img/calculate.jpg" width="300">
++ 選擇後輸入金額，立即試算
++ <img src="asset/img/calc.png" width="300">
+3. 最佳匯率
++ 選擇貨幣
++ <img src="asset/img/choose_currency.png" width="300">
++ 顯示排行榜前五名的銀行匯率
++ <img src="asset/img/best.png" width="300"> 
+4. 外匯提醒
++ 可以設定浮動、區間的提醒模式（每種最多設置兩個提醒），且可以瀏覽之前設定的提醒
++ <img src="asset/img/reminds.png" width="300">
++ 設定提醒
++ <img src="asset/img/setRemind.png" width="300">
++ 瀏覽設定的提醒
++ <img src="asset/img/remindList.png" width="300">
 
 ## 工具
 + Linebot API：https://developers.line.me/en/reference/messaging-api/
