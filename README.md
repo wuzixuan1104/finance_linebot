@@ -37,7 +37,7 @@
 + 瀏覽設定的提醒
 + <img src="asset/img/remindList.png" width="300">
 + 當達到您設定的提醒範圍會主動推播提醒
-+ <img src="asset/img/reminds.png" width="300">
++ <img src="asset/img/remind.png" width="300">
 ## 工具
 + Linebot API：https://developers.line.me/en/reference/messaging-api/
 + phpQuery：使用php爬蟲跑排程取得資料並存入資料庫
