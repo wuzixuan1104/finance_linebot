@@ -343,4 +343,36 @@ class Crontab extends Controller{
 
     echo 'sucess';
   }
+
+  public function clearLog() {
+    $dirs = ['benchmark', 'error', 'info', 'query', 'warning'];
+
+    foreach($dirs as $dir) {
+      if(!is_dir(($dir = PATH_LOG . DIRECTORY_SEPARATOR . $dir )))
+        continue;
+
+      if(!$files = scandir($dir)) 
+        continue;
+
+      $nowDate = date('Y-m') . '-01'; 
+      foreach($files as $file) {
+        $fileDate = rtrim($file, '.log');
+        if(preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$fileDate) && $fileDate < $nowDate)
+          @unlink($dir . DIRECTORY_SEPARATOR . $file);
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -4,4 +4,6 @@ Router::dir('cli', function() {
   Router::cli('crontab/updateRecord')->controller('Crontab@updateRecord');
   Router::cli('crontab/currency')->controller('Crontab@currency');
   Router::cli('crontab/updateDaily')->controller('Crontab@forexRecordJob');
+
+  Router::cli('crontab/clearLog')->controller('Crontab@clearLog');
 });
