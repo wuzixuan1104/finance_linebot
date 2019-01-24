@@ -6,15 +6,11 @@ class Line extends Controller {
   static $cache;
 
   public function index() {
-    Log::error('enter index function');
-    
     $events = MyLineBot::events();
 
     foreach( $events as $event ) {
       if( !$source = \M\Source::checkExist($event) )
         continue;
-
-      Log::info($source->id);
 
       if (!$log = MyLineBotLog::init($source, $event)->create())
         return false;
