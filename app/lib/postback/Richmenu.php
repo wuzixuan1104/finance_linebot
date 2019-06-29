@@ -321,7 +321,7 @@ class Remind {
         $flexes[] = FlexSeparator::create();
         $flexes[] = FlexText::create($v['createAt'])->setSize('xs')->setAlign('end')->setColor('#bdbdbd');
         
-        if(++$cnt % 2 == 0) {
+        if(++$cnt % 5 == 0) {
           $bubbles[] = FlexBubble::create([
                         'header' => FlexBox::create([FlexText::create('匯率提醒列表')->setWeight('bold')->setSize('lg')->setColor('#904d4d')])->setSpacing('xs')->setLayout('horizontal'),
                         'body' => FlexBox::create($flexes)->setLayout('vertical')->setSpacing('md')->setMargin('sm'),
