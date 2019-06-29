@@ -313,8 +313,8 @@ class Remind {
         $flexes[] = FlexSeparator::create();
         $flexes[] = FlexBox::create([
                       FlexBox::create([
-                        FlexText::create($v['currency'] . ($v['bank'] ? ' / ' . $v['bank'] : ''))->setColor('#906768')->setFlex(7),
-                        FlexButton::create('primary')->setFlex(3)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => $k == '區間設定' ? 'RemindRange' : 'RemindFloat', 'method' => 'delete', 'param' => ['id' => $v['id']]]), '移除')),
+                        FlexText::create($v['currency'] . ($v['bank'] ? ' / ' . $v['bank'] : ''))->setColor('#906768')->setFlex(6),
+                        FlexButton::create('primary')->setFlex(4)->setColor('#f97172')->setHeight('sm')->setGravity('center')->setMargin('lg')->setAction(FlexAction::postback('移除', json_encode(['lib' => 'postback/Richmenu', 'class' => $k == '區間設定' ? 'RemindRange' : 'RemindFloat', 'method' => 'delete', 'param' => ['id' => $v['id']]]), '移除')),
                       ])->setLayout('horizontal'),
                       FlexText::create($v['kind'] . (isset($v['type']) ? ($v['type'] == \M\RemindRange::TYPE_LESS ? ' <= ' : ' >= ') : ' +- ') . $v['value'])->setFlex(7)
                     ])->setLayout('vertical');
