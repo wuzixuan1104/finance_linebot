@@ -14,9 +14,9 @@ class Common {
         $params['param']['currencyId'] = $v->id;
         
         $flexes[] = FlexBox::create([
-                      FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(7),
+                      FlexBox::create([FlexText::create($v->name)])->setLayout('vertical')->setFlex(6),
                       FlexSeparator::create(),
-                      FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode($params), $v->name))
+                      FlexButton::create('primary')->setColor('#f37370')->setFlex(4)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode($params), $v->name))
                     ])->setLayout('horizontal')->setSpacing('md');
 
         $flexes[] = FlexSeparator::create();
@@ -62,9 +62,9 @@ class Common {
       $params['param']['bankId'] = $k;
       
       $flexes[] = FlexBox::create([
-                    FlexBox::create([FlexText::create($v)])->setLayout('vertical')->setFlex(7),
+                    FlexBox::create([FlexText::create($v)])->setLayout('vertical')->setFlex(6),
                     FlexSeparator::create(),
-                    FlexButton::create('primary')->setColor('#f37370')->setFlex(3)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode($params), $v))
+                    FlexButton::create('primary')->setColor('#f37370')->setFlex(4)->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback('選擇', json_encode($params), $v))
                   ])->setLayout('horizontal')->setSpacing('md');
       $flexes[] = FlexSeparator::create();
 

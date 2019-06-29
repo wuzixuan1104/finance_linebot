@@ -6,9 +6,11 @@ class Line extends Controller {
   static $cache;
 
   public function index() {
-    $events = MyLineBot::events();
+    // Load::lib('postback/Richmenu.php');
 
+    $events = MyLineBot::events();
     foreach( $events as $event ) {
+
       if( !$source = \M\Source::checkExist($event) )
         continue;
 
