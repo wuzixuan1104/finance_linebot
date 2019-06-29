@@ -95,12 +95,12 @@ class Calculate {
                     FlexBox::create([
                       FlexText::create($calc->currency->name)->setColor('#906768')->setSize('md'),
                       FlexText::create('/ '. $calc->bank->name)->setSize('md'),
-                    ])->setLayout('vertical')->setFlex(4),
+                    ])->setLayout('vertical')->setFlex(6),
 
                     FlexSeparator::create(),
 
-                    FlexButton::create('primary')->setFlex(3)->setColor('#d4d4d4')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'delete', 'param' => ['calcRecordId' => $calc->id]]), '移除')),
-                    FlexButton::create('primary')->setFlex(3)->setColor('#f37370')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '試算', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['curName' => $calc->currency->name, 'passbookSell' => $passbook ? $passbook->sell : 0, 'cashSell' => $cash ? $cash->sell : 0]]), '試算')),
+                    // FlexButton::create('primary')->setFlex(3)->setColor('#d4d4d4')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '移除', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'delete', 'param' => ['calcRecordId' => $calc->id]]), '移除')),
+                    FlexButton::create('primary')->setFlex(4)->setColor('#f37370')->setHeight('sm')->setGravity('center')->setAction(FlexAction::postback( '試算', json_encode(['lib' => 'postback/Richmenu', 'class' => 'Calculate', 'method' => 'type', 'param' => ['curName' => $calc->currency->name, 'passbookSell' => $passbook ? $passbook->sell : 0, 'cashSell' => $cash ? $cash->sell : 0]]), '試算')),
                     
 
                 ])->setLayout('horizontal')->setSpacing('md')->setMargin('lg');
